@@ -1,3 +1,13 @@
+mkv-extractor-qt (5.1.2~ppa2~precise) precise; urgency=low ()
+
+  * Fix possible-unindented-list-in-extended-description
+  * Remove postrm script
+  * Fix the license mentioned in the GUI
+  * Remove python-all from build-depends
+
+ -- Marshall Banana <djcj@gmx.de>  Sun, 06 Jul 2014 22:14:03 +0200
+
+
 mkv-extractor-qt (5.1.2~ppa1~precise) precise; urgency=low ()
 
   [english]

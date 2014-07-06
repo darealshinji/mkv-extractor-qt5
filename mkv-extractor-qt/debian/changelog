@@ -6,6 +6,7 @@ mkv-extractor-qt (5.1.2-2~trusty) trusty; urgency=low ()
 
  -- Marshall Banana <djcj@gmx.de>  Sun, 06 Jul 2014 22:14:03 +0200
 
+
 mkv-extractor-qt (5.1.2-1~trusty) trusty; urgency=low ()
 
   [english]

@@ -1,0 +1,33 @@
+Source: mkv-extractor-qt
+Maintainer: Terence Belleguic <hizo@free.fr>
+Build-Depends:
+ debhelper (>= 9),
+ pyqt4-dev-tools,
+ qt4-linguist-tools
+Standards-Version: 3.9.5
+Priority: standard
+Section: video
+
+Package: mkv-extractor-qt
+Architecture: all
+Depends:
+ ${misc:Depends},
+ mkvtoolnix,
+ python3,
+ python3-pyqt4,
+ python-support (>= 0.90)
+Enhances:
+ libav-tools,
+ mkclean,
+ tesseract-ocr,
+ tesseract-ocr-fra,
+ mkvalidator,
+ mkv-extractor-qt-subptools
+Homepage: http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
+Description: Graphical mkv demultiplexer
+ Features:
+  * DTS to AC3 conversion via ffmpeg
+  * Automatic conversion from SUB to SRT via tesseract
+  * Read and extract joined files
+  * Extract and re-encapsule tracks
+  * And more again

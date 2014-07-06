@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+
+%:
+	dh ${@}
+
+override_dh_auto_build:
+	# Lancement de l'executable creant de fichiers à jours
+	$(CURDIR)/build.sh
+
+override_dh_clean:
+	# Nettoyage des fichiers suivants avant la creation d'un paquet source
+	rm -rf __pycache__
+	dh_clean -- MKVRessources_rc.py \
+		ui_MKVExtractorQt.py \
+		*.qm \
+		licence
+
+override_dh_builddeb:
+	# Compression du dossier data du paquet debian
+	dh_builddeb -- -Zxz -z9

@@ -263,7 +263,7 @@ class MKVExtractorQt(QMainWindow):
 
 
         ### Adresse du fichier licence
-        self.LicenceFile = "file:///usr/share/doc/mkv-extractor-qt/copyright"
+        self.LicenceFile = "licence"
 
 
         ### Cache la box de retour d'info

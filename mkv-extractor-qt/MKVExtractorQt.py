@@ -542,7 +542,7 @@ class MKVExtractorQt(QMainWindow):
         # 008000 : vert                 0000c0 : bleu                           800080 : violet
         effet = """<span style=" color:#000000;">@=====@</span>"""
         self.Trad = {"About_title" : self.tr("About MKV Extractor Gui"),
-                    "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v5.1.2</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/re-encapsulate the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded Bash.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>A big thank to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Create by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
+                    "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v5.1.2</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/re-encapsulate the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
 
                     "ErrorArgTitle" : self.tr("Wrong arguments"),
                     "ErrorArgExist" : self.tr("The <b>{}</b> file given as argument does not exist."),
@@ -553,7 +553,7 @@ class MKVExtractorQt(QMainWindow):
                     "ErrorTesseract" : self.tr("The subtitle language is not avaible in Tesseract list langs: {}"),
 
                     "Help_title" : self.tr("Help me!"),
-                    "Help" : self.tr("""<html><head/><body><p align="center"><span style=" font-weight:600;">Are you lost? Do you need help? </span></p><p><span style=" font-weight:600;">Normally all necessary information is present: </span></p><p>- Read the information in the status bar when moving the mouse on widgets </p><p><span style=" font-weight:600;">Though, if you need more information: </span></p><p>- Forum Ubuntu-fr.org: <a href="http://forum.ubuntu-fr.org/viewtopic.php?id=293216"><span style=" text-decoration: underline; color:#0057ae;">topic</span></a></p><p>- My email address: <a href="mailto:hizo@free.fr"><span style=" text-decoration: underline; color:#0057ae;">hizo@free.fr </span></a></p><p><span style=" font-weight:600;">Thank you for the interest you have shown in this software.</span></p></body></html>"""),
+                    "Help" : self.tr("""<html><head/><body><p align="center"><span style=" font-weight:600;">Are you lost? Do you need help? </span></p><p><span style=" font-weight:600;">Normally all necessary information is present: </span></p><p>- Read the information in the status bar when moving the mouse on widgets </p><p><span style=" font-weight:600;">Though, if you need more information: </span></p><p>- Forum Ubuntu-fr.org: <a href="http://forum.ubuntu-fr.org/viewtopic.php?id=293216"><span style=" text-decoration: underline; color:#0057ae;">topic</span></a></p><p>- My email address: <a href="mailto:hizo@free.fr"><span style=" text-decoration: underline; color:#0057ae;">hizo@free.fr </span></a></p><p><span style=" font-weight:600;">Thank you for your interest in this program.</span></p></body></html>"""),
 
                     "IMGViewerMD5" : self.tr("Edition of files who have the md5: {}"),
                     "IMGProgression" : self.tr("Image progression : {} on {}"),
@@ -600,7 +600,7 @@ class MKVExtractorQt(QMainWindow):
                     "TrackRename" : self.tr("This track can be renamed."),
                     "TrackTags" : self.tr("tags"),
                     "TrackType" : self.tr("This track is a {} type."),
-                    "TrackVideo" : self.tr("Choose the good number of frames per second if needed. Useful in case of audio lag. Normal : 23.976, 25.000 and 30.000."),
+                    "TrackVideo" : self.tr("Change the fps value if needed. Useful in case of audio lag. Normal : 23.976, 25.000 and 30.000."),
 
                     "WorkCanceled" : effet + self.tr(" All commands were canceled ") + effet,
                     "WorkCmd" : self.tr("""Command execution: <span style=" color:#0000c0;">{}</span>"""),

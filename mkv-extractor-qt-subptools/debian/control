@@ -22,4 +22,5 @@ Depends:
  ${misc:Depends},
  mkv-extractor-qt
 Description: Addon for mkv-extractor-qt
- Subrip tools
+ Subrip tools, required for conversion from SUB to SRT.
+ The tools were copied from the ogmrip package.

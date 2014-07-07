@@ -14,5 +14,9 @@ override_dh_auto_install:
 override_dh_clean:
 	dh_clean -- subp2tiff
 
+override_dh_compress:
+	dh_compress
+	gzip -f9 debian/*/usr/share/doc/*/*.1
+
 override_dh_builddeb:
 	dh_builddeb -- -Zxz -z9

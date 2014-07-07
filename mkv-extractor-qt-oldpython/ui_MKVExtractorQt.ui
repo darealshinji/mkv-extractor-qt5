@@ -1068,7 +1068,7 @@ p, li { white-space: pre-wrap; }
     <string>About MKV Extractor Qt</string>
    </property>
    <property name="statusTip">
-    <string>Displays information about MKV Extractor Qt.</string>
+    <string>Display information about MKV Extractor Qt.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::AboutRole</enum>

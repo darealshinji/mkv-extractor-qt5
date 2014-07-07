@@ -1,3 +1,10 @@
+mkv-extractor-qt (5.1.2~ppa3~precise) precise; urgency=low ()
+
+  * Fix English translation
+
+ -- Marshall Banana <djcj@gmx.de>  Mon, 07 Jul 2014 21:56:37 +0200
+
+
 mkv-extractor-qt (5.1.2~ppa2~precise) precise; urgency=low ()
 
   * Fix possible-unindented-list-in-extended-description

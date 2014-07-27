@@ -1,0 +1,4 @@
+mkv-extractor-qt/*.desktop      usr/share/applications
+mkv-extractor-qt/icons/*        usr/share/icons/hicolor
+mkv-extractor-qt/*.py           usr/share/mkv-extractor-qt
+mkv-extractor-qt/*.qm           usr/share/mkv-extractor-qt

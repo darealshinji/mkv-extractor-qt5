@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+
+subptools = mkv-extractor-qt-subptools
+
+%:
+	dh ${@}
+
+override_dh_auto_build:
+	# Lancement de l'executable creant de fichiers à jours
+	cd $(CURDIR)/mkv-extractor-qt && ./build.sh
+	cd $(CURDIR)/mkv-extractor-qt-oldpython && ./build.sh
+
+	# mkv-extractor-qt-subptools
+	cd $(subptools) && autoreconf -ivf
+	cd $(subptools) && ./configure
+	cd $(subptools) && $(MAKE)
+	mv $(subptools)/subp2pgm $(subptools)/subp2tiff
+
+override_dh_clean:
+	# Nettoyage des fichiers suivants avant la creation d'un paquet source
+	dh_clean -- $(subptools)/subp2tiff
+	$(CURDIR)/mkv-extractor-qt/clean.sh
+	$(CURDIR)/mkv-extractor-qt-oldpython/clean.sh
+
+override_dh_compress:
+	dh_compress
+	gzip -f9 debian/$(subptools)/usr/share/doc/*/*.1
+
+override_dh_builddeb:
+	# Compression du dossier data du paquet debian
+	dh_builddeb -- -Zxz -z9

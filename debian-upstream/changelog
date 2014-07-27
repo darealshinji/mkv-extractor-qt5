@@ -1,3 +1,17 @@
+mkv-extractor-qt (5.1.2-4~trusty) trusty; urgency=low ()
+
+  * Build all mkv-extractor-qt packages from the same source tarball
+
+ -- Marshall Banana <djcj@gmx.de>  Sun, 27 Jul 2014 13:38:55 +0200
+
+
+mkv-extractor-qt (5.1.2-3~trusty) trusty; urgency=low ()
+
+  * Fix English translation
+
+ -- Marshall Banana <djcj@gmx.de>  Mon, 07 Jul 2014 21:56:37 +0200
+
+
 mkv-extractor-qt (5.1.2-2~trusty) trusty; urgency=low ()
 
   * Remove postrm script

@@ -1,11 +1,10 @@
-On Debian systems, open the copyright file
---- a/MKVExtractorQt.py
-+++ b/MKVExtractorQt.py
-@@ -255,7 +255,7 @@
+--- a/mkv-extractor-qt-oldpython/MKVExtractorQt.py
++++ b/mkv-extractor-qt-oldpython/MKVExtractorQt.py
+@@ -263,7 +263,7 @@
  
  
          ### Adresse du fichier licence
--        self.LicenceFile = "licence"
+-        self.LicenceFile = "COPYING"
 +        self.LicenceFile = "file:///usr/share/doc/mkv-extractor-qt/copyright"
  
  

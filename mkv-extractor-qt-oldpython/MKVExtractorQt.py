@@ -263,7 +263,7 @@ class MKVExtractorQt(QMainWindow):
 
 
         ### Adresse du fichier licence
-        self.LicenceFile = "licence"
+        self.LicenceFile = "COPYING"
 
 
         ### Cache la box de retour d'info

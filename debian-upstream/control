@@ -2,13 +2,13 @@ Source: mkv-extractor-qt
 Maintainer: Terence Belleguic <hizo@free.fr>
 Build-Depends:
  debhelper (>= 9),
- pyqt4-dev-tools,
- qt4-linguist-tools,
  dh-autoreconf,
- pkg-config,
  libxml2-dev,
  libtiff-dev,
  libpng12-dev,
+ pkg-config,
+ pyqt4-dev-tools,
+ qt4-linguist-tools,
  zlib1g-dev
 Standards-Version: 3.9.5
 Priority: standard
@@ -22,7 +22,7 @@ Depends:
  python3 (>= 3.4.0),
  python3-pyqt4,
  python-support (>= 0.90)
-Replaces: mkv-extractor, mkv-extractor-qt-oldpython
+Replaces: mkv-extractor-qt-oldpython
 Enhances:
  libav-tools,
  mkclean,
@@ -47,7 +47,7 @@ Depends:
  python3,
  python3-pyqt4,
  python-support (>= 0.90)
-Replaces: mkv-extractor, mkv-extractor-qt-oldpython
+Replaces: mkv-extractor-qt
 Enhances:
  libav-tools, ffmpeg,
  mkclean,

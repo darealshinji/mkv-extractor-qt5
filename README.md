@@ -23,4 +23,4 @@ Runtime dependency: `mkvtoolnix` (http://www.bunkus.org/videotools/mkvtoolnix/)
 
 mkv-extractor-qt-subptools:<br>
 addon for mkv-extractor-qt to convert vobsubs into soft subtitles.<br>
-Build dependencies: `automake pkg-config libxml2-dev libtiff-dev libpng12-dev zlib1g-dev`
+Build dependencies: `dh-autoreconf pkg-config libxml2-dev libtiff-dev libpng12-dev zlib1g-dev`

@@ -1322,14 +1322,14 @@ class MKVExtractorQt(QMainWindow):
             elif Select[2] == "text-x-generic":
                 ### Dans le cas de sous titres de fichiers sub
                 if Select[6] == "sub":
-                    Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_sous-titres_{0[4]}.idx".format(Select)))
-                    Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_sous-titres_{0[4]}.sub".format(Select)))
-                    mkvextract_track += '{0[0]}:"{1}/{0[0]}_sous-titres_{0[4]}.idx" '.format(Select, Configs["MKVDirNameOut"])
+                    Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_subtitles_{0[4]}.idx".format(Select)))
+                    Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_subtitles_{0[4]}.sub".format(Select)))
+                    mkvextract_track += '{0[0]}:"{1}/{0[0]}_subtitles_{0[4]}.idx" '.format(Select, Configs["MKVDirNameOut"])
 
                     ### Dans le cas d'un conversion SUB => AC3, maj de commandes
                     if Variables["VobsubToSrt"]:
-                        Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_sous-titres_{0[4]}.srt".format(Select)))
-                        mkvmerge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" "{1}/{0[0]}_sous-titres_{0[4]}.srt" '.format(Select, Configs["MKVDirNameOut"])
+                        Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_subtitles_{0[4]}.srt".format(Select)))
+                        mkvmerge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" "{1}/{0[0]}_subtitles_{0[4]}.srt" '.format(Select, Configs["MKVDirNameOut"])
 
                         ### Difference de nom entre la langue de tesseract et celle de mkvalidator
                         if Select[5] == "fre":
@@ -1339,14 +1339,17 @@ class MKVExtractorQt(QMainWindow):
 
                     ### Dans le cas ou il n'y a pas de conversion, maj de commande
                     else:
-                        mkvmerge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" "{1}/{0[0]}_sous-titres_{0[4]}.idx" '.format(Select, Configs["MKVDirNameOut"])
+                        mkvmerge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" "{1}/{0[0]}_subtitles_{0[4]}.idx" '.format(Select, Configs["MKVDirNameOut"])
 
 
                 ### Dans le cas de sous titres autre que de type sub, maj de commandes
                 else:
-                    mkvmerge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" "{1}/{0[0]}_sous-titres_{0[4]}.{0[6]}" '.format(Select, Configs["MKVDirNameOut"])
-                    Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_sous-titres_{0[4]}.{0[6]}".format(Select)))
-                    mkvextract_track += '{0[0]}:"{1}/{0[0]}_sous-titres_{0[4]}.{0[6]}" '.format(Select, Configs["MKVDirNameOut"])
+                    mkvmerge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" "{1}/{0[0]}_subtitles_{0[4]}.{0[6]}" '.format(Select, Configs["MKVDirNameOut"])
+                    Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_subtitles_{0[4]}.{0[6]}".format(Select)))
+                    if Select[6] == "substationalpha":
+                        mkvextract_track += '{0[0]}:"{1}/{0[0]}_subtitles_{0[4]}.ass" '.format(Select, Configs["MKVDirNameOut"])
+                    else:
+                        mkvextract_track += '{0[0]}:"{1}/{0[0]}_subtitles_{0[4]}.{0[6]}" '.format(Select, Configs["MKVDirNameOut"])
 
 
             ### Traitement des pistes chapitrage, maj de commandes
@@ -1402,13 +1405,13 @@ class MKVExtractorQt(QMainWindow):
                 ID = SubInfo[0]
                 Name = SubInfo[1]
                 Lang = SubInfo[2]
-                BaseFile = '{}/{}_sous-titres_{}'.format(Configs["MKVDirNameOut"], ID, Name)
+                BaseFile = '{}/{}_subtitles_{}'.format(Configs["MKVDirNameOut"], ID, Name)
                 IDX = '{}.idx'.format(BaseFile)
                 SUB = '{}.sub'.format(BaseFile)
                 SRT = '{}.srt'.format(BaseFile)
                 Folder = '{}/SUB2SRT'.format(Variables["TempFolderName"])
-                Files = '{}/{}_sous-titres_{}'.format(Folder, ID, Name)
-                IDXNew = '{}/{}_sous-titres_{}.idx'.format(Folder, ID, Name)
+                Files = '{}/{}_subtitles_{}'.format(Folder, ID, Name)
+                IDXNew = '{}/{}_subtitles_{}.idx'.format(Folder, ID, Name)
 
                 MKVSubSrt[ID] = [] # Creation du dictionnaire listant les differentes infos
                 for info in [Lang, IDX, SUB, Folder, IDXNew]:
@@ -1416,7 +1419,7 @@ class MKVExtractorQt(QMainWindow):
 
                 ### Envoie des commandes dans la liste
                 Variables["CmdList"].append(["Sub2Srt", "Demarrage", 'echo', ID])
-                Variables["CmdList"].append(["Sub2Srt", "Subp2Tiff", '{}/subp2tiff -n "{}/{}_sous-titres_{}"'.format(QDir.currentPath(), Folder, ID, Name), ID])
+                Variables["CmdList"].append(["Sub2Srt", "Subp2Tiff", '{}/subp2tiff -n "{}/{}_subtitles_{}"'.format(QDir.currentPath(), Folder, ID, Name), ID])
                 Variables["CmdList"].append(["Sub2Srt", "Tesseract", "", ID])
                 Variables["CmdList"].append(["Sub2Srt", "SubpTools", '{}/subptools -s -w -t srt -i "{}.xml" -o "{}"'.format(QDir.currentPath(), Files, SRT), ID])
 

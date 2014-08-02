@@ -1,3 +1,11 @@
+mkv-extractor-qt (5.1.2-5~trusty) trusty; urgency=low ()
+
+  * Use .ass extension on Substation Alpha subtitles
+  * Translate 'sous-titres' in output filenames to 'subtitles'
+
+ -- Marshall Banana <djcj@gmx.de>  Sat, 02 Aug 2014 02:38:02 +0200
+
+
 mkv-extractor-qt (5.1.2-4~trusty) trusty; urgency=low ()
 
   * Build all mkv-extractor-qt packages from the same source tarball

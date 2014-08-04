@@ -6,7 +6,7 @@
 
 override_dh_auto_build:
 	# Lancement de l'executable creant de fichiers à jours
-	cd $(CURDIR)/mkv-extractor-qt && ./build.sh
+	#cd $(CURDIR)/mkv-extractor-qt && ./build.sh
 	cd $(CURDIR)/mkv-extractor-qt-oldpython && ./build.sh
 
 	autoreconf -ivf mkv-extractor-qt-subptools

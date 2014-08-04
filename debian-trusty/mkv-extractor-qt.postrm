@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ]; then
+	if [ -e "/home/$SUDO_USER/.config/mkv-extractor-qt" ]; then rm -r "/home/$SUDO_USER/.config/mkv-extractor-qt"; fi
+fi
+
+#DEBHELPER#

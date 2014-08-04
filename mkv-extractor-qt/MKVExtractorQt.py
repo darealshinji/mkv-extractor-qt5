@@ -542,7 +542,7 @@ class MKVExtractorQt(QMainWindow):
         # 008000 : vert                 0000c0 : bleu                           800080 : violet
         effet = """<span style=" color:#000000;">@=====@</span>"""
         self.Trad = {"About_title" : self.tr("About MKV Extractor Gui"),
-                    "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v5.1.2</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/re-encapsulate the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
+                    "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v5.1.3</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/remux the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
 
                     "ErrorArgTitle" : self.tr("Wrong arguments"),
                     "ErrorArgExist" : self.tr("The <b>{}</b> file given as argument does not exist."),
@@ -587,7 +587,7 @@ class MKVExtractorQt(QMainWindow):
                     "SubtitlesCreation" : self.tr("SRT subtitle creation."),
                     "SubtitlesWait" : self.tr("All subtitles images could not be recognized.\nWe must therefore specify the missing texts."),
 
-                    "TrackAac" : self.tr("If the re-encapsulated file has reading problems, change this value."),
+                    "TrackAac" : self.tr("If the remuxed file has reading problems, change this value."),
                     "TrackAudio" : self.tr("Change the language if it's not right. 'und' means 'Undetermined'."),
                     "TrackAttachment" : self.tr("This track can be renamed and must contain an extension to avoid reading errors."),
                     "TrackChapters" : self.tr("chapters"),
@@ -940,12 +940,11 @@ class MKVExtractorQt(QMainWindow):
                             codec = "sup"
                         elif codec in ["s_text/utf8", "text", "subrip/srt"]:
                             codec = "srt"
-                        elif codec in ["s_text/ssa", "s_text/ass"]:
+                        elif codec in ["s_text/ssa", "s_text/ass", "substationalpha"]:
                             codec = "ssa"
                         else:
                             codec = codec.replace("/", "_")
 
-                        ### Envoie des informations dans le tableaux
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
                         self.ComboBoxes[x] = QComboBox() # Création de la combobox et ajout d'un element dans le dico
                         self.ui.mkv_tracks.setCellWidget(x, 5, self.ComboBoxes[x]) # Envoie de la combobox
@@ -997,9 +996,14 @@ class MKVExtractorQt(QMainWindow):
             elif Track[:10] == "Attachment":
                 ID = Track.split(": ")[0].split(" ")[2] # Récupération de l'ID de la piste
                 typecodec = Track.split(" type '")[1].split("'")[0] # Récupération du codec de la piste
-                codec = typecodec.split("/")[1] # Récupération du codec
                 typetrack = typecodec.split("/")[0] # Récupération du type
                 info2 = Track.split(" size ")[1].split(" ")[0] # Récupération de l'information numero 2
+
+                ### Récupération du codec qui peut ne pas etre présent (comme dans le cas d'un fichier binaire)
+                try:
+                    codec = typecodec.split("/")[1]
+                except:
+                    codec = typecodec
 
                 ### Récupération de l'info
                 if " description " in Track:
@@ -1014,6 +1018,8 @@ class MKVExtractorQt(QMainWindow):
                 ### Mise à jour du codec pour plus de lisibilité
                 if codec == "x-truetype-font":
                     codec = "font"
+                elif codec == "vnd.ms-opentype":
+                    codec = "font OpenType"
                 elif codec == "x-msdos-program":
                     codec = "application msdos"
                 elif codec == "plain":
@@ -1346,10 +1352,7 @@ class MKVExtractorQt(QMainWindow):
                 else:
                     mkvmerge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" "{1}/{0[0]}_subtitles_{0[4]}.{0[6]}" '.format(Select, Configs["MKVDirNameOut"])
                     Variables["TempFiles"].append(Path(Configs["MKVDirNameOut"], "{0[0]}_subtitles_{0[4]}.{0[6]}".format(Select)))
-                    if Select[6] == "substationalpha":
-                        mkvextract_track += '{0[0]}:"{1}/{0[0]}_subtitles_{0[4]}.ass" '.format(Select, Configs["MKVDirNameOut"])
-                    else:
-                        mkvextract_track += '{0[0]}:"{1}/{0[0]}_subtitles_{0[4]}.{0[6]}" '.format(Select, Configs["MKVDirNameOut"])
+                    mkvextract_track += '{0[0]}:"{1}/{0[0]}_subtitles_{0[4]}.{0[6]}" '.format(Select, Configs["MKVDirNameOut"])
 
 
             ### Traitement des pistes chapitrage, maj de commandes

@@ -16,6 +16,8 @@ import datetime # utile pour le calcul de la progression de la conversion en ac3
 
 from ui_MKVExtractorQt import Ui_mkv_extractor_qt # Utilisé pour la fentre pricniaple
 
+Version = "5.1.4"
+
 ### Creation des dictionnaires et listes facilement modifiables partout
 MKVDico = {} # Dictionnaire qui contiendra toutes les pistes du fichier mkv
 MKVFPS = {} # Dictionnaire qui contiendra les FPS des pistes du fichier mkv
@@ -281,6 +283,9 @@ class MKVExtractorQt(QMainWindow):
         if "fr_" in Configs["Language"]:
             self.ui.lang_fr.setChecked(True) # Selection de la langue français
             self.OptionLanguage("fr_FR") # Necessaire car l'item ci-dessus n'est pas encore connecté
+        elif "cs_" in Configs["Language"]:
+            self.ui.lang_cs.setChecked(True) # Selection de la langue tchéque
+            self.OptionLanguage("cs_CZ") # Necessaire car l'item ci-dessus n'est pas encore connecté
         else:
             self.OptionLanguage("en_US") # Force le chargement de traduction si c'est la langue english (par defaut)
 
@@ -327,6 +332,7 @@ class MKVExtractorQt(QMainWindow):
         self.ui.option_clean.activated.connect(lambda: self.ui.reply_info.clear()) # Nettoyage de la box du retour d'infos
         self.ui.lang_en.activated.connect(partial(self.OptionLanguage, "en_US")) # Au clic sur le menu
         self.ui.lang_fr.activated.connect(partial(self.OptionLanguage, "fr_FR")) # Au clic sur le menu
+        self.ui.lang_cs.activated.connect(partial(self.OptionLanguage, "cs_CZ")) # Au clic sur le menu
         self.ui.mkv_folder.activated.connect(self.MKVFolder) # Au clic sur le bouton
         self.ui.mkv_open.activated.connect(self.MKVOpen) # Au clic sur le bouton
 
@@ -334,8 +340,7 @@ class MKVExtractorQt(QMainWindow):
         ### Connexions des fenetres d'infos et d'aides
         self.ui.about_qt.activated.connect(lambda: QMessageBox.aboutQt(MKVExtractorQt)) # A propos de Qt
         self.ui.help.activated.connect(lambda: QMessageBox.about(self, self.Trad["Help_title"], self.Trad["Help"])) # Aide
-        self.ui.about.activated.connect(lambda: QMessageBox.about(self, self.Trad["About_title"], self.Trad["About"].format(self.LicenceFile))) # A propos de MKV Extractor Gui
-
+        self.ui.about.activated.connect(lambda: QMessageBox.about(self, self.Trad["About_title"] , self.Trad["About"].format(Version, self.LicenceFile))) # A propos de MKV Extractor Gui
 
         ### Connexions des options, redirige tous ces widgets vers une même fonction
         self.ui.option_reencapsulate.toggled.connect(partial(self.VariablesValue, "Reencapsulate")) # Au clic sur la coche
@@ -534,14 +539,24 @@ class MKVExtractorQt(QMainWindow):
         ### Dossier du logiciel
         folder = os.path.dirname(os.path.abspath(os.path.realpath(sys.argv[0])))
 
-        if os.path.exists(folder + "/MKVExtractorQt_" + Configs["Language"] + ".qm"): # Fichier de trad dans le meme dossier
-            appTranslator.load(folder + "/MKVExtractorQt_" + Configs["Language"])
+        if Configs["Language"] == "fr_FR":
+            find = appTranslator.load("MKVExtractorQt_fr_FR", str(folder))
 
-        elif os.path.exists("/usr/share/mkv-extractor-qt/MKVExtractorQt_" + Configs["Language"] + ".qm"): # Trad dans usr/share
-            appTranslator.load("/usr/share/mkv-extractor-qt/MKVExtractorQt_" + Configs["Language"])
+            # Si le fichier n'a pas été trouvé,relance la fonction en US
+            if not find:
+                QMessageBox(3, "Erreur de traduction", "Aucun fichier de traduction <b>française</b> trouvé.<br/>Utilisation de la langue <b>anglaise</b>.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
+                self.ui.lang_en.setChecked(True)
+                return
 
-        else: # Pas de trad de trouvée
-            return
+        elif Configs["Language"] == "cs_CZ":
+            find = appTranslator.load("MKVExtractorQt_cs_CZ", str(folder))
+
+            # Si le fichier n'a pas été trouvé,relance la fonction en US
+            if not find:
+                QMessageBox(3, "Chyba překladu", "No translation file <b>Czech</b> found. Use <b>English</b> language. Soubor s překladem do <b>češtiny</b> nenalezen. Použít <b>anglický</b> jazyk.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
+                self.ui.lang_en.setChecked(True)
+                return
+
 
         app.installTranslator(appTranslator)
 
@@ -556,7 +571,7 @@ class MKVExtractorQt(QMainWindow):
 # 008000 : vert                 0000c0 : bleu                           800080 : violet
         effet = """<span style=" color:#000000;">@=====@</span>"""
         self.Trad = {"About_title" : self.tr("About MKV Extractor Gui"),
-                    "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v5.1.3</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/remux the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
+                    "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v{}</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/remux the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
 
                     "ErrorArgTitle" : self.tr("Wrong arguments"),
                     "ErrorArgExist" : self.tr("The <b>{}</b> file given as argument does not exist."),
@@ -572,7 +587,7 @@ class MKVExtractorQt(QMainWindow):
                     "IMGViewerMD5" : self.tr("Edition of files who have the md5: {}"),
                     "IMGProgression" : self.tr("Image progression : {} on {}"),
 
-                    "OptionsDelTemp1" : self.tr("Delete re-encapsulation temporary files"),
+                    "OptionsDelTemp1" : self.tr("Delete temporary files"),
                     "OptionsDelTemp2" : self.tr("The temporary files are the extracted tracks."),
                     "OptionsFFMpeg" : self.tr("Use FFMpeg for the conversion."),
                     "OptionsPowerList" : self.tr("Increase the sound power"),

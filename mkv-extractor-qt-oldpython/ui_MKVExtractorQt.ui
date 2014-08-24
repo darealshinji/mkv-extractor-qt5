@@ -949,6 +949,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="separator"/>
     <addaction name="lang_en"/>
     <addaction name="lang_fr"/>
+    <addaction name="lang_cs"/>
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuActions"/>
@@ -1264,7 +1265,7 @@ p, li { white-space: pre-wrap; }
      <string notr="true">English version</string>
     </property>
     <property name="statusTip">
-     <string>Change the display language to English.</string>
+     <string notr="true">Change the display language to English.</string>
     </property>
    </action>
    <action name="lang_fr">
@@ -1276,10 +1277,25 @@ p, li { white-space: pre-wrap; }
       <normaloff>:/img/FR.png</normaloff>:/img/FR.png</iconset>
     </property>
     <property name="text">
-     <string>Version Française</string>
+     <string notr="true">Version Française</string>
     </property>
     <property name="statusTip">
-     <string>Traduire le logiciel en langue Française.</string>
+     <string notr="true">Traduire le logiciel en langue Française.</string>
+    </property>
+   </action>
+   <action name="lang_cs">
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="icon">
+     <iconset resource="MKVRessources.qrc">
+      <normaloff>:/img/CS.png</normaloff>:/img/CS.png</iconset>
+    </property>
+    <property name="text">
+     <string notr="true">Česká verze</string>
+    </property>
+    <property name="statusTip">
+     <string notr="true">Změnit jazyk rozhraní na češtinu.</string>
     </property>
    </action>
   </actiongroup>

@@ -1,6 +1,8 @@
 Graphical MKV demultiplexer
 ===========================
 
+Inofficial working tree
+
 Features:
   * DTS to AC3 conversion via ffmpeg
   * Automatic conversion from SUB to SRT via tesseract
@@ -8,10 +10,10 @@ Features:
   * Extract and re-encapsule tracks
   * And more again
 
-Copyright (C) 2014 Terence Belleguic <hizo@free.fr>
+Copyright (C) 2013-2014 Terence Belleguic <hizo@free.fr>
 
 https://launchpad.net/~hizo/+archive/mkv-extractor-gui<br>
-https://launchpad.net/~djcj/+archive/ubuntu/mkvtoolnix<br>
+https://launchpad.net/~djcj/+archive/ubuntu/mkvtoolnix (inofficial)<br>
 http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
 
 

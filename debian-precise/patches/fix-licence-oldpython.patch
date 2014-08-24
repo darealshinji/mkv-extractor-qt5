@@ -1,6 +1,6 @@
 --- a/mkv-extractor-qt-oldpython/MKVExtractorQt.py
 +++ b/mkv-extractor-qt-oldpython/MKVExtractorQt.py
-@@ -263,7 +263,7 @@
+@@ -265,7 +265,7 @@
  
  
          ### Adresse du fichier licence

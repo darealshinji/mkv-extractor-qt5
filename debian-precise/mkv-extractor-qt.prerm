@@ -2,8 +2,8 @@
 
 set -e
 
-if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
-  for d in /home/* ; do	rm -rfv "$d/.config/MKV-Extractor-Qt"; done
+if [ "$1" = "purge" ]; then
+  for d in /home/* ; do rm -rfv "$d/.config/MKV-Extractor-Qt"; done
 fi
 
 #DEBHELPER#

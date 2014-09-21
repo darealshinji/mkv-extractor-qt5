@@ -8,6 +8,7 @@ Build-Depends:
  libpng12-dev,
  pkg-config,
  pyqt4-dev-tools,
+ python3,
  qt4-linguist-tools,
  zlib1g-dev
 Standards-Version: 3.9.5
@@ -19,7 +20,7 @@ Architecture: all
 Depends:
  ${misc:Depends},
  mkvtoolnix,
- python3,
+ ${python3:Depends},
  python3-pyqt4,
  python-support (>= 0.90)
 Enhances:

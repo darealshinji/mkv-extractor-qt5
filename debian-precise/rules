@@ -2,21 +2,18 @@
 
 
 %:
-	dh ${@}
+	dh ${@} --parallel --with python3
 
 override_dh_auto_build:
-	# Lancement de l'executable creant de fichiers à jours
 	#cd $(CURDIR)/mkv-extractor-qt && ./build.sh
 	cd $(CURDIR)/mkv-extractor-qt-oldpython && ./build.sh
 
 	autoreconf -ivf mkv-extractor-qt-subptools
-	cd mkv-extractor-qt-subptools && ./configure
-	cd mkv-extractor-qt-subptools && $(MAKE)
-	mv mkv-extractor-qt-subptools/subp2pgm mkv-extractor-qt-subptools/subp2tiff
+	dh_auto_configure -Dmkv-extractor-qt-subptools
+	dh_auto_build -Dmkv-extractor-qt-subptools
 
-override_dh_clean:
-	# Nettoyage des fichiers suivants avant la creation d'un paquet source
-	dh_clean -- mkv-extractor-qt-subptools/subp2tiff
+override_dh_auto_clean:
+	dh_auto_clean -Dmkv-extractor-qt-subptools
 	$(CURDIR)/mkv-extractor-qt/clean.sh
 	$(CURDIR)/mkv-extractor-qt-oldpython/clean.sh
 
@@ -25,5 +22,4 @@ override_dh_compress:
 	gzip -f9 debian/mkv-extractor-qt-subptools/usr/share/doc/*/*.1
 
 override_dh_builddeb:
-	# Compression du dossier data du paquet debian
 	dh_builddeb -- -Zxz -z9

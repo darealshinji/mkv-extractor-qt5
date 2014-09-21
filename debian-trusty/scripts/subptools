@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/lib/mkv-extractor-qt/subptools "$@"

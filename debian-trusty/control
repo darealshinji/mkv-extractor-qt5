@@ -37,7 +37,7 @@ Description: Graphical mkv demultiplexer
   * DTS to AC3 conversion via ffmpeg
   * Automatic conversion from SUB to SRT via tesseract
   * Read and extract joined files
-  * Extract and re-encapsule tracks
+  * Extract and remux tracks
   * And more again
 
 Package: mkv-extractor-qt-subptools

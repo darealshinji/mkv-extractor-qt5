@@ -30,6 +30,7 @@ Enhances:
  tesseract-ocr-fra,
  mkvalidator,
  mkv-extractor-qt-subptools
+Replaces: mkv-extractor-qt-oldpython
 Homepage: http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
 Description: Graphical mkv demultiplexer
  Features:

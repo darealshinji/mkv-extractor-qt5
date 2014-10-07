@@ -417,7 +417,6 @@ class MKVExtractorQt(QMainWindow):
         self.ui.about_qt.activated.connect(lambda: QMessageBox.aboutQt(MKVExtractorQt)) # A propos de Qt
         self.ui.help.activated.connect(lambda: QMessageBox.about(self, self.Trad["Help_title"], self.Trad["Help"])) # Aide
         self.ui.about.activated.connect(lambda: QMessageBox.about(self, self.Trad["About_title"] , self.Trad["About"].format(Version, self.LicenceFile))) # A propos de MKV Extractor Gui
-        self.ui.about.activated.connect(lambda: QMessageBox.about(self, self.Trad["About_title"] , self.Trad["About"].format(Version, self.LicenceFile))) # A propos de MKV Extractor Gui
 
         ### Connexions des options, redirige tous ces widgets vers une même fonction
         self.ui.option_reencapsulate.toggled.connect(partial(self.VariablesValue, "Reencapsulate")) # Au clic sur la coche

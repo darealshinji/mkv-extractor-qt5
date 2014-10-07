@@ -28,8 +28,9 @@ done < <(grep "QtGui.QIcon.fromTheme" ui_MKVExtractorQt.py)
 pyrcc4 MKVRessources.qrc -o MKVRessources_rc.py -py3
 
 # Création d'un fichier licence ne servant qu'en local (il est effacer lors de la creation d'un paquet debian)
+now=$(date -R)
 echo """This package was debianized by Terence Belleguic <hizo@free.fr> on
-Wed, 18 Jun 2014 18:50:46 +0200.
+${now}
 
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Source: https://launchpad.net/~hizo/+archive/mkv-extractor-gui

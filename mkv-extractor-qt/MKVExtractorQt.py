@@ -17,7 +17,7 @@ from pathlib import Path # Necessaire pour la recherche de fichier
 from ui_MKVExtractorQt import Ui_mkv_extractor_qt # Utilisé pour la fentre pricniaple
 
 
-Version = "5.1.4"
+Version = "5.1.5"
 
 ### Creation des dictionnaires et listes facilement modifiables partout
 MKVDico = {} # Dictionnaire qui contiendra toutes les pistes du fichier mkv
@@ -104,6 +104,81 @@ except:
                "ViewInfo" : True, # Affichage du retour d'info
                "WinMax" : False, # Fenetre maximisée ou non
               }
+
+
+### Dictionnaire listant les codecs connu par mkvmerge
+CodecList = {"V_MS/VFW/FOURCC": ["vfw", "Microsoft Video Codec Manager"],
+             "V_UNCOMPRESSED": ["raw", "Raw Uncompressed Video Frames"],
+             "V_MPEG4/ISO/AVC": ["mpeg4", "MPEG4 ISO (x264)"],
+             "V_MPEG4/ISO/SP": ["mpeg4", "MPEG4 ISO simple profile (DivX4)"],
+             "V_MPEG4/ISO/ASP": ["mpeg4", "MPEG4 ISO advanced simple profile (DivX5, XviD, FFMPEG)"],
+             "V_MPEG4/ISO/AP": ["mpeg4", "MPEG4 ISO advanced profile"],
+             "V_MPEG4/MS/V3": ["mpeg4", "Microsoft MPEG4 V3"],
+             "V_MPEG1": ["mpeg1", "MPEG 1"],
+             "V_MPEG2": ["mpeg1", "MPEG 2"],
+             "V_REAL/RV10": ["rv", "RealVideo 1.0 aka RealVideo 5"],
+             "V_REAL/RV20": ["rv", "RealVideo G2 and RealVideo G2+SVT"],
+             "V_REAL/RV30": ["rv", "RealVideo 8"],
+             "V_REAL/RV40": ["rv", "RealVideo 9"],
+             "V_QUICKTIME": ["qt", "QuickTime"],
+             "V_THEORA": ["ogv", "Theora"],
+             "V_PRORES": ["prores", "Apple ProRes"],
+             "V_SNOW": ["snow", "Opaque codec init data"],
+             "V_VP8": ["vp8", "After vp7 and before vp9 owned by Google"],
+             "V_VP9": ["vp9", "After vp8 owned by Google"],
+             "V_DIRAC": ["drc", "Developed by BBC Research"],
+             "V_MPEGH/ISO/HEVC": ["mpegh", "future replacement of MPEG"],
+             "A_MPEG/L1": ["mp1", "MPEG Audio 1, 2 Layer I"],
+             "A_MPEG/L2": ["mp2", "MPEG Audio 1, 2 Layer II"],
+             "A_MPEG/L3": ["mp3", "MPEG Audio 1, 2, 2.5 Layer III"],
+             "A_PCM/INT/BIG": ["pcm", "Integer Big Endian"],
+             "A_PCM/INT/LIT": ["pcm", "Integer Little Endian"],
+             "A_PCM/FLOAT/IEEE": ["pcm", "Floating Point, IEEE compatible"],
+             "A_MPC": ["mpc", "MPC (musepack) SV8"],
+             "A_AC3": ["ac3", "Dolby AC3"],
+             "A_AC3/BSID9": ["ac3", "Dolby AC3"],
+             "A_AC3/BSID10": ["ac3", "Dolby AC3"],
+             "A_EAC3": ["eac3", "Enhanced AC-3 - Dolby Digital Plus"],
+             "A_ALAC": ["alac", "Apple Lossless Audio Codec"],
+             "A_DTS": ["dts", "Digital Theatre System"],
+             "A_DTS/EXPRESS": ["dts", "Digital Theatre System Express"],
+             "A_DTS/LOSSLESS": ["dts", "Digital Theatre System Lossless"],
+             "A_VORBIS": ["ogg", "Vorbis"],
+             "A_FLAC": ["flac", "Free Lossless Audio Codec"],
+             "A_REAL/14_4": ["ra", "Real Audio 1"],
+             "A_REAL/28_8": ["ra", "Real Audio 2"],
+             "A_REAL/COOK": ["ra", "Real Audio Cook Codec (codename: Gecko)"],
+             "A_REAL/SIPR": ["ra", "Sipro Voice Codec"],
+             "A_REAL/RALF": ["ra", "Real Audio Lossless Format"],
+             "A_REAL/ATRC": ["ra", "Sony Atrac3 Codec"],
+             "A_MS/ACM": ["acm", "Microsoft Audio Codec Manager"],
+             "A_AAC": ["aac", "No more information"],
+             "A_AAC/MPEG2/MAIN": ["aac", "MPEG2 Main Profile"],
+             "A_AAC/MPEG2/LC": ["aac", "Low Complexity"],
+             "A_AAC/MPEG2/LC/SBR": ["aac sbr", "Low Complexity with Spectral Band Replication"],
+             "A_AAC/MPEG2/SSR": ["aac", "Scalable Sampling Rate"],
+             "A_AAC/MPEG4/MAIN": ["aac", "MPEG4 Main Profile"],
+             "A_AAC/MPEG4/LC": ["aac", "Low Complexity"],
+             "A_AAC/MPEG4/LC/SBR": ["aac sbr", "Low Complexity with Spectral Band Replication"],
+             "A_AAC/MPEG4/SSR": ["aac", "Scalable Sampling Rate"],
+             "A_AAC/MPEG4/LTP": ["aac", "Long Term Prediction"],
+             "A_QUICKTIME": ["qta", "Audio taken from QuickTime files"],
+             "A_QUICKTIME/QDMC": ["qdmc", "QuickTime QDesign Music"],
+             "A_OPUS": ["opus", "A lossy audio coding format"],
+             "A_MLP": ["mlp", "Meridian Lossless Packing"],
+             "A_TTA1": ["tta", "The True Audio lossles audio compressor"],
+             "A_WAVPACK4": ["wv", "WavPack lossles audio compressor"],
+             "A_TRUEHD": ["thd", "Dolby TrueHD Lossless Audio"],
+             "S_TEXT/UTF8": ["srt", "UTF-8 Plain Text"],
+             "S_TEXT/SSA": ["ssa", "Subtitles Format"],
+             "S_TEXT/ASS": ["ass", "Advanced Subtitles Format"],
+             "S_TEXT/USF": ["usf", "Universal Subtitle Format"],
+             "S_TEXT/ASCII": ["asc", "American Standard Code of Information Interchange"],
+             "S_IMAGE/BMP": ["bmp", "Bitmap"],
+             "S_VOBSUB": ["vob", "VobSub subtitles"],
+             "S_VOBSUB/ZLIB": ["vob", "VobSub subtitles compressed"],
+             "S_KATE": ["kate", "Karaoke And Text Encapsulation"],
+             "S_HDMV/PGS": ["pgs", "Presentation Grapic Stream"]}
 
 
 
@@ -240,12 +315,19 @@ class MKVExtractorQt(QMainWindow):
         if Configs["SameFolder"]: # Coche la case si l'option est true
             self.ui.option_mkv_folder.setChecked(True)
 
-        if not Configs["MKVDirNameOut"].exists(): # Réinitialisation du dossier de sortie s'il n'existe pas
+        # Ce try evite les plantage en cas de passage de l'ancienne version à la nouvelle
+        try:
+            if not Configs["MKVDirNameOut"].exists(): # Réinitialisation du dossier de sortie s'il n'existe pas
+                Configs["MKVDirNameOut"] = Path().resolve()
+
+                # Activation de l'option meme dossier afin qu'un dossier de sortie soit pris en compte au prochain mkv
+                self.ui.option_mkv_folder.setChecked(True)
+
+        except:
             Configs["MKVDirNameOut"] = Path().resolve()
 
             # Activation de l'option meme dossier afin qu'un dossier de sortie soit pris en compte au prochain mkv
             self.ui.option_mkv_folder.setChecked(True)
-
 
         ### QProcess (permet de lancer les jobs en fond de taches)
         self.process = QProcess() # Creation du QProcess
@@ -257,7 +339,7 @@ class MKVExtractorQt(QMainWindow):
 
 
         ### Adresse du fichier licence
-        self.LicenceFile = "COPYING"
+        self.LicenceFile = "file:///usr/share/doc/mkv-extractor-qt/copyright"
 
 
         ### Cache la box de retour d'info
@@ -627,22 +709,6 @@ class MKVExtractorQt(QMainWindow):
                     }
 
 
-        ### Mise à jour du dictionnaire des explications des codecs
-        self.Codecs = {"sup" : self.tr("Subtitle Bitmap."),
-                       "srt" : self.tr("The SubRip file format is perhaps the most basic of all subtitle formats."),
-                       "sub" : self.tr("Vob Subtitle."),
-                       "ssa" : self.tr("SubStation Alpha is a subtitle file format created by CS Low that allows for more advanced subtitles than SRT format."),
-                       "mp3" : self.tr("MP3 is an encoding format for digital audio which uses a form of lossy data compression."),
-                       "ogg" : self.tr("Ogg is a free, open container format maintained by the Xiph.Org Foundation."),
-                       "dts" : self.tr("DTS is a series of multichannel audio technologies owned by DTS, Inc."),
-                       "aac" : self.tr("Advanced Audio Coding is a standardized, lossy compression and encoding scheme for digital audio."),
-                       "ac3" : self.tr("Dolby Digital audio codec, the audio compression is lossy."),
-                       "cook" : self.tr("The cook codec is a lossy audio compression codec developed by RealNetworks."),
-                       "rv40" : self.tr("RealVideo 4.0, suspected to be based on H.264. RV40 is RealNetworks' proprietary codec."),
-                       "h264" : self.tr("H264 is a video compression format, and is currently one of the most commonly used formats for the recording, compression, and distribution of video content."),
-                      }
-
-
         ### Recharge les textes de l'application graphique du fichier ui.py
         self.ui.retranslateUi(self)
 
@@ -821,9 +887,11 @@ class MKVExtractorQt(QMainWindow):
                 CodecAVirer = Variables["Tracks"][val].split("codec_private_data:")[1].split(" ")[0]
                 Variables["Tracks"][val] = Variables["Tracks"][val].replace(CodecAVirer, "")
 
-        ### Affichage du titre du fichier mkv
+        ### Affichage du titre ou du nom du fichier (sans extension) du fichier mkv
         if Variables["MKVTitle"]:
             self.ui.mkv_title.setText(Variables["MKVTitle"])
+        else:
+            self.ui.mkv_title.setText(Variables["MKVFileNameIn"][:-4])
 
         ### Retours d'information
         self.SetInfo(self.Trad["WorkMerge"], "800080", True, True)
@@ -841,7 +909,7 @@ class MKVExtractorQt(QMainWindow):
                 ### Traitement des pistes normales
                 if TrackType in ["video", "audio", "subtitles"]:
                     ID = Track.split(": ")[0].split(" ")[2] # Récupération de l'ID de la piste
-                    codec = Track.split("(")[1].split(")")[0].lower() # Récupération du codec de la piste
+                    codec1 = Track.split("codec_id:")[1].split(" ")[0] # Récupération du codec de la piste
 
                     ### Traitement spécifique aux vidéos
                     if TrackType == "video":
@@ -859,16 +927,10 @@ class MKVExtractorQt(QMainWindow):
                         info2 = MKVFPS[int(ID)]
 
                         ### Mise à jour du codec pour plus de lisibilité
-                        if "avc" in codec or "h264" in codec:
-                            codec = "h264"
-                        elif "xvid" in codec:
-                            codec = "xvid"
-                        elif "rv40" in codec:
-                            codec = "rv40"
-                        elif "asp" in codec:
-                            codec = "mpeg4"
-                        else:
-                            codec = codec.replace("/", "_")
+                        try:
+                            codec = CodecList[codec1][0]
+                        except:
+                            codec = codec1.replace("/", "_").lower()
 
                         ### Envoie des informations dans le tableaux
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
@@ -904,24 +966,13 @@ class MKVExtractorQt(QMainWindow):
                             info2 = "und"
 
                         ### Mise à jour du codec pour plus de lisibilité
-                        if codec == "mp4a" or "aac" in codec:
-                            if "SBR" in codec:
-                                codec = "aac sbr"
-                            else:
-                                codec = "aac"
-                        elif "ac3" in codec:
-                            codec = "ac3"
-                        elif "dts" in codec:
+                        try:
+                            codec = CodecList[codec1][0]
+                        except:
+                            codec = codec1.replace("/", "_").lower()
+
+                        if codec == "dts":
                             self.ui.option_dts_ac3.setEnabled(True) # Deblocage du widget de conversion dts => ac3
-                            codec = "dts"
-                        elif codec in ["a_vorbis", "ogg"]:
-                            codec = "ogg"
-                        elif codec in ["ac3", "a_mpeg/l3"]:
-                            codec = "mp3"
-                        elif codec == "a_real/cook":
-                            codec = "cook"
-                        else:
-                            codec = codec.replace("/", "_")
 
                         ### Envoie des informations dans le tableaux
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
@@ -948,17 +999,13 @@ class MKVExtractorQt(QMainWindow):
                             info2 = "und"
 
                         ### Mise à jour du codec pour plus de lisibilité
-                        if "vobsub" in codec:
+                        try:
+                            codec = CodecList[codec1][0]
+                        except:
+                            codec = codec1.replace("/", "_").lower()
+
+                        if codec == "vob":
                             self.ui.option_vobsub_srt.setEnabled(True) # Deblocage de widget de conversion sub => srt
-                            codec = "sub"
-                        elif codec == "s_hdmv/pgs":
-                            codec = "sup"
-                        elif codec in ["s_text/utf8", "text", "subrip/srt"]:
-                            codec = "srt"
-                        elif codec in ["s_text/ssa", "s_text/ass", "substationalpha"]:
-                            codec = "ssa"
-                        else:
-                            codec = codec.replace("/", "_")
 
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
                         self.ComboBoxes[x] = QComboBox() # Création de la combobox et ajout d'un element dans le dico
@@ -967,9 +1014,9 @@ class MKVExtractorQt(QMainWindow):
                         self.ComboBoxes[x].setStatusTip(self.Trad["TrackAudio"]) # StatusTip
                         self.ComboBoxes[x].currentIndexChanged['QString'].connect(partial(self.ComboModif, x)) # Connexion + ligne de la combobox
 
-                    ### Traitement global des pistes simples
-                    info1 = info1.replace(r"\s", " ") # Remplacement des \s par des espaces
-                    info2 = info2.replace(r"\s", " ") # Remplacement des \s par des espaces
+                    ### Traitement global des pistes simples avec remplacement des caracteres speciaux
+                    info1 = info1.replace(r"\s", " ").replace(r"\2", '"').replace(r"\c", ":").replace(r"\h", "#")
+                    info2 = info2.replace(r"\s", " ").replace(r"\2", '"').replace(r"\c", ":").replace(r"\h", "#")
 
                     ### Ajout de la piste au dico
                     MKVDico[x] = [ID, "Track", icone, "layer-visible-off", info1, info2, codec]
@@ -1002,7 +1049,7 @@ class MKVExtractorQt(QMainWindow):
                     else:
                         self.ui.mkv_tracks.setItem(x, 6, QTableWidgetItem(codec))
                         self.ui.mkv_tracks.item(x, 6).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
-                        self.ui.mkv_tracks.item(x, 6).setStatusTip(self.Codecs.get(codec, self.Trad["TrackNoInfo"])) # StatusTip
+                        self.ui.mkv_tracks.item(x, 6).setStatusTip(CodecList[codec1][1]) # StatusTip
 
                     x += 1 # Incrémentation du numero de ligne
 

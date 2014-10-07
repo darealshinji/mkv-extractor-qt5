@@ -16,7 +16,7 @@ import datetime # utile pour le calcul de la progression de la conversion en ac3
 
 from ui_MKVExtractorQt import Ui_mkv_extractor_qt # Utilisé pour la fentre pricniaple
 
-Version = "5.1.4"
+Version = "5.1.5"
 
 ### Creation des dictionnaires et listes facilement modifiables partout
 MKVDico = {} # Dictionnaire qui contiendra toutes les pistes du fichier mkv
@@ -101,6 +101,82 @@ except:
                "ViewInfo" : True, # Affichage du retour d'info
                "WinMax" : False, # Fenetre maximisée ou non
               }
+
+
+### Dictionnaire listant les codecs connu par mkvmerge
+CodecList = {"V_MS/VFW/FOURCC": ["vfw", "Microsoft Video Codec Manager"],
+             "V_UNCOMPRESSED": ["raw", "Raw Uncompressed Video Frames"],
+             "V_MPEG4/ISO/AVC": ["mpeg4", "MPEG4 ISO (x264)"],
+             "V_MPEG4/ISO/SP": ["mpeg4", "MPEG4 ISO simple profile (DivX4)"],
+             "V_MPEG4/ISO/ASP": ["mpeg4", "MPEG4 ISO advanced simple profile (DivX5, XviD, FFMPEG)"],
+             "V_MPEG4/ISO/AP": ["mpeg4", "MPEG4 ISO advanced profile"],
+             "V_MPEG4/MS/V3": ["mpeg4", "Microsoft MPEG4 V3"],
+             "V_MPEG1": ["mpeg1", "MPEG 1"],
+             "V_MPEG2": ["mpeg1", "MPEG 2"],
+             "V_REAL/RV10": ["rv", "RealVideo 1.0 aka RealVideo 5"],
+             "V_REAL/RV20": ["rv", "RealVideo G2 and RealVideo G2+SVT"],
+             "V_REAL/RV30": ["rv", "RealVideo 8"],
+             "V_REAL/RV40": ["rv", "RealVideo 9"],
+             "V_QUICKTIME": ["qt", "QuickTime"],
+             "V_THEORA": ["ogv", "Theora"],
+             "V_PRORES": ["prores", "Apple ProRes"],
+             "V_SNOW": ["snow", "Opaque codec init data"],
+             "V_VP8": ["vp8", "After vp7 and before vp9 owned by Google"],
+             "V_VP9": ["vp9", "After vp8 owned by Google"],
+             "V_DIRAC": ["drc", "Developed by BBC Research"],
+             "V_MPEGH/ISO/HEVC": ["mpegh", "future replacement of MPEG"],
+             "A_MPEG/L1": ["mp1", "MPEG Audio 1, 2 Layer I"],
+             "A_MPEG/L2": ["mp2", "MPEG Audio 1, 2 Layer II"],
+             "A_MPEG/L3": ["mp3", "MPEG Audio 1, 2, 2.5 Layer III"],
+             "A_PCM/INT/BIG": ["pcm", "Integer Big Endian"],
+             "A_PCM/INT/LIT": ["pcm", "Integer Little Endian"],
+             "A_PCM/FLOAT/IEEE": ["pcm", "Floating Point, IEEE compatible"],
+             "A_MPC": ["mpc", "MPC (musepack) SV8"],
+             "A_AC3": ["ac3", "Dolby AC3"],
+             "A_AC3/BSID9": ["ac3", "Dolby AC3"],
+             "A_AC3/BSID10": ["ac3", "Dolby AC3"],
+             "A_EAC3": ["eac3", "Enhanced AC-3 - Dolby Digital Plus"],
+             "A_ALAC": ["alac", "Apple Lossless Audio Codec"],
+             "A_DTS": ["dts", "Digital Theatre System"],
+             "A_DTS/EXPRESS": ["dts", "Digital Theatre System Express"],
+             "A_DTS/LOSSLESS": ["dts", "Digital Theatre System Lossless"],
+             "A_VORBIS": ["ogg", "Vorbis"],
+             "A_FLAC": ["flac", "Free Lossless Audio Codec"],
+             "A_REAL/14_4": ["ra", "Real Audio 1"],
+             "A_REAL/28_8": ["ra", "Real Audio 2"],
+             "A_REAL/COOK": ["ra", "Real Audio Cook Codec (codename: Gecko)"],
+             "A_REAL/SIPR": ["ra", "Sipro Voice Codec"],
+             "A_REAL/RALF": ["ra", "Real Audio Lossless Format"],
+             "A_REAL/ATRC": ["ra", "Sony Atrac3 Codec"],
+             "A_MS/ACM": ["acm", "Microsoft Audio Codec Manager"],
+             "A_AAC": ["aac", "No more information"],
+             "A_AAC/MPEG2/MAIN": ["aac", "MPEG2 Main Profile"],
+             "A_AAC/MPEG2/LC": ["aac", "Low Complexity"],
+             "A_AAC/MPEG2/LC/SBR": ["aac sbr", "Low Complexity with Spectral Band Replication"],
+             "A_AAC/MPEG2/SSR": ["aac", "Scalable Sampling Rate"],
+             "A_AAC/MPEG4/MAIN": ["aac", "MPEG4 Main Profile"],
+             "A_AAC/MPEG4/LC": ["aac", "Low Complexity"],
+             "A_AAC/MPEG4/LC/SBR": ["aac sbr", "Low Complexity with Spectral Band Replication"],
+             "A_AAC/MPEG4/SSR": ["aac", "Scalable Sampling Rate"],
+             "A_AAC/MPEG4/LTP": ["aac", "Long Term Prediction"],
+             "A_QUICKTIME": ["qta", "Audio taken from QuickTime files"],
+             "A_QUICKTIME/QDMC": ["qdmc", "QuickTime QDesign Music"],
+             "A_OPUS": ["opus", "A lossy audio coding format"],
+             "A_MLP": ["mlp", "Meridian Lossless Packing"],
+             "A_TTA1": ["tta", "The True Audio lossles audio compressor"],
+             "A_WAVPACK4": ["wv", "WavPack lossles audio compressor"],
+             "A_TRUEHD": ["thd", "Dolby TrueHD Lossless Audio"],
+             "S_TEXT/UTF8": ["srt", "UTF-8 Plain Text"],
+             "S_TEXT/SSA": ["ssa", "Subtitles Format"],
+             "S_TEXT/ASS": ["ass", "Advanced Subtitles Format"],
+             "S_TEXT/USF": ["usf", "Universal Subtitle Format"],
+             "S_TEXT/ASCII": ["asc", "American Standard Code of Information Interchange"],
+             "S_IMAGE/BMP": ["bmp", "Bitmap"],
+             "S_VOBSUB": ["vob", "VobSub subtitles"],
+             "S_VOBSUB/ZLIB": ["vob", "VobSub subtitles compressed"],
+             "S_KATE": ["kate", "Karaoke And Text Encapsulation"],
+             "S_HDMV/PGS": ["pgs", "Presentation Grapic Stream"]}
+
 
 
 #========================================================================
@@ -265,7 +341,7 @@ class MKVExtractorQt(QMainWindow):
 
 
         ### Adresse du fichier licence
-        self.LicenceFile = "COPYING"
+        self.LicenceFile = "file:///usr/share/doc/mkv-extractor-qt/copyright"
 
 
         ### Cache la box de retour d'info
@@ -340,6 +416,7 @@ class MKVExtractorQt(QMainWindow):
         ### Connexions des fenetres d'infos et d'aides
         self.ui.about_qt.activated.connect(lambda: QMessageBox.aboutQt(MKVExtractorQt)) # A propos de Qt
         self.ui.help.activated.connect(lambda: QMessageBox.about(self, self.Trad["Help_title"], self.Trad["Help"])) # Aide
+        self.ui.about.activated.connect(lambda: QMessageBox.about(self, self.Trad["About_title"] , self.Trad["About"].format(Version, self.LicenceFile))) # A propos de MKV Extractor Gui
         self.ui.about.activated.connect(lambda: QMessageBox.about(self, self.Trad["About_title"] , self.Trad["About"].format(Version, self.LicenceFile))) # A propos de MKV Extractor Gui
 
         ### Connexions des options, redirige tous ces widgets vers une même fonction
@@ -835,24 +912,25 @@ class MKVExtractorQt(QMainWindow):
         self.SetInfo(self.Trad["WorkMerge"], "800080", True, True)
         self.SetInfo(self.Trad["WorkCmd"].format("mkvmerge -I " + Variables["MKVLinkIn"]))
 
-# Boucle traitant les pistes du fichier mkv
+        ### Boucle traitant les pistes du fichier mkv
+        # Impossible d'e remplacer x par enumerate car il ne faut pas toujours incrémenter
         for Track in Variables["Tracks"]:
             self.SetInfo(Track) # Envoie du retour de mkvmerge
 
-    # Traitement des pistes normales
+            ### Traitement des pistes normales
             if Track[:5] == "Track":
                 TrackType = Track.split(": ")[1].split(" ")[0] # Récupération du type de piste
 
-        # Traitement des pistes normales
+                ### Traitement des pistes normales
                 if TrackType in ["video", "audio", "subtitles"]:
                     ID = Track.split(": ")[0].split(" ")[2] # Récupération de l'ID de la piste
-                    codec = Track.split("(")[1].split(")")[0].lower() # Récupération du codec de la piste
+                    codec1 = Track.split("codec_id:")[1].split(" ")[0] # Récupération du codec de la piste
 
-            # Traitement spécifique aux vidéos
+                    ### Traitement spécifique aux vidéos
                     if TrackType == "video":
                         icone = 'video-x-generic' # Icone video
 
-                # Récupération de l'info1
+                        ### Récupération de l'info1
                         if " track_name:" in Track:
                             info1 = Track.split(" track_name:")[1].split(" ")[0]
                         elif " display_dimensions:" in Track:
@@ -860,22 +938,16 @@ class MKVExtractorQt(QMainWindow):
                         else:
                             info1 = ""
 
-                # Récupération du FPS de la piste
+                        ### Récupération du FPS de la piste
                         info2 = MKVFPS[int(ID)]
 
-                # Mise à jour du codec pour plus de lisibilité
-                        if "avc" in codec or "h264" in codec:
-                            codec = "h264"
-                        elif "xvid" in codec:
-                            codec = "xvid"
-                        elif "rv40" in codec:
-                            codec = "rv40"
-                        elif "asp" in codec:
-                            codec = "mpeg4"
-                        else:
-                            codec = codec.replace("/", "_")
+                        ### Mise à jour du codec pour plus de lisibilité
+                        try:
+                            codec = CodecList[codec1][0]
+                        except:
+                            codec = codec1.replace("/", "_").lower()
 
-                # Envoie des informations dans le tableaux
+                        ### Envoie des informations dans le tableaux
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
                         self.ComboBoxes[x] = QComboBox() # Création de la combobox et ajout d'un element dans le dico
                         self.ui.mkv_tracks.setCellWidget(x, 5, self.ComboBoxes[x]) # Envoie de la combobox
@@ -890,11 +962,11 @@ class MKVExtractorQt(QMainWindow):
                         self.ComboBoxes[x].setStatusTip(self.Trad["TrackVideo"]) # StatusTip
                         self.ComboBoxes[x].currentIndexChanged['QString'].connect(partial(self.ComboModif, x)) # Connexion + ligne
 
-            # Traitement spécifique aux vidéos
+                    ### Traitement spécifique à l'audio
                     elif TrackType == "audio":
                         icone = 'audio-x-generic' # Icone audio
 
-                # Récupération de l'info
+                        ### Récupération de l'info
                         if " track_name:" in Track:
                             info1 = Track.split(" track_name:")[1].split(" ")[0]
                         elif " audio_sampling_frequency:" in Track:
@@ -902,32 +974,22 @@ class MKVExtractorQt(QMainWindow):
                         else:
                             info1 = ""
 
-                # Récupération de la langue
+                        ### Récupération de la langue
                         if " language:" in Track:
                             info2 = Track.split(" language:")[1].split(" ")[0]
                         else:
                             info2 = "und"
 
-                # Mise à jour du codec pour plus de lisibilité
-                        if codec == "mp4a" or "aac" in codec:
-                            if "SBR" in codec:
-                                codec = "aac sbr"
-                            else:
-                                codec = "aac"
-                        elif "ac3" in codec:
-                            codec = "ac3"
-                        elif "dts" in codec:
-                            codec = "dts"
-                        elif codec in ["a_vorbis", "ogg"]:
-                            codec = "ogg"
-                        elif codec in ["ac3", "a_mpeg/l3"]:
-                            codec = "mp3"
-                        elif codec == "a_real/cook":
-                            codec = "cook"
-                        else:
-                            codec = codec.replace("/", "_")
+                        ### Mise à jour du codec pour plus de lisibilité
+                        try:
+                            codec = CodecList[codec1][0]
+                        except:
+                            codec = codec1.replace("/", "_").lower()
 
-                # Envoie des informations dans le tableaux
+                        if codec == "dts":
+                            self.ui.option_dts_ac3.setEnabled(True) # Deblocage du widget de conversion dts => ac3
+
+                        ### Envoie des informations dans le tableaux
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
                         self.ComboBoxes[x] = QComboBox() # Création de la combobox et ajout d'un element dans le dico
                         self.ui.mkv_tracks.setCellWidget(x, 5, self.ComboBoxes[x]) # Envoie de la combobox
@@ -935,34 +997,31 @@ class MKVExtractorQt(QMainWindow):
                         self.ComboBoxes[x].setStatusTip(self.Trad["TrackAudio"]) # StatusTip
                         self.ComboBoxes[x].currentIndexChanged['QString'].connect(partial(self.ComboModif, x)) # Connexion + ligne
 
-            # Traitement spécifique aux sous titres
+                    ### Traitement spécifique aux sous titres
                     elif TrackType == "subtitles":
-                        icone = 'text-x-generic'
-                # Récupération de l'info
+                        icone = 'text-x-generic' # Icone sous titres
+
+                        ### Récupération de l'info
                         if " track_name:" in Track:
                             info1 = Track.split(" track_name:")[1].split(" ")[0]
                         else:
                             info1 = ""
 
-                # Récupération de la langue
+                        ### Récupération de la langue
                         if " language:" in Track:
                             info2 = Track.split(" language:")[1].split(" ")[0]
                         else:
                             info2 = "und"
 
-                # Mise à jour du codec pour plus de lisibilité
-                        if "vobsub" in codec:
-                            codec = "sub"
-                        elif codec == "s_hdmv/pgs":
-                            codec = "sup"
-                        elif codec in ["s_text/utf8", "text", "subrip/srt"]:
-                            codec = "srt"
-                        elif codec in ["s_text/ssa", "s_text/ass", "substationalpha"]:
-                            codec = "ssa"
-                        else:
-                            codec = codec.replace("/", "_")
+                        ### Mise à jour du codec pour plus de lisibilité
+                        try:
+                            codec = CodecList[codec1][0]
+                        except:
+                            codec = codec1.replace("/", "_").lower()
 
-                # Envoie des informations dans le tableaux
+                        if codec == "vob":
+                            self.ui.option_vobsub_srt.setEnabled(True) # Deblocage de widget de conversion sub => srt
+
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
                         self.ComboBoxes[x] = QComboBox() # Création de la combobox et ajout d'un element dans le dico
                         self.ui.mkv_tracks.setCellWidget(x, 5, self.ComboBoxes[x]) # Envoie de la combobox
@@ -970,13 +1029,14 @@ class MKVExtractorQt(QMainWindow):
                         self.ComboBoxes[x].setStatusTip(self.Trad["TrackAudio"]) # StatusTip
                         self.ComboBoxes[x].currentIndexChanged['QString'].connect(partial(self.ComboModif, x)) # Connexion + ligne de la combobox
 
-            # Traitement global des pistes simples
-                    info1 = info1.replace(r"\s", " ") # Remplacement des \s par des espaces
-                    info2 = info2.replace(r"\s", " ") # Remplacement des \s par des espaces
+                    ### Traitement global des pistes simples avec remplacement des caracteres speciaux
+                    info1 = info1.replace(r"\s", " ").replace(r"\2", '"').replace(r"\c", ":").replace(r"\h", "#")
+                    info2 = info2.replace(r"\s", " ").replace(r"\2", '"').replace(r"\c", ":").replace(r"\h", "#")
 
-                    MKVDico[x] = [ID, "Track", icone, "layer-visible-off", info1, info2, codec] # Ajout de la piste au dico
+                    ### Ajout de la piste au dico
+                    MKVDico[x] = [ID, "Track", icone, "layer-visible-off", info1, info2, codec]
 
-            # Envoie des informations dans le tableaux
+                    ### Envoie des informations dans le tableaux
                     self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem(ID)) # Envoie de l'ID
                     self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
                     self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
@@ -1004,11 +1064,12 @@ class MKVExtractorQt(QMainWindow):
                     else:
                         self.ui.mkv_tracks.setItem(x, 6, QTableWidgetItem(codec))
                         self.ui.mkv_tracks.item(x, 6).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
-                        self.ui.mkv_tracks.item(x, 6).setStatusTip(self.Codecs.get(codec, self.Trad["TrackNoInfo"])) # StatusTip
+                        self.ui.mkv_tracks.item(x, 6).setStatusTip(CodecList[codec1][1]) # StatusTip
 
                     x += 1 # Incrémentation du numero de ligne
 
-    # Traitement spécifique aux fichiers joints
+
+            ### Traitement spécifique aux fichiers joints
             elif Track[:10] == "Attachment":
                 ID = Track.split(": ")[0].split(" ")[2] # Récupération de l'ID de la piste
                 typecodec = Track.split(" type '")[1].split("'")[0] # Récupération du codec de la piste
@@ -1021,7 +1082,7 @@ class MKVExtractorQt(QMainWindow):
                 except:
                     codec = typecodec
 
-        # Récupération de l'info
+                ### Récupération de l'info
                 if " description " in Track:
                     info1 = Track.split(" description '")[1].split("'")[0]
                 elif " file name " in Track:
@@ -1031,9 +1092,11 @@ class MKVExtractorQt(QMainWindow):
 
                 info1 = info1.replace(r"\s", " ") # Remplacement des \s par des espaces
 
-        # Mise à jour du codec pour plus de lisibilité
+                ### Mise à jour du codec pour plus de lisibilité
                 if codec == "x-truetype-font":
                     codec = "font"
+                elif codec == "vnd.ms-opentype":
+                    codec = "font OpenType"
                 elif codec == "x-msdos-program":
                     codec = "application msdos"
                 elif codec == "plain":
@@ -1047,7 +1110,7 @@ class MKVExtractorQt(QMainWindow):
                 elif codec == "x-ms-bmp":
                     codec = "bmp"
 
-        # Icone du type de piste
+                ### Icone du type de piste
                 if "application" in typetrack:
                     icone = "system-run"
                 elif typetrack == "image":
@@ -1061,10 +1124,10 @@ class MKVExtractorQt(QMainWindow):
                 else:
                     icone = "image-missing"
 
-        # Mise à jour du dictionnaire des pistes du fichier mkv
+                ### Mise à jour du dictionnaire des pistes du fichier mkv
                 MKVDico[x] = [ID, "Attachment", icone, "layer-visible-on", info1, info2, codec]
 
-        # Envoie des informations dans le tableaux
+                ### Envoie des informations dans le tableaux
                 self.ui.mkv_tracks.insertRow(x) # Création de ligne
                 self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem(ID)) # Envoie de l'ID
                 self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
@@ -1085,17 +1148,18 @@ class MKVExtractorQt(QMainWindow):
 
                 x += 1 # Incrémentation du numero de ligne
 
-    # Traitement spécifique aux chapitres
+
+            ### Traitement spécifique aux chapitres
             elif Track[:8] == "Chapters":
                 icone = "x-office-address-book" # Icone de chapitrage
                 info1 = Track.split(": ")[1].split(" ")[0] # Récupération de l'info 1
                 info2 = self.Trad["TrackChapters"] # Récupération de l'info 2
                 mixe = info1 + " " + info2
 
-        # Mise à jour du dictionnaire des pistes du fichier mkv
+                ### Mise à jour du dictionnaire des pistes du fichier mkv
                 MKVDico[x] = ["NoID", "Chapters", icone, "layer-visible-on", info2, mixe, "Chapters"]
 
-        # Envoie des informations dans le tableaux
+                ### Envoie des informations dans le tableaux
                 self.ui.mkv_tracks.insertRow(x) # Création de ligne
                 self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem("chapters")) # Envoie du type de piste
                 self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
@@ -1116,17 +1180,18 @@ class MKVExtractorQt(QMainWindow):
 
                 x += 1 # Incrémentation du numero de ligne
 
-    # Traitement spécifique aux tags
+
+            ### Traitement spécifique aux tags
             elif Track[:11] == "Global tags":
                 icone = "text-html" # Icone de global tags
                 info1 = Track.split(": ")[1].split(" ")[0] # Récupération de l'info 1
                 info2 = self.Trad["TrackTags"] # Récupération de l'info 2
                 mixe = info1 + " " + info2
 
-        # Mise à jour du dictionnaire des pistes du fichier mkv
+                ### Mise à jour du dictionnaire des pistes du fichier mkv
                 MKVDico[x] = ["NoID", "Global tags", icone, "layer-visible-on", info2, mixe, "Tags"]
 
-        # Envoie des informations dans le tableaux
+                ### Envoie des informations dans le tableaux
                 self.ui.mkv_tracks.insertRow(x) # Création de ligne
                 self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem("tags")) # Envoie du type de piste
                 self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
@@ -1147,12 +1212,13 @@ class MKVExtractorQt(QMainWindow):
 
                 x += 1 # Incrémentation du numero de ligne
 
-        ### Retours d'information
+        ### Dégrise le bouton de ré-encapsulage si la liste des pistes n'est pas vide
+        if MKVDico:
+            self.ui.option_reencapsulate.setEnabled(True)
+
+        ### Retours d'information, deblocage, curseur normal
         self.SetInfo(self.Trad["WorkMerge"], "800080", True, False)
-
-# Variable servant à bloquer les signaux du tableau (impossible autrement)
-        Variables["SuperBlock"] = False
-
+        Variables["SuperBlock"] = False # Variable servant à bloquer les signaux du tableau (impossible autrement)
         self.setCursor(Qt.ArrowCursor)
 
 

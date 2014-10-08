@@ -14,6 +14,7 @@ autom4te.cache/
 
 *.pyc
 *.qm
+configure.scan
 
 MKVRessources_rc.py
 ui_MKVExtractorQt.py

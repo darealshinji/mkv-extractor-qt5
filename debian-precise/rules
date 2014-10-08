@@ -1,5 +1,8 @@
 #!/usr/bin/make -f
 
+cleanfiles = autom4te.cache aclocal.m4 compile config.h.in \
+			configure depcomp install-sh Makefile.in missing
+
 
 %:
 	dh ${@} --parallel --with python3
@@ -11,11 +14,10 @@ override_dh_auto_build:
 	autoreconf -ivf mkv-extractor-qt-subptools
 	dh_auto_configure -Dmkv-extractor-qt-subptools
 	dh_auto_build -Dmkv-extractor-qt-subptools
-	mv mkv-extractor-qt-subptools/subp2pgm mkv-extractor-qt-subptools/subp2tiff
 
 override_dh_auto_clean:
 	dh_auto_clean -Dmkv-extractor-qt-subptools
-	rm -f mkv-extractor-qt-subptools/subp2tiff
+	cd mkv-extractor-qt-subptools && rm -rf *~ $(cleanfiles)
 	$(CURDIR)/mkv-extractor-qt/clean.sh
 	$(CURDIR)/mkv-extractor-qt-oldpython/clean.sh
 

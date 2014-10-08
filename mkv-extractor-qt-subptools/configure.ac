@@ -26,7 +26,9 @@ fi
 
 AM_CONDITIONAL(HAVE_PNG_SUPPORT, [test x"$have_png_support" = x"yes"])
 
-AC_CHECK_LIB(tiff, TIFFOpen, [LIBTIFF_LIBS="-ltiff" && have_tiff_support=yes], [have_tiff_support=no])
+AC_CHECK_LIB([m], [sqrt], [], [exit 1])
+
+AC_CHECK_LIB([tiff], [TIFFOpen], [LIBTIFF_LIBS="-ltiff" && have_tiff_support=yes], [have_tiff_support=no])
 AC_SUBST(LIBTIFF_LIBS)
 
 if test x"$have_tiff_support" = x"yes"; then

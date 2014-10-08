@@ -1,20 +1,20 @@
-.TH SUBP2PGM 1 "January 20, 2007" Linux "User Manuals"
+.TH SUBP2TIFF 1 "January 20, 2007" Linux "User Manuals"
 .SH NAME
-subp2pgm \- convert VobSub DVD subtitles into pgm files and xml description
+subp2tiff \- convert VobSub DVD subtitles into pgm files and xml description
 .SH SYNOPSIS
-subp2pgm [-hvf] [-o output] [-s sid] vobsub
+subp2tiff [-hvf] [-o output] [-s sid] vobsub
 .SH DESCRIPTION
-.B subp2pgm
+.B subp2tiff
 converts DVD subtitles from the VobSub format into an intermediate form suitable
 for OCR extraction.
 
-.B subp2pgm
+.B subp2tiff
 takes two files as input, which should be named <vobsub>.idx and <vobsub>.sub,
 where
 .I vobsub
 is the basename of the files.
 
-.B subp2pgm
+.B subp2tiff
 outputs one .pgm graphics file for each subtitle image, and a .xml description file
 with correct timing annotation, where each subtitle entry is replaced by the
 corresponding graphics file.

@@ -1,17 +1,7 @@
 #!/usr/bin/make -f
 
 %:
-	dh ${@}
-
-override_dh_auto_build:
-	autoreconf -ivf .
-	dh_auto_configure -D.
-	dh_auto_build -D.
-
-override_dh_compress:
-	# Compression du manpage de subptools
-	dh_compress
-	gzip -f9 debian/subptools/usr/share/doc/*/*.1
+	dh ${@} --parallel --with autoreconf
 
 override_dh_builddeb:
 	# Compression du dossier data du paquet debian

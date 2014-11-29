@@ -1,14 +1,17 @@
 /.pc/
 autom4te.cache/
 
-/mkv-extractor-qt-subptools/aclocal.m4
-/mkv-extractor-qt-subptools/autoscan.log
-/mkv-extractor-qt-subptools/compile
-/mkv-extractor-qt-subptools/configure
-/mkv-extractor-qt-subptools/depcomp
-/mkv-extractor-qt-subptools/install-sh
-/mkv-extractor-qt-subptools/Makefile.in
-/mkv-extractor-qt-subptools/missing
+/*/aclocal.m4
+/*/autoscan.log
+/*/compile
+/*/config.h.in
+/*/configure
+/*/depcomp
+/*/install-sh
+/*/Makefile.in
+/*/missing
+/*/debian/autoreconf.after
+/*/debian/autoreconf.before
 
 *~
 

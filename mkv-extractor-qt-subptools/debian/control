@@ -7,7 +7,6 @@ Build-Depends:
  libtiff-dev,
  libpng12-dev,
  pkg-config,
- pyqt4-dev-tools,
  zlib1g-dev
 Standards-Version: 3.9.5
 Priority: standard
@@ -17,8 +16,8 @@ Package: subptools
 Architecture: any
 Depends:
  ${shlibs:Depends},
- ${misc:Depends},
- mkv-extractor-qt
-Description: Addon for mkv-extractor-qt
+ ${misc:Depends}
+Recommends: mkv-extractor-qt
+Description: convert SUB to SRT subtitles
  Subrip tools, required for conversion from SUB to SRT.
  The tools were copied from the ogmrip package.

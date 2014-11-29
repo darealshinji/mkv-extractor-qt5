@@ -18,6 +18,7 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends}
 Recommends: mkv-extractor-qt
+Conflicts: ogmrip
 Description: convert SUB to SRT subtitles
  Subrip tools, required for conversion from SUB to SRT.
  The tools were copied from the ogmrip package.

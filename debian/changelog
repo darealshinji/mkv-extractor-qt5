@@ -1,4 +1,32 @@
-mkv-extractor-qt (5.1.5-0~trusty) trusty; urgency=low ()
+mkv-extractor-qt (5.2.0-0~trusty) trusty; urgency=low ()
+
+  [english]
+    - Change system icons and some icons
+    - Using Quilt mode for the ppa
+    - Modification of the configuration file
+    - Cleanup code
+    - Added keyboard shortcuts
+    - Abandonment of the version who use python < 3.3
+    - Fix the start action in the barmenu
+    - The buttons are activated depending on the selections
+    - Change subp2tiff by subp2pgm
+    - Creation of a externe package for subptools
+
+  [français]
+    - Modification du systeme d'icones et de certaines icones
+    - Utilisation du mode Quilt pour le ppa
+    - Modification du fichier de configuration
+    - Nettoyage de code
+    - Ajout de raccourcis clavier
+    - Abandon de la version utilisant une version python < 3.3
+    - Correction du bouton de lancement de la barre de menu
+    - Les boutons s'activent en fonction des séléctions
+    - Remplacement de subp2tiff par subp2pgm
+    - Création d'un paquet externe pour subptools
+
+ -- hizoka <hizo@free.fr>  Thu, 20 Nov 2014 17:37:14 +0100
+
+mkv-extractor-qt (5.1.5-1~trusty) trusty; urgency=low ()
 
   [english]
   * Thanks to Marshall Banana for

@@ -7,42 +7,39 @@
 chemin="$(cd "$(dirname "$0")";pwd)"
 cd "${chemin}"
 
+# Mise à jour des fichiers ts
+pylupdate4 ui_MKVExtractorQt.ui MKVExtractorQt.py -ts MKVExtractorQt_fr_FR.ts MKVExtractorQt_cs_CZ.ts
+
 # Convertion des fichiers ts en qm
 lrelease-qt4 *.ts
 
 # Conversion de l'interface graphique en fichier python
 pyuic4 ui_MKVExtractorQt.ui -o ui_MKVExtractorQt.py
 
-# Creation d'un systeme d'icone de secour ce le fichier python ci-dessus
-while read icone
+### Creation d'un systeme d'icone de secoure sur le fichier python ci-dessus
+# Modification du systeme des icones en utilisant la fonction ci-dessous
+while read line
 do
-    nom_icone=$(sed -n 's/.*_fromUtf8("\(.*\)".*/\1/p' <<< "${icone}")
-    espacement="        "
+    before="${line%%(*}"
+    icon="${line##*/}"
+    icon="${icon%%.*}"
 
-    new_icone="iconbis = QtGui.QIcon()\n${espacement}iconbis.addPixmap(QtGui.QPixmap(\":/img/${nom_icone}.png\"), QtGui.QIcon.Normal, QtGui.QIcon.Off)\n${espacement}icon = QtGui.QIcon.fromTheme(_fromUtf8(\"${nom_icone}\"), iconbis)"
+    # Ne doit pas le faire pour l'icone du titre de la fenetre
+    [[ $(grep "icon." <<< "${line}") ]] && continue
 
-    sed -i "s@${icone}@${new_icone}@" ui_MKVExtractorQt.py
-done < <(grep "QtGui.QIcon.fromTheme" ui_MKVExtractorQt.py)
+    new_line="${before}(IconBis('${icon}'))"
+    sed -i "s@${line}@${new_line}@" ui_MKVExtractorQt.py
+done < <(grep "QtGui.QPixmap" ui_MKVExtractorQt.py)
+
+# Création d'une fonction
+echo """
+def IconBis(Icon):
+    if QtGui.QIcon().hasThemeIcon(Icon):
+        return QtGui.QPixmap(QtGui.QIcon().fromTheme(Icon).pixmap(24))
+    else:
+        return QtGui.QPixmap(':/img/{}.png'.format(Icon))""" >> ui_MKVExtractorQt.py
+
 
 # Création d'un fichier source python (contient les icones)
 pyrcc4 MKVRessources.qrc -o MKVRessources_rc.py -py3
 
-# Création d'un fichier licence ne servant qu'en local (il est effacer lors de la creation d'un paquet debian)
-now=$(date -R)
-echo """This package was debianized by Terence Belleguic <hizo@free.fr> on
-${now}
-
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Source: https://launchpad.net/~hizo/+archive/mkv-extractor-gui
-
-It was downloaded from :
-https://launchpad.net/~hizo/+archive/mkv-extractor-gui
-http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
-
-Icon file based on the oxygen theme under GNU LGPL 3 license.
-
-Files: *
-Copyright: 2014 Terence Belleguic <hizo@free.fr>
-License: GNU GPL v3
- On Debian systems, the complete text of the GNU General
- Public License version 3 can be found in \"/usr/share/common-licenses/GPL-3\".""" > licence

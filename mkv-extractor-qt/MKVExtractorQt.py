@@ -1,23 +1,23 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 import sys
 import os
 import shutil # Utilisé pour tester la présence d'executable : which, disk_usage, move
-import pickle # Utilisé pour le fichier de sauvegarde
-import hashlib # Utilisé pour la traduction des sous titres
+import hashlib # Utilisé pour détecter les doublons lors de la traduction des sous titres
 from tempfile import TemporaryDirectory # Utilisé pour la creation du dossier temporaire
 from functools import partial # Utilisé pour envoyer plusieurs infos via les connexions
 import datetime # utile pour le calcul de la progression de la conversion en ac3
 from pathlib import Path # Necessaire pour la recherche de fichier
+import configparser # Pour charger les informations de config
 
 from ui_MKVExtractorQt import Ui_mkv_extractor_qt # Utilisé pour la fentre pricniaple
 
-
-Version = "5.1.5"
+Version = "5.2.0"
 
 ### Creation des dictionnaires et listes facilement modifiables partout
 MKVDico = {} # Dictionnaire qui contiendra toutes les pistes du fichier mkv
@@ -34,8 +34,7 @@ TesseractLanguages = [] # Liste qui contiendra les langues disponibles pour Tess
 ### Dictionnaire contenant les autres infos utiles
 Variables = {"Cmd" : "", # Commande à éxecuter
              "CmdList" : [], # Liste des commandes à executer
-             "ConfigFile" : Path(QDir.homePath(), '.config/MKV-Extractor-Qt/config'), # Fichier de configuration
-             "ConfigFolder" : Path(QDir.homePath(), '.config/MKV-Extractor-Qt'), # Dossier de configuration
+             "ConfigFile" : Path(QDir.homePath(), '.config/MKV-Extractor-Qt.cfg'), # Fichier de configuration
              "FirstRun" : True, # Variable bloquante pour le chargement des textes au demarrage
              "ImgFilesNb" : "", # Nombre de sous titres images
              "ImgFiles" : [], # Liste des fichiers sous titres images
@@ -59,51 +58,67 @@ Variables = {"Cmd" : "", # Commande à éxecuter
              "WorkOldLine" : "", # Variable anti doublon pendant le travail
              "WorkPause" : False, # Variable indiquantla mise en pause du travail en court
              "WorkStop" : False, # Variable indiquant l'arret du travail en court
-
              "VobsubToSrt" : False, # Option de conversion des vobsub en srt
              "Reencapsulate" : False, # Option de ré encapsulage
              "DtsToAc3" : False, # Option de conversion des dts en ac3
+             "subp2pgm" : None, # Adresse de l'executable
+             "subptools" : None, # Adresse de l'executable
             }
 
 
-
 ### Création du dossier de configuration s'il n'existe pas (il ne stockera que le fichier config)
-if not Variables["ConfigFolder"].exists():
-    Variables["ConfigFolder"].mkdir(parents=True)
+if not Variables["ConfigFile"].parent.exists():
+    Variables["ConfigFolder"].parent.mkdir(parents=True)
 
-### Si le dossier et le fichier existent, essaie de charger le dictionnaire de configs
-elif Variables["ConfigFile"].exists(): # Verifie l'existence du fichier de config
-    with Variables["ConfigFile"].open('rb') as ConfigFile: # Ouverture avec fermeture auto du fichier de config
-        mon_depickler = pickle.Unpickler(ConfigFile)
 
-        try: # Verifie que le chargement des configs est possible (déjà eu 1 soucis avec un fichier corrompu)
-            Configs = mon_depickler.load()
+### Configs du logiciel
+# Pas de try car avec optionxform on a une liste vide, pas une erreur
+# Chargement des configs
+Config = configparser.ConfigParser() # Chargement du fichier de cfg
+Config.optionxform = lambda option: option # Conserve le nom des variables
+Config.read(str(Variables["ConfigFile"])) # Lecture du fichier de cfg
 
-        except: # Le fichier de config n'est pas bon mais un dico de base sera cré juste apres
-            pass
+# Vérifie le nom d'item
+if len(Config['DEFAULT']) == 16:
+    Configs = {}
 
-### Teste l'appel à la dernire variable ajoutée au dictionnaire de configs (si pas de fichier de configs ou si plantage en chargement)
-try:
-    Configs["SplitterState"]
+    for Item, Value in Config['DEFAULT'].items():
+        if Item in ["DelConfig", "DelTemp", "FFMpeg", "SameFolder", "Stereo", "SubtitlesOpen", "ViewInfo", "WinMax"]:
+            Configs[Item] = Config['DEFAULT'].getboolean(Item)
 
-### Si la variable n'existe pas, création d'une version basique du dico
-except:
-    Configs = {"Ac3Kbits" : 128, # Qualité des fichiers ac3 convertis
-               "Ac3Boost" : 1, # Puissance des fichiers ac3 convertis
-               "DelConfig" : False, # Option de reinitialisation des config (au prochain reboot)
-               "DelTemp" : False, # Option de suppression des fichiers temporaires
-               "FFMpeg" : False, # Commande de conversion aconv ou ffmpeg
-               "Geometry" : "", # Option de sauvegarde la resolution de la fenêtre
-               "MKVDirNameIn" : Path().resolve(), # Dossier du fichier mkv d'entrée : Path(MKVLink).name
-               "MKVDirNameOut" : Path().resolve(), # Dossier de sortie
-               "Language" : QLocale.system().name(), # Langue du systeme
-               "SameFolder" : True, # Option d'utilisation du même dossier de sortie que celui du fichier mkv
-               "Stereo" : False, # Option de conversion en canal double
-               "SplitterState" : None, # Permet de sauvegarder et de charger l'aspect du splitter
-               "SubtitlesOpen" : False, # Option d'ouverture des sous-titres avant leur ré encapsulage
-               "ViewInfo" : True, # Affichage du retour d'info
-               "WinMax" : False, # Fenetre maximisée ou non
-              }
+        elif Item in ["Ac3Kbits", "Ac3Boost", "WinWidth", "WinHeight"]:
+            Configs[Item] = int(Value)
+
+        elif Item in ["MKVDirNameIn", "MKVDirNameOut"]:
+            Configs[Item] = Path(Value)
+
+        elif Item == "Language":
+            Configs[Item] = Value
+
+        elif Item == "SplitterSizes":
+            Configs[Item] = []
+            for Int in Value.replace("[", "").replace("]", "").replace(" ", "").split(","):
+                Configs[Item].append(int(Int))
+
+else:
+    # Valeurs par defaut
+    Configs = { "Ac3Kbits" : 128, # Qualité des fichiers ac3 convertis
+                "Ac3Boost" : 1, # Puissance des fichiers ac3 convertis
+                "DelConfig" : False, # Option de reinitialisation des config (au prochain reboot)
+                "DelTemp" : False, # Option de suppression des fichiers temporaires
+                "FFMpeg" : False, # Commande de conversion aconv ou ffmpeg
+                "MKVDirNameIn" : Path().resolve(), # Dossier du fichier mkv d'entrée : Path(MKVLink).name
+                "MKVDirNameOut" : Path().resolve(), # Dossier de sortie
+                "Language" : QLocale.system().name(), # Langue du systeme
+                "SameFolder" : True, # Option d'utilisation du même dossier de sortie que celui du fichier mkv
+                "Stereo" : False, # Option de conversion en canal double
+                "SplitterSizes" : None, # Permet de sauvegarder et de charger l'aspect du splitter
+                "SubtitlesOpen" : False, # Option d'ouverture des sous-titres avant leur ré encapsulage
+                "ViewInfo" : True, # Affichage du retour d'info
+                "WinMax" : False, # Fenetre maximisée ou non
+                "WinWidth" : 615, # Largeur de la fenetre
+                "WinHeight" : 510 # Hauteur de la fenetre
+                }
 
 
 ### Dictionnaire listant les codecs connu par mkvmerge
@@ -175,21 +190,38 @@ CodecList = {"V_MS/VFW/FOURCC": ["vfw", "Microsoft Video Codec Manager"],
              "S_TEXT/USF": ["usf", "Universal Subtitle Format"],
              "S_TEXT/ASCII": ["asc", "American Standard Code of Information Interchange"],
              "S_IMAGE/BMP": ["bmp", "Bitmap"],
-             "S_VOBSUB": ["vob", "VobSub subtitles"],
-             "S_VOBSUB/ZLIB": ["vob", "VobSub subtitles compressed"],
+             "S_VOBSUB": ["sub", "VobSub subtitles"],
+             "S_VOBSUB/ZLIB": ["sub", "VobSub subtitles compressed"],
              "S_KATE": ["kate", "Karaoke And Text Encapsulation"],
              "S_HDMV/PGS": ["pgs", "Presentation Grapic Stream"]}
 
 
 
 #========================================================================
-def IconBis(icon):
+def IconBis(Icon, Type):
     """Fonction créant le code pour afficher l'icone du theme avec une icone des ressources si la 1ere n'existe pas."""
     # http://standards.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html
     # http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html
-    Icon2 = QIcon()
-    Icon2.addPixmap(QPixmap(":/img/{}.png".format(icon)), QIcon.Normal, QIcon.Off) # Icone secondaire des ressources
-    return QIcon.fromTheme(icon, Icon2)
+
+    # Si l'icone existe dans le theme
+    if QIcon().hasThemeIcon(Icon):
+        # S'il faut un pixmap
+        if Type == "Pixmap":
+            return QPixmap(QIcon().fromTheme(Icon).pixmap(24))
+
+        # S'il faut une icone
+        elif Type == "Icon":
+            return QIcon().fromTheme(Icon)
+
+    # Si l'icone n'existe pas, on utilise celle des ressources
+    else:
+        # S'il faut un pixmap
+        if Type == "Pixmap":
+            return QPixmap(":/Icons/{}.png".format(Icon))
+
+        # S'il faut une icone
+        elif Type == "Icon":
+            return QIcon(QPixmap(":/Icons/{}.png".format(Icon)))
 
 
 
@@ -203,18 +235,18 @@ class MKVExtractorQt(QMainWindow):
         self.ui.setupUi(self) # Lance la fonction definissant tous les widgets du fichier UI
         self.show() # Affichage de la fenêtre principale
 
-
         ### Gestion de la fenetre
         # Resolution de la fenetre
-        if Configs["Geometry"]:
-            self.resize(Configs["Geometry"][0], Configs["Geometry"][1]) # Resize de la fenetre si les valeurs ont été save
+        if Configs["WinWidth"] != 615 or Configs["WinHeight"] != 510:
+            self.resize(Configs["WinWidth"], Configs["WinHeight"]) # Resize de la fenetre si les valeurs ont été save
 
         # Aspect du splitter
-        if Configs["SplitterState"]:
-            self.ui.splitter.restoreState(Configs["SplitterState"])
+        if Configs["SplitterSizes"]:
+            self.ui.splitter.setSizes(Configs["SplitterSizes"])
 
         # Centrage de la fenêtre
         if Configs["WinMax"]:
+            size_ecran = QDesktopWidget().screenGeometry() # Taille de l'ecran
             self.showMaximized() # Maximise la fenetre
         else:
             size_ecran = QDesktopWidget().screenGeometry() # Taille de l'ecran
@@ -233,10 +265,17 @@ class MKVExtractorQt(QMainWindow):
         if not shutil.which("mkclean"):
             self.ui.mk_clean.setVisible(False) # Cache l'option mkvinfo si le l'executable n'existe pas
 
-        for executable in ["tesseract", "subp2tiff", "subptools"]:
-            if not shutil.which(executable) and not Path(".", executable).exists():
+        for executable in ["tesseract", "subp2pgm", "subptools"]:
+            if not shutil.which(executable) and not Path(executable).exists():
                 self.ui.option_vobsub_srt.setVisible(False) # Cache l'option de conversion si le l'executable n'existe pas
                 break
+
+            if executable in ["subp2pgm", "subptools"]:
+                if shutil.which(executable): # Definit l'adresse du programme
+                    Variables[executable] = shutil.which(executable)
+
+                if Path(executable).exists(): # Definit l'adresse du programme
+                    Variables[executable] = "{}/{}".format(QDir.currentPath(), executable)
 
         # Recherche ffmpeg et avconv qui font la même chose
         if not shutil.which("ffmpeg") and not shutil.which("avconv"):
@@ -260,7 +299,7 @@ class MKVExtractorQt(QMainWindow):
         menulist = QMenu() # Creation d'un menu
 
         if ffconv:
-            self.option_ffmpeg = QAction(IconBis("ffmpeg"), '', self, checkable=True) # Creation d'un item sans texte
+            self.option_ffmpeg = QAction(IconBis("ffmpeg", "Icon"), '', self, checkable=True) # Creation d'un item sans texte
             menulist.addAction(self.option_ffmpeg) # Ajout de l'action à la liste
 
             if Configs["FFMpeg"]:
@@ -268,7 +307,7 @@ class MKVExtractorQt(QMainWindow):
 
             self.option_ffmpeg.toggled.connect(partial(self.OptionsValue, "FFMpeg")) # Au clic sur la coche
 
-        self.option_stereo = QAction(IconBis("audio-headphones"), '', self, checkable=True) # Creation d'un item sans texte
+        self.option_stereo = QAction(IconBis("audio-headphones", "Icon"), '', self, checkable=True) # Creation d'un item sans texte
         menulist.addAction(self.option_stereo) # Ajout de l'action à la liste
 
         self.RatesMenu = QMenu(self) # Creation d'un sous menu
@@ -291,8 +330,8 @@ class MKVExtractorQt(QMainWindow):
 
 
         ### Menu du bouton de reencapsulage
-        self.option_del_temp = QAction(IconBis("edit-delete"), '', self, checkable=True) # Creation d'une action cochable sans texte
-        self.option_subtitles_open = QAction(IconBis("document-edit"), '', self, checkable=True) # Creation d'une action cochable sans texte
+        self.option_del_temp = QAction(IconBis("edit-delete", "Icon"), '', self, checkable=True) # Creation d'une action cochable sans texte
+        self.option_subtitles_open = QAction(IconBis("document-edit", "Icon"), '', self, checkable=True) # Creation d'une action cochable sans texte
         menulist = QMenu() # Creation d'un menu
         menulist.addAction(self.option_del_temp) # Ajout de l'action à la liste
         menulist.addAction(self.option_subtitles_open) # Ajout de l'action à la liste
@@ -336,10 +375,6 @@ class MKVExtractorQt(QMainWindow):
 
         ### Connexions de la grande partie des widgets (les autres sont ci-dessus ou via le fichier ui)
         self.connectActions() # Création des connexions
-
-
-        ### Adresse du fichier licence
-        self.LicenceFile = "COPYING"
 
 
         ### Cache la box de retour d'info
@@ -415,7 +450,7 @@ class MKVExtractorQt(QMainWindow):
         ### Connexions des fenetres d'infos et d'aides
         self.ui.about_qt.activated.connect(lambda: QMessageBox.aboutQt(MKVExtractorQt)) # A propos de Qt
         self.ui.help.activated.connect(lambda: QMessageBox.about(self, self.Trad["Help_title"], self.Trad["Help"])) # Aide
-        self.ui.about.activated.connect(lambda: QMessageBox.about(self, self.Trad["About_title"] , self.Trad["About"].format(Version, self.LicenceFile))) # A propos de MKV Extractor Gui
+        self.ui.about.activated.connect(lambda: QMessageBox.about(self, self.Trad["About_title"] , self.Trad["About"].format(Version, "http://www.gnu.org/copyleft/gpl.html"))) # A propos de MKV Extractor Gui
 
 
         ### Connexions des options, redirige tous ces widgets vers une même fonction
@@ -612,7 +647,10 @@ class MKVExtractorQt(QMainWindow):
             if not find:
                 QMessageBox(3, "Erreur de traduction", "Aucun fichier de traduction <b>française</b> trouvé.<br/>Utilisation de la langue <b>anglaise</b>.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
                 self.ui.lang_en.setChecked(True)
-                return
+
+            else:
+                ### Chargement de la traduction
+                app.installTranslator(appTranslator)
 
         elif Configs["Language"] == "cs_CZ":
             find = appTranslator.load("MKVExtractorQt_cs_CZ", str(folder))
@@ -621,11 +659,10 @@ class MKVExtractorQt(QMainWindow):
             if not find:
                 QMessageBox(3, "Chyba překladu", "No translation file <b>Czech</b> found. Use <b>English</b> language. Soubor s překladem do <b>češtiny</b> nenalezen. Použít <b>anglický</b> jazyk.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
                 self.ui.lang_en.setChecked(True)
-                return
 
-
-        ### Chargement de la traduction
-        app.installTranslator(appTranslator)
+            else:
+                ### Chargement de la traduction
+                app.installTranslator(appTranslator)
 
 
         ### Mise à jour du fichier langage de Qt
@@ -791,13 +828,17 @@ class MKVExtractorQt(QMainWindow):
             if Variables["MKVLoad"] and MKVDicoSelect:
                 self.ui.option_reencapsulate.setEnabled(True) # Deblocage du bouton de reencapsulage
                 self.ui.mkv_execute.setEnabled(True)
+                self.ui.mkv_execute_2.setEnabled(True)
+                self.ui.option_dts_ac3.setEnabled(False) # Deblocage du widget
+                self.ui.option_vobsub_srt.setEnabled(False) # Deblocage de widget
 
                 for valeurs in MKVDicoSelect.values(): # Boucle sur la liste des lignes
-                    if "dts" in valeurs: # Recherche la valeur dts dans les sous listes
+                    if "dts" in valeurs[-1]: # Recherche la valeur dts dans les sous listes
                         self.ui.option_dts_ac3.setEnabled(True) # Deblocage du widget
 
-                    elif "sub" in valeurs: # Recherche la valeur vobsub dans les sous listes
+                    elif "sub" in valeurs[-1]: # Recherche la valeur vobsub dans les sous listes
                         self.ui.option_vobsub_srt.setEnabled(True) # Deblocage de widget
+
 
 
 
@@ -971,9 +1012,6 @@ class MKVExtractorQt(QMainWindow):
                         except:
                             codec = codec1.replace("/", "_").lower()
 
-                        if codec == "dts":
-                            self.ui.option_dts_ac3.setEnabled(True) # Deblocage du widget de conversion dts => ac3
-
                         ### Envoie des informations dans le tableaux
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
                         self.ComboBoxes[x] = QComboBox() # Création de la combobox et ajout d'un element dans le dico
@@ -1004,9 +1042,6 @@ class MKVExtractorQt(QMainWindow):
                         except:
                             codec = codec1.replace("/", "_").lower()
 
-                        if codec == "vob":
-                            self.ui.option_vobsub_srt.setEnabled(True) # Deblocage de widget de conversion sub => srt
-
                         self.ui.mkv_tracks.insertRow(x) # Création de la ligne
                         self.ComboBoxes[x] = QComboBox() # Création de la combobox et ajout d'un element dans le dico
                         self.ui.mkv_tracks.setCellWidget(x, 5, self.ComboBoxes[x]) # Envoie de la combobox
@@ -1026,10 +1061,10 @@ class MKVExtractorQt(QMainWindow):
                     self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
                     self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
                     self.ui.mkv_tracks.item(x, 1).setStatusTip(self.Trad["TrackID"].format(ID)) # StatusTip
-                    self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(IconBis(icone),"")) # Envoie de l'icône
+                    self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(IconBis(icone, "Icon"),"")) # Envoie de l'icône
                     self.ui.mkv_tracks.item(x, 2).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
                     self.ui.mkv_tracks.item(x, 2).setStatusTip(self.Trad["TrackType"].format(TrackType)) # StatusTip
-                    self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(IconBis("layer-visible-off"),"")) # Envoie de l'icone de visualisation
+                    self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(IconBis("layer-visible-off", "Icon"),"")) # Envoie de l'icone de visualisation
                     self.ui.mkv_tracks.item(x, 3).setStatusTip(self.Trad["TrackNoDislay"]) # StatusTip
                     self.ui.mkv_tracks.item(x, 3).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
                     self.ui.mkv_tracks.setItem(x, 4, QTableWidgetItem(info1)) # Envoie de l'information
@@ -1118,10 +1153,10 @@ class MKVExtractorQt(QMainWindow):
                 self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
                 self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
                 self.ui.mkv_tracks.item(x, 1).setStatusTip(self.Trad["TrackID2"].format(ID)) # StatusTip
-                self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(IconBis(icone),"")) # Envoie de l'icône
+                self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(IconBis(icone, "Icon"),"")) # Envoie de l'icône
                 self.ui.mkv_tracks.item(x, 2).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
                 self.ui.mkv_tracks.item(x, 2).setStatusTip(self.Trad["TrackType"].format(typetrack)) # StatusTip
-                self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(IconBis("layer-visible-on"),"")) # Envoie de l'icone de visualisation
+                self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(IconBis("layer-visible-on", "Icon"),"")) # Envoie de l'icone de visualisation
                 self.ui.mkv_tracks.item(x, 3).setStatusTip(self.Trad["TrackDislay"]) # StatusTip
                 self.ui.mkv_tracks.item(x, 3).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
                 self.ui.mkv_tracks.setItem(x, 4, QTableWidgetItem(info1)) # Envoie de l'information
@@ -1150,10 +1185,10 @@ class MKVExtractorQt(QMainWindow):
                 self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
                 self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
                 self.ui.mkv_tracks.item(x, 1).setStatusTip(self.Trad["TrackID3"].format(info2)) # StatusTip
-                self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(IconBis(icone),"")) # Envoie de l'icône
+                self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(IconBis(icone, "Icon"),"")) # Envoie de l'icône
                 self.ui.mkv_tracks.item(x, 2).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
                 self.ui.mkv_tracks.item(x, 2).setStatusTip(self.Trad["TrackType"].format(info2)) # StatusTip
-                self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(IconBis("layer-visible-on"),"")) # Envoie de l'icone de visualisation
+                self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(IconBis("layer-visible-on", "Icon"),"")) # Envoie de l'icone de visualisation
                 self.ui.mkv_tracks.item(x, 3).setStatusTip(self.Trad["TrackDislay"]) # StatusTip
                 self.ui.mkv_tracks.item(x, 3).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
                 self.ui.mkv_tracks.setItem(x, 4, QTableWidgetItem(info2)) # Envoie de l'information
@@ -1182,10 +1217,10 @@ class MKVExtractorQt(QMainWindow):
                 self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
                 self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
                 self.ui.mkv_tracks.item(x, 1).setStatusTip(self.Trad["TrackID3"].format(info2)) # StatusTip
-                self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(IconBis(icone),"")) # Envoie de l'icône
+                self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(IconBis(icone, "Icon"),"")) # Envoie de l'icône
                 self.ui.mkv_tracks.item(x, 2).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
                 self.ui.mkv_tracks.item(x, 2).setStatusTip(self.Trad["TrackType"].format(info2)) # StatusTip
-                self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(IconBis("layer-visible-on"),"")) # Envoie de l'icone de visualisation
+                self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(IconBis("layer-visible-on", "Icon"),"")) # Envoie de l'icone de visualisation
                 self.ui.mkv_tracks.item(x, 3).setStatusTip(self.Trad["TrackDislay"]) # StatusTip
                 self.ui.mkv_tracks.item(x, 3).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
                 self.ui.mkv_tracks.setItem(x, 4, QTableWidgetItem(info2)) # Envoie de l'information
@@ -1197,9 +1232,6 @@ class MKVExtractorQt(QMainWindow):
 
                 x += 1 # Incrémentation du numero de ligne
 
-        ### Dégrise le bouton de ré-encapsulage si la liste des pistes n'est pas vide
-        if MKVDico:
-            self.ui.option_reencapsulate.setEnabled(True)
 
         ### Retours d'information, deblocage, curseur normal
         self.SetInfo(self.Trad["WorkMerge"], "800080", True, False)
@@ -1297,12 +1329,30 @@ class MKVExtractorQt(QMainWindow):
                 if self.ui.mkv_tracks.item(x, 1).checkState(): # Teste si la ligne est cochée
                     MKVDicoSelect[x] = MKVDico[x] # mise à jour de la liste des pistes cochées
 
+            ### Blocage des boutons par defaut
+            self.ui.mkv_execute.setEnabled(False)
+            self.ui.mkv_execute_2.setEnabled(False)
+            self.ui.option_dts_ac3.setEnabled(False)
+            self.ui.option_vobsub_srt.setEnabled(False)
+            self.ui.option_reencapsulate.setEnabled(False)
+
             ### Arret de la fonction si pas de séléction ou pas de dossier de sortie
-            if not MKVDicoSelect or not Configs["MKVDirNameOut"]:
-                self.ui.mkv_execute.setEnabled(False) # Bloquage du bouton d'execution
-                return
-            else:
+            if MKVDicoSelect and Configs["MKVDirNameOut"]:
                 self.ui.mkv_execute.setEnabled(True) # Debloquage du bouton d'execution
+                self.ui.mkv_execute_2.setEnabled(True) # Debloquage du bouton d'execution
+                self.ui.option_reencapsulate.setEnabled(True)
+
+                for valeurs in MKVDicoSelect.values(): # Boucle sur la liste des lignes
+                    if "dts" in valeurs[-1]: # Recherche la valeur dts dans les sous listes
+                        self.ui.option_dts_ac3.setEnabled(True) # Deblocage du widget
+
+                    elif "sub" in valeurs[-1]: # Recherche la valeur vobsub dans les sous listes
+                        self.ui.option_vobsub_srt.setEnabled(True) # Deblocage de widget
+
+            ### Décoche les boutons s'ils sont grisés
+            for widget in [self.ui.option_vobsub_srt, self.ui.option_reencapsulate, self.ui.option_dts_ac3]:
+                if not widget.isEnabled():
+                    widget.setChecked(False)
 
 
         ### Dans le cas d'une modification de texte
@@ -1484,9 +1534,9 @@ class MKVExtractorQt(QMainWindow):
 
                 ### Envoie des commandes dans la liste
                 Variables["CmdList"].append(["Sub2Srt", "Demarrage", 'echo', ID])
-                Variables["CmdList"].append(["Sub2Srt", "Subp2Tiff", '{}/subp2tiff -n "{}/{}_subtitles_{}"'.format(QDir.currentPath(), Folder, ID, Name), ID])
+                Variables["CmdList"].append(["Sub2Srt", "Subp2Pgm", '"{}" -n "{}/{}_subtitles_{}"'.format(Variables["subp2pgm"], Folder, ID, Name), ID])
                 Variables["CmdList"].append(["Sub2Srt", "Tesseract", "", ID])
-                Variables["CmdList"].append(["Sub2Srt", "SubpTools", '{}/subptools -s -w -t srt -i "{}.xml" -o "{}"'.format(QDir.currentPath(), Files, SRT), ID])
+                Variables["CmdList"].append(["Sub2Srt", "SubpTools", '"{}" -s -w -t srt -i "{}.xml" -o "{}"'.format(Variables["subptools"], Files, SRT), ID])
 
 
         ### Ajout de la commande mkvextract_joint à la liste des commandes à executer
@@ -1550,6 +1600,7 @@ class MKVExtractorQt(QMainWindow):
         ### Dans le cas d'un lancement de travail
         if value:
             self.ui.mkv_execute.hide() # Cache le bouton executer
+            self.ui.mkv_execute_2.setEnabled(False) # Grise le bouton executer
             self.ui.mkv_stop.show() # Affiche le bouton arreter
 
             for widget in (self.ui.menubar, self.ui.tracks_bloc, self.ui.view_info, self.ui.out_info):
@@ -1562,6 +1613,7 @@ class MKVExtractorQt(QMainWindow):
 
             ### Modifications graphiques
             self.ui.mkv_execute.show() # Affiche le bouton executer
+            self.ui.mkv_execute_2.setEnabled(True) # Dégrise le bouton executer
             self.ui.mkv_stop.hide() # Cache le bouton arreter
 
             for widget in (self.ui.menubar, self.ui.tracks_bloc, self.ui.view_info, self.ui.out_info):
@@ -1863,7 +1915,7 @@ class MKVExtractorQt(QMainWindow):
 
 
         ### La 2e commande est la transformation sub en images
-        elif Variables["Cmd"][1] == "Subp2Tiff":
+        elif Variables["Cmd"][1] == "Subp2Pgm":
             ### Creation d'une liste des fichiers sous titres
             Variables["ImgFiles"] = []
             for File in ["*.pgm", "*.tif"]:
@@ -2105,14 +2157,29 @@ class MKVExtractorQt(QMainWindow):
 
         ### Dans le cas normal, les valeurs sont saves
         else:
-            Configs["Geometry"] = [self.geometry().width(), self.geometry().height()]
-            Configs["WinMax"] = self.isMaximized()
-            Configs["SplitterState"] = self.ui.splitter.saveState()
+            ### Sauvegarde des préférences
+            Config = configparser.ConfigParser()
+            Config.optionxform = lambda option: option # Conserve le nom des variables
 
-            ### Sauvegarde des infos
-            with Variables["ConfigFile"].open('wb') as ConfigFile: # Enregistrement du fichier configs
-                mon_pickler = pickle.Pickler(ConfigFile)
-                mon_pickler.dump(Configs)
+            Config['DEFAULT'] = { "Ac3Kbits" : str(Configs["Ac3Kbits"]),
+                                  "Ac3Boost" : str(Configs["Ac3Boost"]),
+                                  "DelConfig" : Configs["DelConfig"],
+                                  "DelTemp" : Configs["DelTemp"],
+                                  "FFMpeg" : Configs["FFMpeg"],
+                                  "MKVDirNameIn" : str(Configs["MKVDirNameIn"]),
+                                  "MKVDirNameOut" : str(Configs["MKVDirNameOut"]),
+                                  "Language" : Configs["Language"],
+                                  "SameFolder" : Configs["SameFolder"],
+                                  "Stereo" : Configs["Stereo"],
+                                  "SplitterSizes" : str(self.ui.splitter.sizes()),
+                                  "SubtitlesOpen" : Configs["SubtitlesOpen"],
+                                  "ViewInfo" : Configs["ViewInfo"],
+                                  "WinMax" : self.isMaximized(),
+                                  "WinWidth" : self.geometry().width(),
+                                  "WinHeight" : self.geometry().height() }
+
+            with Variables["ConfigFile"].open('w') as file:
+                Config.write(file)
 
         ### Acceptation de l'arret du logiciel
         event.accept()

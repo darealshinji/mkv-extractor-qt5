@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
-    <height>546</height>
+    <width>615</width>
+    <height>510</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -102,9 +102,8 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset theme="layer-visible-on">
-                <normaloff/>
-               </iconset>
+               <iconset resource="MKVRessources.qrc">
+                <normaloff>:/img/layer-visible-on.png</normaloff>:/img/layer-visible-on.png</iconset>
               </property>
               <property name="checkable">
                <bool>true</bool>
@@ -160,9 +159,8 @@
                <string/>
               </property>
               <property name="icon">
-               <iconset theme="document-export">
-                <normaloff/>
-               </iconset>
+               <iconset resource="MKVRessources.qrc">
+                <normaloff>:/img/document-export.png</normaloff>:/img/document-export.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -402,9 +400,8 @@ p, li { white-space: pre-wrap; }
                   <string notr="true"/>
                  </property>
                  <property name="icon">
-                  <iconset theme="checkbox">
-                   <normaloff/>
-                  </iconset>
+                  <iconset resource="MKVRessources.qrc">
+                   <normaloff>:/img/checkbox.png</normaloff>:/img/checkbox.png</iconset>
                  </property>
                 </column>
                 <column>
@@ -415,9 +412,8 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset theme="mixer-video">
-                   <normaloff/>
-                  </iconset>
+                  <iconset resource="MKVRessources.qrc">
+                   <normaloff>:/img/mixer-video.png</normaloff>:/img/mixer-video.png</iconset>
                  </property>
                 </column>
                 <column>
@@ -431,9 +427,8 @@ p, li { white-space: pre-wrap; }
                   <set>AlignHCenter|AlignVCenter|AlignCenter</set>
                  </property>
                  <property name="icon">
-                  <iconset theme="layer-visible-off">
-                   <normaloff/>
-                  </iconset>
+                  <iconset resource="MKVRessources.qrc">
+                   <normaloff>:/img/layer-visible-off.png</normaloff>:/img/layer-visible-off.png</iconset>
                  </property>
                 </column>
                 <column>
@@ -479,9 +474,8 @@ p, li { white-space: pre-wrap; }
                    <string>Remux</string>
                   </property>
                   <property name="icon">
-                   <iconset theme="view-refresh">
-                    <normaloff/>
-                   </iconset>
+                   <iconset resource="MKVRessources.qrc">
+                    <normaloff>:/img/view-refresh.png</normaloff>:/img/view-refresh.png</iconset>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -512,9 +506,8 @@ p, li { white-space: pre-wrap; }
                    <string>SUB to SRT</string>
                   </property>
                   <property name="icon">
-                   <iconset theme="document-export">
-                    <normaloff/>
-                   </iconset>
+                   <iconset resource="MKVRessources.qrc">
+                    <normaloff>:/img/document-export.png</normaloff>:/img/document-export.png</iconset>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -533,9 +526,8 @@ p, li { white-space: pre-wrap; }
                    <string>DTS to AC3</string>
                   </property>
                   <property name="icon">
-                   <iconset theme="media-tape">
-                    <normaloff/>
-                   </iconset>
+                   <iconset resource="MKVRessources.qrc">
+                    <normaloff>:/img/media-tape.png</normaloff>:/img/media-tape.png</iconset>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -659,9 +651,8 @@ p, li { white-space: pre-wrap; }
                    <string>Previous</string>
                   </property>
                   <property name="icon">
-                   <iconset theme="go-previous">
-                    <normaloff/>
-                   </iconset>
+                   <iconset resource="MKVRessources.qrc">
+                    <normaloff>:/img/go-previous.png</normaloff>:/img/go-previous.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -708,9 +699,8 @@ p, li { white-space: pre-wrap; }
                    <string>Next</string>
                   </property>
                   <property name="icon">
-                   <iconset theme="go-next">
-                    <normaloff/>
-                   </iconset>
+                   <iconset resource="MKVRessources.qrc">
+                    <normaloff>:/img/go-next.png</normaloff>:/img/go-next.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -774,9 +764,8 @@ p, li { white-space: pre-wrap; }
          <string>Execute</string>
         </property>
         <property name="icon">
-         <iconset theme="run-build">
-          <normaloff/>
-         </iconset>
+         <iconset resource="MKVRessources.qrc">
+          <normaloff>:/img/run-build.png</normaloff>:/img/run-build.png</iconset>
         </property>
        </widget>
       </item>
@@ -804,9 +793,8 @@ p, li { white-space: pre-wrap; }
          <string>Stop</string>
         </property>
         <property name="icon">
-         <iconset theme="process-stop">
-          <normaloff/>
-         </iconset>
+         <iconset resource="MKVRessources.qrc">
+          <normaloff>:/img/process-stop.png</normaloff>:/img/process-stop.png</iconset>
         </property>
        </widget>
       </item>
@@ -822,9 +810,8 @@ p, li { white-space: pre-wrap; }
          <string>Resume</string>
         </property>
         <property name="icon">
-         <iconset theme="view-refresh">
-          <normaloff/>
-         </iconset>
+         <iconset resource="MKVRessources.qrc">
+          <normaloff>:/img/view-refresh.png</normaloff>:/img/view-refresh.png</iconset>
         </property>
        </widget>
       </item>
@@ -871,9 +858,8 @@ p, li { white-space: pre-wrap; }
          <string>Quit</string>
         </property>
         <property name="icon">
-         <iconset theme="application-exit">
-          <normaloff/>
-         </iconset>
+         <iconset resource="MKVRessources.qrc">
+          <normaloff>:/img/application-exit.png</normaloff>:/img/application-exit.png</iconset>
         </property>
         <property name="shortcut">
          <string notr="true">Alt+Q</string>
@@ -889,7 +875,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>679</width>
+     <width>615</width>
      <height>21</height>
     </rect>
    </property>
@@ -959,9 +945,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QStatusBar" name="statusbar"/>
   <action name="mkv_open">
    <property name="icon">
-    <iconset theme="document-open">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/document-open.png</normaloff>:/img/document-open.png</iconset>
    </property>
    <property name="text">
     <string>Open an MKV file</string>
@@ -975,12 +960,14 @@ p, li { white-space: pre-wrap; }
    <property name="statusTip">
     <string>Chosing an MKV file is required.</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">F2</string>
+   </property>
   </action>
   <action name="mkv_folder">
    <property name="icon">
-    <iconset theme="document-open-folder">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/document-open-folder.png</normaloff>:/img/document-open-folder.png</iconset>
    </property>
    <property name="text">
     <string>Output folder</string>
@@ -991,12 +978,14 @@ p, li { white-space: pre-wrap; }
    <property name="statusTip">
     <string>Chosing an output folder is mandatory if the option to use the same folder as the MKV file is not used.</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">F3</string>
+   </property>
   </action>
   <action name="soft_quit_2">
    <property name="icon">
-    <iconset theme="application-exit">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/application-exit.png</normaloff>:/img/application-exit.png</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -1007,6 +996,9 @@ p, li { white-space: pre-wrap; }
    <property name="statusTip">
     <string>Quit the program and save the options.</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">F12</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>
    </property>
@@ -1016,9 +1008,8 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="run-build">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/run-build.png</normaloff>:/img/run-build.png</iconset>
    </property>
    <property name="text">
     <string>Start job queue</string>
@@ -1026,15 +1017,17 @@ p, li { white-space: pre-wrap; }
    <property name="statusTip">
     <string>Launch extract/convert/mux tracks.</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">F4</string>
+   </property>
   </action>
   <action name="mk_validator">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="dialog-ok">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/dialog-ok.png</normaloff>:/img/dialog-ok.png</iconset>
    </property>
    <property name="text">
     <string>Check MKV file</string>
@@ -1042,15 +1035,17 @@ p, li { white-space: pre-wrap; }
    <property name="statusTip">
     <string>Verify Matroska files for specification conformance with MKValidator.</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">F7</string>
+   </property>
   </action>
   <action name="mk_clean">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="draw-eraser">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/draw-eraser.png</normaloff>:/img/draw-eraser.png</iconset>
    </property>
    <property name="text">
     <string>Optimize MKV file</string>
@@ -1058,12 +1053,14 @@ p, li { white-space: pre-wrap; }
    <property name="statusTip">
     <string>Clean/Optimize Matroska files with MKClean.</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">F8</string>
+   </property>
   </action>
   <action name="about">
    <property name="icon">
-    <iconset theme="help-about">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/mkv-extractor-qt.png</normaloff>:/img/mkv-extractor-qt.png</iconset>
    </property>
    <property name="text">
     <string>About MKV Extractor Qt</string>
@@ -1083,9 +1080,8 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="mkvinfo">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/mkvinfo.png</normaloff>:/img/mkvinfo.png</iconset>
    </property>
    <property name="text">
     <string>View MKV information</string>
@@ -1096,12 +1092,14 @@ p, li { white-space: pre-wrap; }
    <property name="font">
     <font/>
    </property>
+   <property name="shortcut">
+    <string notr="true">F5</string>
+   </property>
   </action>
   <action name="about_qt">
    <property name="icon">
-    <iconset theme="help-about">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/qt.png</normaloff>:/img/qt.png</iconset>
    </property>
    <property name="text">
     <string>About Qt</string>
@@ -1113,28 +1111,6 @@ p, li { white-space: pre-wrap; }
     <enum>QAction::AboutQtRole</enum>
    </property>
   </action>
-  <action name="option_mkv_link">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset theme="document-save">
-     <normaloff/>
-    </iconset>
-   </property>
-   <property name="text">
-    <string>Save MKV filename</string>
-   </property>
-   <property name="statusTip">
-    <string>Keep the MKV file in memory for the next session.</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::TextHeuristicRole</enum>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
-   </property>
-  </action>
   <action name="option_mkv_folder">
    <property name="checkable">
     <bool>true</bool>
@@ -1143,9 +1119,8 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="edit-copy">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/edit-copy.png</normaloff>:/img/edit-copy.png</iconset>
    </property>
    <property name="text">
     <string>Use the same output folder as the MKV file</string>
@@ -1159,9 +1134,8 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="edit-delete">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/edit-delete.png</normaloff>:/img/edit-delete.png</iconset>
    </property>
    <property name="text">
     <string>Delete config file</string>
@@ -1175,15 +1149,17 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="mkvmerge">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/mkvmerge.png</normaloff>:/img/mkvmerge.png</iconset>
    </property>
    <property name="text">
     <string>Edit MKV file</string>
    </property>
    <property name="statusTip">
     <string>Open the MKV file with mkvmerge GUI for more modifications.</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">F6</string>
    </property>
   </action>
   <action name="mkv_view">
@@ -1194,9 +1170,8 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="video-x-generic">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/video-x-generic.png</normaloff>:/img/video-x-generic.png</iconset>
    </property>
    <property name="text">
     <string>Replay MKV file</string>
@@ -1204,22 +1179,26 @@ p, li { white-space: pre-wrap; }
    <property name="statusTip">
     <string>Open the MKV file with the default application.</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">F9</string>
+   </property>
   </action>
   <action name="help">
    <property name="icon">
-    <iconset theme="help-contents">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/help-contents.png</normaloff>:/img/help-contents.png</iconset>
    </property>
    <property name="text">
     <string>Need help</string>
    </property>
+   <property name="shortcut">
+    <string notr="true">F1</string>
+   </property>
   </action>
   <action name="option_clean">
    <property name="icon">
-    <iconset theme="edit-clear">
-     <normaloff/>
-    </iconset>
+    <iconset resource="MKVRessources.qrc">
+     <normaloff>:/img/edit-clear.png</normaloff>:/img/edit-clear.png</iconset>
    </property>
    <property name="text">
     <string>Clean the information feedback box</string>
@@ -1327,16 +1306,16 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>soft_quit_2</sender>
    <signal>activated()</signal>
-   <receiver>soft_quit</receiver>
-   <slot>click()</slot>
+   <receiver>mkv_extractor_qt</receiver>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>808</x>
-     <y>612</y>
+     <x>307</x>
+     <y>254</y>
     </hint>
    </hints>
   </connection>

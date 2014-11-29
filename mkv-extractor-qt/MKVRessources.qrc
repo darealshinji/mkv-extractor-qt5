@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="/">
     <file>img/ffmpeg.png</file>
+    <file>img/qt.png</file>
     <file>img/mkv-extractor-qt.png</file>
     <file>img/x-office-address-book.png</file>
     <file>img/view-refresh.png</file>

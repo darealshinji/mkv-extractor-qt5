@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+# Supprime l'ancien dossier de configuration
+for user in /home/*
+do
+    if [ -e "${user}/.config/MKV-Extractor-Qt" ]
+    then
+        rm -rfv "${user}/.config/MKV-Extractor-Qt"
+    fi
+done
+
+
+# Supprime le fichier de configuration
+if [ "${1}" = "purge" ]
+then
+    for user in /home/*
+    do
+        rm -fv "${user}/.config/MKV-Extractor-Qt.cfg"
+    done
+fi
+
+#DEBHELPER#

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ]; then
+  for d in /home/* ; do rm -rfv "$d/.config/MKV-Extractor-Qt"; done
+fi
+
+#DEBHELPER#

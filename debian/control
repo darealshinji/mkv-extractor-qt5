@@ -1,0 +1,51 @@
+Source: mkv-extractor-qt
+Maintainer: Terence Belleguic <hizo@free.fr>
+Build-Depends:
+ debhelper (>= 9),
+ dh-autoreconf,
+ libxml2-dev,
+ libtiff-dev,
+ libpng12-dev,
+ pkg-config,
+ pyqt4-dev-tools,
+ python3,
+ qt4-linguist-tools,
+ zlib1g-dev
+Standards-Version: 3.9.5
+Priority: standard
+Section: video
+
+Package: mkv-extractor-qt
+Architecture: all
+Depends:
+ ${misc:Depends},
+ mkvtoolnix,
+ ${python3:Depends},
+ python3-pyqt4,
+ python-support (>= 0.90)
+Enhances:
+ libav-tools, ffmpeg,
+ mkclean,
+ tesseract-ocr,
+ tesseract-ocr-fra,
+ mkvalidator,
+ mkv-extractor-qt-subptools
+Replaces: mkv-extractor-qt-oldpython
+Homepage: http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
+Description: Graphical mkv demultiplexer
+ Features:
+  * DTS to AC3 conversion via ffmpeg
+  * Automatic conversion from SUB to SRT via tesseract
+  * Read and extract joined files
+  * Extract and remux tracks
+  * And more again
+
+Package: mkv-extractor-qt-subptools
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ mkv-extractor-qt | mkv-extractor-qt-oldpython
+Description: Addon for mkv-extractor-qt
+ Subrip tools, required for conversion from SUB to SRT.
+ The tools were copied from the ogmrip package.

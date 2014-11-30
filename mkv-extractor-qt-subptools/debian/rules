@@ -1,8 +1,0 @@
-#!/usr/bin/make -f
-
-%:
-	dh ${@} --parallel --with autoreconf
-
-override_dh_builddeb:
-	# Compression du dossier data du paquet debian
-	dh_builddeb -- -Zxz -z9

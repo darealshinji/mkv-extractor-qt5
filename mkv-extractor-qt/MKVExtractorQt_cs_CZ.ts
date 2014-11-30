@@ -3,7 +3,7 @@
 <context>
     <name>MKVExtractorQt</name>
     <message>
-        <location filename="MKVExtractorQt.py" line="735"/>
+        <location filename="MKVExtractorQt.py" line="758"/>
         <source>tags</source>
         <translation>Značky</translation>
     </message>
@@ -13,22 +13,22 @@
         <translation type="obsolete">Advanced Audio Coding je standard ztrátové komprese a systéme kódování digitálního zvuku.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="684"/>
+        <location filename="MKVExtractorQt.py" line="707"/>
         <source>Space available</source>
         <translation>Dostupné místo</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="725"/>
+        <location filename="MKVExtractorQt.py" line="748"/>
         <source>Change the language if it&apos;s not right. &apos;und&apos; means &apos;Undetermined&apos;.</source>
         <translation>měnit jazyk, pokud není správný. &apos;und&apos; znamená &apos;nestanovený&apos;.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="695"/>
+        <location filename="MKVExtractorQt.py" line="718"/>
         <source>Delete temporary files</source>
         <translation>Smazat dočasné soubory opětovného zabalení</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="736"/>
+        <location filename="MKVExtractorQt.py" line="759"/>
         <source>This track is a {} type.</source>
         <translation>Tato stopa je typu {}.</translation>
     </message>
@@ -43,22 +43,22 @@
         <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;MKV Extractor Qt v5.1.1&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Rozhraní pro vytahování, úpravy a opětovné zabalení stop souboru matroska (MKV).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Tento program následuje po několika dalších, jež byly programovány v bashi.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Tento program je licencován pod &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;&lt;a href=&quot;{}&quot;&gt;Creative Commons BY-NC-SA&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Velké poděkování fórům pro python &lt;a href=&quot;http://www.developpez.net/forums/f96/autres-langages/python-zope/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;developpez.net&lt;/span&gt;&lt;/a&gt; za jejich trpělivost.&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;Vytvořeno &lt;span style=&quot; font-weight:600;&quot;&gt;Belleguic Terence&lt;/span&gt; (Hizoka), listopad 2013&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="678"/>
+        <location filename="MKVExtractorQt.py" line="698"/>
         <source>About MKV Extractor Gui</source>
         <translation>O rozhraní MKV Extractor Gui</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="704"/>
+        <location filename="MKVExtractorQt.py" line="727"/>
         <source>{} kbits/s</source>
         <translation>{} kbits/s</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="739"/>
+        <location filename="MKVExtractorQt.py" line="762"/>
         <source> All commands were canceled </source>
         <translation> Všechny příkazy byly zrušeny </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="714"/>
+        <location filename="MKVExtractorQt.py" line="737"/>
         <source>Selected folder: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</source>
         <translation>Vybraná složka: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</translation>
     </message>
@@ -68,17 +68,17 @@
         <translation type="obsolete">SubStation Alpha je formát titulků vytvořený CS Low, který umožňuje pokročilejší efekty než formát SRT.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="741"/>
+        <location filename="MKVExtractorQt.py" line="764"/>
         <source> The last command returned an error </source>
         <translation> Poslední příkaz vrátil chybu </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="700"/>
+        <location filename="MKVExtractorQt.py" line="723"/>
         <source>Multiplying audio power by {}.</source>
         <translation>Znásobení zvukového výkonu {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="706"/>
+        <location filename="MKVExtractorQt.py" line="729"/>
         <source>The audio will not use the same number of channels, the audio will be stereo (2 channels).</source>
         <translation>Zvuk nezachová stejný počet kanálů, zvuk bude stereo (2 kanály).</translation>
     </message>
@@ -88,22 +88,22 @@
         <translation type="obsolete">V případě potřeby vybrat dobrý počet obrázků za sekundu. Užitečné v případě prodlevy zvuku. Normální: 23.976, 25.000 a 30.000.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="708"/>
+        <location filename="MKVExtractorQt.py" line="731"/>
         <source>Auto opening of subtitle srt files for correction. The software will be paused.</source>
         <translation>Otevřít automaticky soubory titulků srt pro jejich opravení. Tento program bude pozastaven.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="740"/>
+        <location filename="MKVExtractorQt.py" line="763"/>
         <source>Command execution: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</source>
         <translation>Provedení příkazu: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="718"/>
+        <location filename="MKVExtractorQt.py" line="741"/>
         <source>Select the output folder</source>
         <translation>Vybrat výstupní složku</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="705"/>
+        <location filename="MKVExtractorQt.py" line="728"/>
         <source>Switch to stereo during conversion</source>
         <translation>Během převodu přepnout do sterea</translation>
     </message>
@@ -113,12 +113,12 @@
         <translation type="obsolete">Bitmapa titulků.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="733"/>
+        <location filename="MKVExtractorQt.py" line="756"/>
         <source>No information.</source>
         <translation>Žádné informace.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="734"/>
+        <location filename="MKVExtractorQt.py" line="757"/>
         <source>This track can be renamed.</source>
         <translation>Tato stopa může být přejmenována.</translation>
     </message>
@@ -128,7 +128,7 @@
         <translation type="obsolete">Předpokládá se, že RealVideo 4.0 je založeno na kodeku H264. RV40 je kodek vlastněný RealNetwork&apos;. </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="721"/>
+        <location filename="MKVExtractorQt.py" line="744"/>
         <source>SRT subtitle creation.</source>
         <translation>vytvoření souboru titulků SRT.</translation>
     </message>
@@ -138,22 +138,22 @@
         <translation type="obsolete">Titulky vob.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="709"/>
+        <location filename="MKVExtractorQt.py" line="732"/>
         <source>New value for &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt; option: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</source>
         <translation>Nová hodnota pro &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt; : &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="713"/>
+        <location filename="MKVExtractorQt.py" line="736"/>
         <source>Selected folder: {}.</source>
         <translation>Vybraná složka: {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="697"/>
+        <location filename="MKVExtractorQt.py" line="720"/>
         <source>Use FFMpeg for the conversion.</source>
         <translation>Použít FFMpeg pro převod.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="728"/>
+        <location filename="MKVExtractorQt.py" line="751"/>
         <source>This track can be displayed via an icon click.</source>
         <translation>Tato stopa může být zobrazena pomocí klepnutí na ikonu.</translation>
     </message>
@@ -163,47 +163,47 @@
         <translation type="obsolete">Formát MP3 je formát kódování digitálního zvuku, který používá formu ztrátové komprese dat.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="703"/>
+        <location filename="MKVExtractorQt.py" line="726"/>
         <source>Convert the audio quality in {} kbits/s.</source>
         <translation>Převede kvalitu zvuku na {} kbits/s.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="744"/>
+        <location filename="MKVExtractorQt.py" line="767"/>
         <source> Paused software time to read the subtitles </source>
         <translation> Pozastavený čas programu ke čtení titulků </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="720"/>
+        <location filename="MKVExtractorQt.py" line="743"/>
         <source>Subtitle converter to images.</source>
         <translation>Převod titulků na obrázky.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="712"/>
+        <location filename="MKVExtractorQt.py" line="735"/>
         <source>Selected file: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</source>
         <translation>vybraný soubor: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="702"/>
+        <location filename="MKVExtractorQt.py" line="725"/>
         <source>List of available flow rates of conversion</source>
         <translation>Seznam dostupných převodních datových toků</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="707"/>
+        <location filename="MKVExtractorQt.py" line="730"/>
         <source>Opening subtitles before encapsulation</source>
         <translation>Otevřít titulky před zabalením</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="729"/>
+        <location filename="MKVExtractorQt.py" line="752"/>
         <source>This track can not be displayed.</source>
         <translation>Tuto stopa nelze zobrazit.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="686"/>
+        <location filename="MKVExtractorQt.py" line="709"/>
         <source>Tesseract langs error</source>
         <translation>Chyba jazyku s Tesseractem</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="693"/>
+        <location filename="MKVExtractorQt.py" line="716"/>
         <source>Image progression : {} on {}</source>
         <translation>Zpracování obrázků: {} na {}</translation>
     </message>
@@ -213,42 +213,42 @@
         <translation type="obsolete">DTS je řada vícekanálových technologií vyvinutá a vlastněná DTS, Inc.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="692"/>
+        <location filename="MKVExtractorQt.py" line="715"/>
         <source>Edition of files who have the md5: {}</source>
         <translation>Úprava souborů majících md5 : {}</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="681"/>
+        <location filename="MKVExtractorQt.py" line="704"/>
         <source>Wrong arguments</source>
         <translation>Špatné argumenty</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="731"/>
+        <location filename="MKVExtractorQt.py" line="754"/>
         <source>Work with attachment number {}.</source>
         <translation>Pracovat na připojeném souboru číslo {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="724"/>
+        <location filename="MKVExtractorQt.py" line="747"/>
         <source>If the remuxed file has reading problems, change this value.</source>
         <translation>Pokud má nově zabalený soubor potíže se čtením, změňte tuto hodnotu.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="745"/>
+        <location filename="MKVExtractorQt.py" line="768"/>
         <source> {} execution in progress </source>
         <translation> Probíhá provedení {} </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="716"/>
+        <location filename="MKVExtractorQt.py" line="739"/>
         <source>Select the input MKV File</source>
         <translation>Vybrat vstupní soubor MKV</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="683"/>
+        <location filename="MKVExtractorQt.py" line="706"/>
         <source>&lt;b&gt;Too many arguments given:&lt;/b&gt; {}</source>
         <translation>&lt;b&gt;Zadáno příliš mnoho argumentů:&lt;/b&gt; {}</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="685"/>
+        <location filename="MKVExtractorQt.py" line="708"/>
         <source>Not enough space available.
 
 It is advisable to have at least twice the size of free space on the disk file.</source>
@@ -262,17 +262,17 @@ Doporučuje se mít na disku volného místa alespoň dvojnásobek velikosti sou
         <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Vous êtes perdu ? Vous avez besoin d&apos;aide ?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Obvykle jsou přítomny všechny nutné informace:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Čtěte informace ve stavovém řádku, když přejíždíte ukazovátkem myši nad prvky rozhraní&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Pokud máte přesto potřebu ještě dalších informací:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Forum Ubuntu-fr.org: &lt;a href=&quot;http://forum.ubuntu-fr.org/viewtopic.php?id=293216&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;topic&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;- Moje e-mailová adresa: &lt;a href=&quot;mailto:hizo@free.fr &quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;hizo@free.fr &lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Děkuji vám za zájem, který věnujete tomuto programu.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="742"/>
+        <location filename="MKVExtractorQt.py" line="765"/>
         <source> {} execution is finished </source>
         <translation> Provedení {} je dokončeno </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="689"/>
+        <location filename="MKVExtractorQt.py" line="712"/>
         <source>Help me!</source>
         <translation>Pomozte!</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="701"/>
+        <location filename="MKVExtractorQt.py" line="724"/>
         <source>Power x {}</source>
         <translation>Výkon x {}</translation>
     </message>
@@ -282,27 +282,27 @@ Doporučuje se mít na disku volného místa alespoň dvojnásobek velikosti sou
         <translation type="obsolete">Kodek audio Dolby Digital, ztrátová komprese zvuku.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="698"/>
+        <location filename="MKVExtractorQt.py" line="721"/>
         <source>Increase the sound power</source>
         <translation>Zvětšit zvukový výkon</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="717"/>
+        <location filename="MKVExtractorQt.py" line="740"/>
         <source>Select the output MKV file</source>
         <translation>Vybrat výstupní soubor MKV</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="730"/>
+        <location filename="MKVExtractorQt.py" line="753"/>
         <source>Work with track number {}.</source>
         <translation>Pracovat se stopou číslo {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="711"/>
+        <location filename="MKVExtractorQt.py" line="734"/>
         <source>Selected file: {}.</source>
         <translation>Vybraný soubor: {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="687"/>
+        <location filename="MKVExtractorQt.py" line="710"/>
         <source>The subtitle language is not avaible in Tesseract list langs: {}</source>
         <translation>jazyk titulků není dostupný v seznamu jazyků Tesseractu:{} </translation>
     </message>
@@ -312,29 +312,29 @@ Doporučuje se mít na disku volného místa alespoň dvojnásobek velikosti sou
         <translation type="obsolete">Ogg je svobodný, otevřený kontejner udržovaný nadací Xiph.Org.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="722"/>
+        <location filename="MKVExtractorQt.py" line="745"/>
         <source>All subtitles images could not be recognized.
 We must therefore specify the missing texts.</source>
         <translation>Všechny obrázkové titulky se nepodařilo rozpoznat.
 Je tudíž potřeba přikročit ke stanovení chybějících textů.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="727"/>
+        <location filename="MKVExtractorQt.py" line="750"/>
         <source>chapters</source>
         <translation>Kapitoly</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="699"/>
+        <location filename="MKVExtractorQt.py" line="722"/>
         <source>No power change.</source>
         <translation>Žádná změna výkonu.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="732"/>
+        <location filename="MKVExtractorQt.py" line="755"/>
         <source>Work with {}.</source>
         <translation>Pracovat na {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="696"/>
+        <location filename="MKVExtractorQt.py" line="719"/>
         <source>The temporary files are the extracted tracks.</source>
         <translation>Dočasné soubory jsou vytažené stopy.</translation>
     </message>
@@ -344,12 +344,12 @@ Je tudíž potřeba přikročit ke stanovení chybějících textů.</translatio
         <translation type="obsolete">H264 je jeden z kompresních formátů obrazu a je v současnosti jedním z nejpoužívanějších formátů pro nahrávání, komprese a šíření videoobsahu.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="726"/>
+        <location filename="MKVExtractorQt.py" line="749"/>
         <source>This track can be renamed and must contain an extension to avoid reading errors.</source>
         <translation>tato stopa může být přejmenována a musí obsahovat příponu kvůli vyhnutí se chbám při čtení.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="743"/>
+        <location filename="MKVExtractorQt.py" line="766"/>
         <source> MKV File Tracks </source>
         <translation> Stopy souboru MKV </translation>
     </message>
@@ -359,24 +359,35 @@ Je tudíž potřeba přikročit ke stanovení chybějících textů.</translatio
         <translation type="obsolete">Souborový formát SRT (SubRip) je jistě nejjednodušším formátem titulků.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="682"/>
+        <location filename="MKVExtractorQt.py" line="705"/>
         <source>The &lt;b&gt;{}&lt;/b&gt; file given as argument does not exist.</source>
         <translation>Soubor &lt;b&gt;{}&lt;/b&gt; zadaný jako argument neexistuje.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="679"/>
+        <location filename="MKVExtractorQt.py" line="699"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;MKV Extractor Qt v{}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;GUI to extract/edit/remux the tracks of a matroska (MKV) file.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program follows several others that were coded in Bash.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;This software is licensed under &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;&lt;a href=&quot;{}&quot;&gt;GNU GPL v3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Thanks to the &lt;a href=&quot;http://www.developpez.net/forums/f96/autres-langages/python-zope/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;developpez.net&lt;/span&gt;&lt;/a&gt; python forums for their patience&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;Created by &lt;span style=&quot; font-weight:600;&quot;&gt;Belleguic Terence&lt;/span&gt; (Hizoka), November 2013&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;MKV Extractor Qt v{}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Rozhraní pro vytahování, úpravy a opětovné zabalení stop souboru matroska (MKV).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Tento program následuje po několika dalších, jež byly programovány v bashi.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Tento program je licencován pod &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;&lt;a href=&quot;{}&quot;&gt;Creative Commons BY-NC-SA&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Velké poděkování fórům pro python &lt;a href=&quot;http://www.developpez.net/forums/f96/autres-langages/python-zope/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;developpez.net&lt;/span&gt;&lt;/a&gt; za jejich trpělivost.&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;Vytvořeno &lt;span style=&quot; font-weight:600;&quot;&gt;Belleguic Terence&lt;/span&gt; (Hizoka), listopad 2013&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="690"/>
+        <location filename="MKVExtractorQt.py" line="713"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Are you lost? Do you need help? &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Normally all necessary information is present: &lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Read the information in the status bar when moving the mouse on widgets &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Though, if you need more information: &lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Forum Ubuntu-fr.org: &lt;a href=&quot;http://forum.ubuntu-fr.org/viewtopic.php?id=293216&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;topic&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;- My email address: &lt;a href=&quot;mailto:hizo@free.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;hizo@free.fr &lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Thank you for your interest in this program.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ztratil jste se? Potřebujete pomoc?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Obvykle jsou přítomny všechny nutné informace:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Čtěte informace ve stavovém řádku, když přejíždíte ukazovátkem myši nad prvky rozhraní&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Pokud máte přesto potřebu ještě dalších informací:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Forum Ubuntu-fr.org: &lt;a href=&quot;http://forum.ubuntu-fr.org/viewtopic.php?id=293216&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;topic&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;- Moje e-mailová adresa: &lt;a href=&quot;mailto:hizo@free.fr &quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;hizo@free.fr &lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Děkuji vám za zájem, který věnujete tomuto programu.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="737"/>
+        <location filename="MKVExtractorQt.py" line="760"/>
         <source>Change the fps value if needed. Useful in case of audio lag. Normal : 23.976, 25.000 and 30.000.</source>
         <translation>V případě potřeby vybrat dobrý počet obrázků za sekundu. Užitečné v případě prodlevy zvuku. Normální: 23.976, 25.000 a 30.000.</translation>
+    </message>
+    <message>
+        <location filename="MKVExtractorQt.py" line="702"/>
+        <source>This file is not supported by mkvmerge.
+Do you want convert this file in mkv ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="MKVExtractorQt.py" line="701"/>
+        <source>Not supported file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -17,7 +17,7 @@ import configparser # Pour charger les informations de config
 
 from ui_MKVExtractorQt import Ui_mkv_extractor_qt # Utilisé pour la fentre pricniaple
 
-Version = "5.2.0"
+Version = "5.2.1"
 
 ### Creation des dictionnaires et listes facilement modifiables partout
 MKVDico = {} # Dictionnaire qui contiendra toutes les pistes du fichier mkv
@@ -587,6 +587,26 @@ class MKVExtractorQt(QMainWindow):
 
 
     #========================================================================
+    def MKVConvert(self, file):
+        """Fonction appelée lors du besoin de convertir une video en mkv."""
+        # Proposition de conversion de la vidéo
+        test = QMessageBox(2, self.Trad["Convert1"], self.Trad["Convert2"], QMessageBox.Ok | QMessageBox.Cancel, self, Qt.WindowSystemMenuHint).exec()
+
+        # En cas de refus
+        if test != 1024:
+            return
+
+        # Code à executer
+        Variables["TempFiles"] = [Path(file.parent, file.stem +".mkv")]
+        Variables["Cmd"] = ["MKVMerge", "FileToMKV", 'mkvmerge -o "{}" "{}"'.format(Variables["TempFiles"][0], file) ] # Commande de listage
+
+        self.SetInfo(self.Trad["WorkProgress"].format(Variables["Cmd"][0]), "800080", True, True) # Nom de la commande
+        self.SetInfo(self.Trad["WorkCmd"].format(Variables["Cmd"][2])) # Envoie d'informations
+
+        self.process.start(Variables["Cmd"][2]) # Lancement de la commande de listage
+
+
+    #========================================================================
     def OptionsValue(self, option, value):
         """Fonction de mise à jour des options."""
         ### Mise à jour de la variable et envoie de l'info
@@ -677,6 +697,9 @@ class MKVExtractorQt(QMainWindow):
         effet = """<span style=" color:#000000;">@=====@</span>"""
         self.Trad = {"About_title" : self.tr("About MKV Extractor Gui"),
                     "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v{}</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/remux the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
+
+                    "Convert1" : self.tr("Not supported file"),
+                    "Convert2" : self.tr("This file is not supported by mkvmerge.\nDo you want convert this file in mkv ?"),
 
                     "ErrorArgTitle" : self.tr("Wrong arguments"),
                     "ErrorArgExist" : self.tr("The <b>{}</b> file given as argument does not exist."),
@@ -847,15 +870,21 @@ class MKVExtractorQt(QMainWindow):
         """Fonction de séléction du fichier mkv."""
         ### Fenetre de séléction du fichier mkv
         if not MKVLinkTemp:
-            MKVLinkTemp = Path(QFileDialog.getOpenFileName(self, self.Trad["SelectFileIn"], QDir.path(QDir(str(Configs["MKVDirNameIn"]))), "Matroska Files(*.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma)"))
+            self.ui.reply_info.clear() # Mise au propre des retours
+            MKVLinkTemp = Path(QFileDialog.getOpenFileName(self, self.Trad["SelectFileIn"], QDir.path(QDir(str(Configs["MKVDirNameIn"]))), "Matroska Files (mka mks mkv mk3d webm webmv webma)(*.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma);;Other Video Files(mp4 nut ogg)(*.mp4 *.nut *.ogg)"))
+
+
+        ### S'il est necessaire de convertir la vidéo
+        if MKVLinkTemp.suffix in (".mp4", ".nut", ".ogg"):
+            # Lancement de la conversion et la fonction sera appelée par WorkFinished
+            self.MKVConvert(MKVLinkTemp)
 
         ### Continuation de la fonction si un fichier est bien séléctionné
-        if MKVLinkTemp.exists():
+        elif MKVLinkTemp.exists():
             Variables["MKVLinkIn"] = MKVLinkTemp # Mise à jour de la variable
             Variables["MKVFileNameIn"] = MKVLinkTemp.name # Mise à jour de la variable
             Configs["MKVDirNameIn"] = MKVLinkTemp.parent # Mise à jour de la variable
 
-            self.ui.reply_info.clear() # Mise au propre des retours
             self.SetInfo(self.Trad["SelectedFile2"].format(Variables["MKVLinkIn"])) # Envoie d'information
             self.ui.mkv_open.setStatusTip(self.Trad["SelectedFile"].format(Variables["MKVLinkIn"])) # StatusTip
             self.ui.out_info.setEnabled(True) # Debloquage du bouton d'exportation d'info
@@ -1685,6 +1714,12 @@ class MKVExtractorQt(QMainWindow):
                         line = int(line.split(": ")[1].strip()[0:-1]) # Récupere le nombre
 
 
+                ### Dans le cas d'une conversion
+                elif Variables["Cmd"][1] == "FileToMKV":
+                    if line[-1] == "%": # Traiter le retour en cas de presence de pourcentage
+                        line = int(line.split(": ")[1].strip()[0:-1]) # Récupere le nombre
+
+
             ### MKVInfo sert à récupérer quelques infos sur le fichier mkv
             elif Variables["Cmd"][0] == "MKVInfo":
                 # Récupération du titre du fichier MKV
@@ -1821,7 +1856,7 @@ class MKVExtractorQt(QMainWindow):
                     for file in Variables["MKVSubtitles"]: # Boucle ouvrant tous les fichiers srt d'un coup
                         self.process.startDetached('xdg-open "{}"'.format(file))
 
-                if Variables["Cmd"][1] != "Merge": # Soit pause soit recup de variable
+                elif not Variables["Cmd"][1] in ("Merge", "FileToMKV"): # Soit pause soit recup de variable
                     return # Arrete la fonction
 
             elif Variables["Cmd"][0] == "MKVInfo": # Simple réccupération de variable
@@ -1838,14 +1873,23 @@ class MKVExtractorQt(QMainWindow):
                     self.WorkInProgress(False) # Remise en état des widgets
                     return
 
+
             elif Variables["Cmd"][0] == "Sub2Srt": # Systeme n'affichant pas la fin tant que la conversion n'est pas finie
                 if Variables["CmdList"] and Variables["CmdList"][0][0] == "Sub2Srt":
                     self.Sub2SrtFinished()
                     return
 
+
             ### Indication de fin de pack de commande
             self.SetInfo(self.Trad["WorkFinished"].format(Variables["Cmd"][0]), "800080", True) # Travail terminé
             self.ui.progressBar.setValue(100) # Mise à 100% de la barre de progression pour signaler la fin ok
+
+
+            ### Lancement de l'ouverture du fichier mkv, ici pour un soucis esthetique du texte affiché
+            if Variables["Cmd"][1] == "FileToMKV":
+                # Dans le cas d'une conversion
+                self.MKVOpen(Variables["TempFiles"][-1]) # Lancement de la fonction d'ouverture du fichier mkv créé avec le nom du fichier
+
 
             ### S'il reste des commandes, execution de la commande suivante
             if Variables["CmdList"]:
@@ -2118,6 +2162,9 @@ class MKVExtractorQt(QMainWindow):
             if file.suffix in [".mka", ".mks", ".mkv", ".mk3d", ".webm", ".webmv", ".webma"]:
                 event.accept()
 
+            elif file.suffix in [".mp4", ".nut", ".ogg"]:
+                event.accept()
+
         ### En cas de dossier (pour le dossier de sortie)
         elif file.is_dir():
             event.accept()
@@ -2135,6 +2182,11 @@ class MKVExtractorQt(QMainWindow):
             # Vérifie que l'extension fasse partie de la liste
             if file.suffix in [".mka", ".mks", ".mkv", ".mk3d", ".webm", ".webmv", ".webma"]:
                 self.MKVOpen(file) # Lancement de la fonction d'ouverture du fichier mkv avec le nom du fichier
+
+            elif file.suffix in [".mp4", ".nut", ".ogg"]:
+                # Necessite une conversion de la vidéo
+                self.MKVConvert(file)
+
 
         ### En cas de dossier (pour le dossier de sortie)
         elif file.is_dir():

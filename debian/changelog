@@ -1,3 +1,13 @@
+mkv-extractor-qt (5.2.1-0~trusty) trusty; urgency=low ()
+
+  [english]
+    - Added the ability to convert files (ogm, mp4, nut) to mkv
+
+  [français]
+    - Ajout de la possibilité de convertir des fichiers (ogm, mp4, nut) en mkv
+
+ -- hizoka <hizo@free.fr>  Sat, 29 Nov 2014 19:07:14 +0100
+
 mkv-extractor-qt (5.2.0-0~trusty) trusty; urgency=low ()
 
   [english]

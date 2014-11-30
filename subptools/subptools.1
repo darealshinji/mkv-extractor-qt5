@@ -1,0 +1,78 @@
+.TH SUBPTOOLS 1 "January 20, 2007" Linux "User Manuals"
+.SH NAME
+subptools \- manipulates xml subtitles files
+.SH SYNOPSIS
+subptools [-hrsvw] [-a hh:mm:ss,ms] [-c first[,last]] [-d seconds] [-e seconds]
+[-i file] [-o file] [-t format]
+.SH DESCRIPTION
+The
+.B subptools
+command performs various manipulations on xml subtitles files, acting as a filter from
+standard input to standard output unless -i or -o options are used.
+
+subtools can be used to handle so-called xml subtitles files, where each subtitle
+entry is actually a filename to be substituted for the entry, or to adjust
+timestamps on each subtitle entry.
+
+The options are as follows:
+.TP
+.BI "-a, --adjust " hh:mm:ss,ms
+Adjust all time stamps so that the first tag begins at
+.IR hh:mm:ss,ms .
+.TP
+.BI "-c, --cut " first[,last]
+Write only entries numbered from
+.I first
+to
+.IR last ,
+where
+.I last
+defaults to the last entry of the file.
+.TP
+.BI "-d, --shift " seconds
+Shift all time stamps by
+.I seconds
+seconds.
+.TP
+.BI "-e, --expand " seconds
+Expand the subtitle hour by
+.I seconds 
+seconds.
+.TP
+.BI "-c, --convert " format
+Convert the xml subtitles file into a
+.I srt
+(default) or
+.I spumux
+file.
+.TP
+.B -h, --help
+Display usage and quit.
+.TP
+.BI "-i, --input " filename
+Use file
+.I filename
+for input, defaults to stdin.
+.TP
+.BI "-o, --output " filename
+Use file
+.I filename
+for output, defaults to stdout.
+.TP
+.B -r, --renumber
+Renumber all entries.
+.TP
+.B -s, --subst
+Substitute filename in each subtitle entry by the file contents.
+.TP
+.B -v, --verbose
+Verbose mode.
+.TP
+.B -w, --strip
+Remove leading white space
+.SH "SEE ALSO"
+.BR subp2pgm (1)
+.BR subp2tiff (1)
+.BR spumux (1)
+.SH AUTHORS
+Manual page by Marc Espie, Olivier Rolland

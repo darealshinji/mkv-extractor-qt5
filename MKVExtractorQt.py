@@ -871,11 +871,10 @@ class MKVExtractorQt(QMainWindow):
         ### Fenetre de séléction du fichier mkv
         if not MKVLinkTemp:
             self.ui.reply_info.clear() # Mise au propre des retours
-            MKVLinkTemp = Path(QFileDialog.getOpenFileName(self, self.Trad["SelectFileIn"], QDir.path(QDir(str(Configs["MKVDirNameIn"]))), "Matroska Files (mka mks mkv mk3d webm webmv webma)(*.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma);;Other Video Files(mp4 nut ogg)(*.mp4 *.nut *.ogg)"))
-
+            MKVLinkTemp = Path(QFileDialog.getOpenFileName(self, self.Trad["SelectFileIn"], QDir.path(QDir(str(Configs["MKVDirNameIn"]))), "Matroska Files(*.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma);;Other Video Files(*.mp4 *.m4a *.nut *.ogg *.ogm *.ogv)"))
 
         ### S'il est necessaire de convertir la vidéo
-        if MKVLinkTemp.suffix in (".mp4", ".nut", ".ogg"):
+        if MKVLinkTemp.suffix in (".mp4", ".m4a", ".nut", ".ogg", ".ogm", ".ogv"):
             # Lancement de la conversion et la fonction sera appelée par WorkFinished
             self.MKVConvert(MKVLinkTemp)
 

@@ -17,7 +17,8 @@ subp2tiff_LDADD = \
   $(LIBPNG_LIBS) \
   $(LIBTIFF_LIBS) -lm
 
-AM_CPPFLAGS = \
+AM_CFLAGS = \
+  -Wall -Wformat \
   $(LIBXML_CFLAGS) \
   $(LIBPNG_CFLAGS)
 

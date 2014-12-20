@@ -596,8 +596,15 @@ class MKVExtractorQt(QMainWindow):
         if test != 1024:
             return
 
+        # Dossier dans lequel mettre le nouveau fichier mkv
+        FolderTemp = QFileDialog.getExistingDirectory(self, self.Trad["SelectFolderTemp"], QDir.path(QDir(str(file.parent))))
+
+        # En cas de refus
+        if not FolderTemp:
+            return
+
         # Code à executer
-        Variables["TempFiles"] = [Path(file.parent, file.stem +".mkv")]
+        Variables["TempFiles"] = [Path(FolderTemp, file.stem + ".mkv")]
         Variables["Cmd"] = ["MKVMerge", "FileToMKV", 'mkvmerge -o "{}" "{}"'.format(Variables["TempFiles"][0], file) ] # Commande de listage
 
         self.SetInfo(self.Trad["WorkProgress"].format(Variables["Cmd"][0]), "800080", True, True) # Nom de la commande
@@ -739,6 +746,7 @@ class MKVExtractorQt(QMainWindow):
                     "SelectFileIn" : self.tr("Select the input MKV File"),
                     "SelectFileOut" : self.tr("Select the output MKV file"),
                     "SelectFolder" : self.tr("Select the output folder"),
+                    "SelectFolderTemp" : self.tr("Select the output folder to use for convert the file"),
 
                     "SubtitlesConvert" : self.tr("Subtitle converter to images."),
                     "SubtitlesCreation" : self.tr("SRT subtitle creation."),
@@ -871,7 +879,8 @@ class MKVExtractorQt(QMainWindow):
         ### Fenetre de séléction du fichier mkv
         if not MKVLinkTemp:
             self.ui.reply_info.clear() # Mise au propre des retours
-            MKVLinkTemp = Path(QFileDialog.getOpenFileName(self, self.Trad["SelectFileIn"], QDir.path(QDir(str(Configs["MKVDirNameIn"]))), "Matroska Files  *.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma(*.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma);;Other Video Files  *.mp4 *.m4a *.nut *.ogg *.ogm *.ogv(*.mp4 *.m4a *.nut *.ogg *.ogm *.ogv)"))
+            MKVLinkTemp = Path(QFileDialog.getOpenFileName(self, self.Trad["SelectFileIn"], QDir.path(QDir(str(Configs["MKVDirNameIn"]))), "Matroska Files: *.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma(*.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma);;Other Video Files: *.mp4 *.m4a *.nut *.ogg *.ogm *.ogv(*.mp4 *.m4a *.nut *.ogg *.ogm *.ogv)"))
+
 
         ### S'il est necessaire de convertir la vidéo
         if MKVLinkTemp.suffix in (".mp4", ".m4a", ".nut", ".ogg", ".ogm", ".ogv"):

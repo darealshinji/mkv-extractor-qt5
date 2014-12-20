@@ -1,3 +1,17 @@
+mkv-extractor-qt (5.2.1-1~trusty) trusty; urgency=low ()
+
+  [english]
+    - Add the choice of the output folder for the conversion in mkv
+    - Fix for the select of the other video files
+    - Add other video files extensions
+
+  [français]
+    - Ajout du choix du dossier de sortie lors de la convertion en mkv
+    - Correction de la sélection des autres fichiers vidéo
+    - Ajout d'extension pour les autres vidéos
+
+ -- hizoka <hizo@free.fr>  Fri, 19 Dec 2014 20:47:35 +0100
+
 mkv-extractor-qt (5.2.1-0~trusty) trusty; urgency=low ()
 
   [english]

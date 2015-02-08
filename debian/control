@@ -2,15 +2,9 @@ Source: mkv-extractor-qt
 Maintainer: Terence Belleguic <hizo@free.fr>
 Build-Depends:
  debhelper (>= 9),
- dh-autoreconf,
- libxml2-dev,
- libtiff-dev,
- libpng12-dev,
- pkg-config,
  pyqt4-dev-tools,
  python3 (>= 3.4.0),
- qt4-linguist-tools,
- zlib1g-dev
+ qt4-linguist-tools
 Standards-Version: 3.9.5
 Priority: standard
 Section: video

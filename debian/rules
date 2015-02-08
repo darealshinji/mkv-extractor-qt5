@@ -8,7 +8,3 @@ override_dh_python3:
 
 override_dh_pysupport:
 
-
-override_dh_builddeb:
-	# Compression du dossier data du paquet debian
-	dh_builddeb -- -Zxz -z9

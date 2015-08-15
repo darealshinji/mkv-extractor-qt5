@@ -5,7 +5,7 @@ Build-Depends:
  pyqt4-dev-tools,
  python3 (>= 3.4.0),
  qt4-linguist-tools
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Priority: standard
 Section: video
 

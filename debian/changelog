@@ -1,3 +1,29 @@
+mkv-extractor-qt (5.2.2-3~trusty) trusty; urgency=low ()
+
+  [english]
+    - mkv file select fixed
+    - Upadte About window
+    - Package name fixed
+
+  [français]
+    - Séléction du fichier mkv corrigé
+    - Mise à jour de la fenetre à propos
+    - Nom du paquet corrigé
+
+ -- hizoka <hizo@free.fr>  Sat, 1 Aug 2015 12:40:00 +0100
+
+mkv-extractor-qt (5.2.2-0~trusty) trusty; urgency=low ()
+
+  [english]
+    - Many little fix
+    - Window who propose to use mmg if you just reencapsulate
+
+  [français]
+    - Plusieurs petites corrections
+    - Ajout d'une fenetre proposant d'utiliser mmg lors d'un simple réencapsulage
+
+ -- hizoka <hizo@free.fr>  Wed, 15 Jul 2015 19:47:00 +0100
+
 mkv-extractor-qt (5.2.1-1~trusty) trusty; urgency=low ()
 
   [english]

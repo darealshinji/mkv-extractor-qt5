@@ -17,7 +17,7 @@ import configparser # Pour charger les informations de config
 
 from ui_MKVExtractorQt import Ui_mkv_extractor_qt # Utilisé pour la fentre pricniaple
 
-Version = "5.2.1"
+Version = "5.2.2"
 
 ### Creation des dictionnaires et listes facilement modifiables partout
 MKVDico = {} # Dictionnaire qui contiendra toutes les pistes du fichier mkv
@@ -225,6 +225,23 @@ def IconBis(Icon, Type):
 
 
 
+
+#############################################################################
+# Class et fonction permettant la prise en charge du clic droit sur le bouton quitter
+class QuitButton(QPushButton):
+    def mousePressEvent(self, event):
+        """Fonction de reccup des touches souris utilisées."""
+        MKVExtractorQt.ui.soft_quit.animateClick()
+
+        ### Récupp du bouton utilisé
+        if event.button() == Qt.RightButton:
+            python = sys.executable
+            os.execl(python, python, * sys.argv)
+
+        # Acceptation de l'evenement
+        return super(type(self), self).mousePressEvent(event)
+
+
 #############################################################################
 class MKVExtractorQt(QMainWindow):
     def __init__(self, parent=None):
@@ -243,6 +260,9 @@ class MKVExtractorQt(QMainWindow):
         # Aspect du splitter
         if Configs["SplitterSizes"]:
             self.ui.splitter.setSizes(Configs["SplitterSizes"])
+        else:
+            height = self.ui.splitter.geometry().height() # Recup de la hauteur du splitter
+            self.ui.splitter.setSizes([100, height - 150])
 
         # Centrage de la fenêtre
         if Configs["WinMax"]:
@@ -479,6 +499,7 @@ class MKVExtractorQt(QMainWindow):
         self.ui.mkv_stop.clicked.connect(self.WorkStop) # Au clic sur le bouton
         self.ui.mkv_execute.clicked.connect(self.MKVExecute) # Au clic sur le bouton
         self.ui.mkv_resume.clicked.connect(self.WorkPause) # Au clic sur le bouton
+        self.ui.soft_quit.__class__ = QuitButton # Utilisation de la class QuitButton pour la prise en charge du clic droit
 
 
         ### Connexions du QProcess
@@ -600,8 +621,7 @@ class MKVExtractorQt(QMainWindow):
         FolderTemp = QFileDialog.getExistingDirectory(self, self.Trad["SelectFolderTemp"], QDir.path(QDir(str(file.parent))))
 
         # En cas de refus
-        if not FolderTemp:
-            return
+        if not FolderTemp: return
 
         # Code à executer
         Variables["TempFiles"] = [Path(FolderTemp, file.stem + ".mkv")]
@@ -703,7 +723,7 @@ class MKVExtractorQt(QMainWindow):
         # 008000 : vert                 0000c0 : bleu                           800080 : violet
         effet = """<span style=" color:#000000;">@=====@</span>"""
         self.Trad = {"About_title" : self.tr("About MKV Extractor Gui"),
-                    "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v{}</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/remux the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
+                    "About" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v{}</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/remux the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash and it codec in python3 + QT4.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
 
                     "Convert1" : self.tr("Not supported file"),
                     "Convert2" : self.tr("This file is not supported by mkvmerge.\nDo you want convert this file in mkv ?"),
@@ -751,6 +771,9 @@ class MKVExtractorQt(QMainWindow):
                     "SubtitlesConvert" : self.tr("Subtitle converter to images."),
                     "SubtitlesCreation" : self.tr("SRT subtitle creation."),
                     "SubtitlesWait" : self.tr("All subtitles images could not be recognized.\nWe must therefore specify the missing texts."),
+
+                    "UseMMGTitle" : self.tr("MKV Merge Gui or MKV Extractor Qt ?"),
+                    "UseMMGText" : self.tr("You want extract and reencapsulate the tracks without use other options.\n\nIf you just need to make this, you should use MMG (MKV Merge gui) who is more adapted for this job.\n\nWhat software do you want use ?"),
 
                     "TrackAac" : self.tr("If the remuxed file has reading problems, change this value."),
                     "TrackAudio" : self.tr("Change the language if it's not right. 'und' means 'Undetermined'."),
@@ -871,16 +894,16 @@ class MKVExtractorQt(QMainWindow):
                         self.ui.option_vobsub_srt.setEnabled(True) # Deblocage de widget
 
 
-
-
     #========================================================================
     def MKVOpen(self, MKVLinkTemp=None):
         """Fonction de séléction du fichier mkv."""
+        self.SetInfo("Lancement de MKVOpen")
         ### Fenetre de séléction du fichier mkv
         if not MKVLinkTemp:
-            self.ui.reply_info.clear() # Mise au propre des retours
             MKVLinkTemp = Path(QFileDialog.getOpenFileName(self, self.Trad["SelectFileIn"], QDir.path(QDir(str(Configs["MKVDirNameIn"]))), "Matroska Files: *.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma(*.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma);;Other Video Files: *.mp4 *.m4a *.nut *.ogg *.ogm *.ogv(*.mp4 *.m4a *.nut *.ogg *.ogm *.ogv)"))
 
+            # Si pas de séléction, on arrete la
+            if MKVLinkTemp == Path("."): return
 
         ### S'il est necessaire de convertir la vidéo
         if MKVLinkTemp.suffix in (".mp4", ".m4a", ".nut", ".ogg", ".ogm", ".ogv"):
@@ -889,6 +912,7 @@ class MKVExtractorQt(QMainWindow):
 
         ### Continuation de la fonction si un fichier est bien séléctionné
         elif MKVLinkTemp.exists():
+            self.ui.reply_info.clear() # Mise au propre des retours
             Variables["MKVLinkIn"] = MKVLinkTemp # Mise à jour de la variable
             Variables["MKVFileNameIn"] = MKVLinkTemp.name # Mise à jour de la variable
             Configs["MKVDirNameIn"] = MKVLinkTemp.parent # Mise à jour de la variable
@@ -1420,6 +1444,23 @@ class MKVExtractorQt(QMainWindow):
         mkvmerge = "" # Commande de réencapsulage
         subconvert = [] # Liste pour la conversion des sous titres SUB en SRT
 
+
+        ### Si on veut uniquement réencapsuler sans rien d'autre, on affiche un message conseillant d'utiliser mmg
+        if Variables["Reencapsulate"] and not Variables["DtsToAc3"] and not Variables["VobsubToSrt"] and not Configs["SubtitlesOpen"]:
+            UseMMG = QMessageBox(4, self.Trad["UseMMGTitle"], self.Trad["UseMMGText"], QMessageBox.NoButton, self, Qt.WindowSystemMenuHint)
+            UseMMG.setWindowFlags(Qt.WindowTitleHint | Qt.Dialog | Qt.WindowMaximizeButtonHint | Qt.CustomizeWindowHint) # Enleve le bouton de fermeture de la fenetre
+            MMG = QPushButton(IconBis("mkvmerge", "Icon"), "MKV Merge Gui") # Création du bouton MKV Merge Gui
+            MEQ = QPushButton(IconBis("mkv-extractor-qt", "Icon"), "MKV Extracor Qt") # Création du bouton MKV Extracor Qt
+            UseMMG.addButton(MMG, QMessageBox.YesRole) # Ajout du bouton
+            UseMMG.addButton(MEQ, QMessageBox.NoRole) # Ajout du bouton
+            UseMMG.setDefaultButton(MEQ) # Bouton par defaut : MKV Extracor Qt
+            UseMMG.exec() # Message d'information
+
+            # Recupération du résultat
+            if UseMMG.buttonRole(UseMMG.clickedButton()) == 5:
+                self.MKVMergeGui()
+                return
+
         ### Boucle traitant les pistes une à une
         for Select in MKVDicoSelect.values():
             # Select[0] : ID
@@ -1915,7 +1956,7 @@ class MKVExtractorQt(QMainWindow):
 
             ### Si c'était la derniere commande
             else:
-                if Configs["DelTemp"] and Variables["Reencapsulate"]: # Si l'option de suppression des fichiers temporaire est active
+                if Configs["DelTemp"] and Variables["Cmd"][0] == "MKVMerge": # Si l'option de suppression des fichiers temporaire est active
                     Variables["TempFiles"].remove(Variables["MKVLinkOut"]) # Suppression du fichier mkv de sortie de la liste
                     self.RemoveTempFiles() # Suppression des fichiers temporaires
 

@@ -1,5 +1,6 @@
 Source: mkv-extractor-qt
 Maintainer: Terence Belleguic <hizo@free.fr>
+Uploaders: Marshall Banana <djcj@gmx.de>
 Build-Depends:
  debhelper (>= 9),
  pyqt4-dev-tools,

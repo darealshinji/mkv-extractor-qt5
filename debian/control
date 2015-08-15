@@ -16,8 +16,7 @@ Depends:
  ${misc:Depends},
  mkvtoolnix,
  ${python3:Depends},
- python3-pyqt4,
- python-support (>= 0.90)
+ python3-pyqt4
 Recommends:
  libav-tools | ffmpeg,
  mkclean,

@@ -10,7 +10,7 @@ Features:
   * Extract and re-encapsule tracks
   * And more again
 
-Copyright (C) 2013-2014 Terence Belleguic <hizo@free.fr>
+Copyright (C) 2013-2015 Terence Belleguic <hizo@free.fr>
 
 https://launchpad.net/~hizo/+archive/mkv-extractor-gui<br>
 https://launchpad.net/~djcj/+archive/ubuntu/mkvtoolnix (inofficial)<br>
@@ -22,6 +22,6 @@ Build dependencies: `pyqt4-dev-tools qt4-linguist-tools`<br>
 Runtime dependency: `mkvtoolnix` (http://www.bunkus.org/videotools/mkvtoolnix/)
 
 Other branches:<br>
-oldpython: made for python below version 3.4<br>
+oldpython: made for python below version 3.4 (discontinued)<br>
 subptools: addon for mkv-extractor-qt to convert vobsubs into soft subtitles.<br>
 subptools build dependencies: `dh-autoreconf pkg-config libxml2-dev libtiff-dev libpng12-dev zlib1g-dev`

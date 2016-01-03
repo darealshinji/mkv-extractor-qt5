@@ -1,48 +1,36 @@
-/.pc/
-autom4te.cache/
+# Python cache/object code
+__pycache__/
+*.py[cod]
 
-/*/aclocal.m4
-/*/autoscan.log
-/*/compile
-/*/config.h.in
-/*/configure
-/*/depcomp
-/*/install-sh
-/*/Makefile.in
-/*/missing
-/*/debian/autoreconf.after
-/*/debian/autoreconf.before
-
-*~
-
-*.pyc
+# compiled Qt translations
 *.qm
-configure.scan
 
 MKVRessources_rc.py
 ui_MKVExtractorQt.py
-/mkv-extractor-qt*/licence
+MKVExtractorQt_new.py
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# editor and backup stuff
+*~
+*.log
+*.old
+.*.kate-swp
+.swp.*
 
-# Libraries
-*.lib
-*.a
+# Quilt working directory
+.pc/
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+# Windows crap
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+# OSX crap
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux and KDE crap
+.fuse_hidden*
+.directory
+

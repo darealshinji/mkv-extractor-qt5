@@ -694,6 +694,7 @@ class MKVExtractorQt(QMainWindow):
             if not find:
                 QMessageBox(3, "Erreur de traduction", "Aucun fichier de traduction <b>française</b> trouvé.<br/>Utilisation de la langue <b>anglaise</b>.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
                 self.ui.lang_en.setChecked(True)
+                Configs["Language"] = "en_US"
 
             else:
                 ### Chargement de la traduction
@@ -706,6 +707,7 @@ class MKVExtractorQt(QMainWindow):
             if not find:
                 QMessageBox(3, "Chyba překladu", "No translation file <b>Czech</b> found. Use <b>English</b> language. Soubor s překladem do <b>češtiny</b> nenalezen. Použít <b>anglický</b> jazyk.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
                 self.ui.lang_en.setChecked(True)
+                Configs["Language"] = "en_US"
 
             else:
                 ### Chargement de la traduction

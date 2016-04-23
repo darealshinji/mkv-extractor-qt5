@@ -8,12 +8,12 @@
         <translation type="obsolete">Erreur : Pas assez de place disponible (besoin de 2 x la taille du MKV)</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="773"/>
+        <location filename="MKVExtractorQt.py" line="775"/>
         <source>Select the output folder</source>
         <translation>Sélectionner le dossier de sortie</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="799"/>
+        <location filename="MKVExtractorQt.py" line="801"/>
         <source>This track is a {} type.</source>
         <translation>Cette piste est de type {}.</translation>
     </message>
@@ -23,109 +23,109 @@
         <translation type="obsolete">Erreur : Pas de fichier Licence trouvé</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="772"/>
+        <location filename="MKVExtractorQt.py" line="774"/>
         <source>Select the output MKV file</source>
         <translation>Séléctionner le fichier MKV de sortie</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="766"/>
+        <location filename="MKVExtractorQt.py" line="768"/>
         <source>Selected file: {}.</source>
         <translation>Fichier sélectionné : {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="768"/>
+        <location filename="MKVExtractorQt.py" line="770"/>
         <source>Selected folder: {}.</source>
         <translation>Dossier sélectionné : {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="764"/>
+        <location filename="MKVExtractorQt.py" line="766"/>
         <source>New value for &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt; option: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</source>
         <translation>Nouvelle valeur pour l&apos;option &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt; : &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="803"/>
+        <location filename="MKVExtractorQt.py" line="805"/>
         <source>Command execution: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</source>
         <translation>Éxécution de la commande : &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="767"/>
+        <location filename="MKVExtractorQt.py" line="769"/>
         <source>Selected file: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</source>
         <translation>Fichier sélectionné : &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="769"/>
+        <location filename="MKVExtractorQt.py" line="771"/>
         <source>Selected folder: &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</source>
         <translation>Dossier sélectionné : &lt;span style=&quot; color:#0000c0;&quot;&gt;{}&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="797"/>
+        <location filename="MKVExtractorQt.py" line="799"/>
         <source>This track can be renamed.</source>
         <translation>Cette piste peut être renommée.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="796"/>
+        <location filename="MKVExtractorQt.py" line="798"/>
         <source>No information.</source>
         <translation>Pas d&apos;information.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="793"/>
+        <location filename="MKVExtractorQt.py" line="795"/>
         <source>Work with track number {}.</source>
         <translation>Travailler avec la piste numéro {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="802"/>
+        <location filename="MKVExtractorQt.py" line="804"/>
         <source> All commands were canceled </source>
         <translation> Toutes les commandes ont été annulées </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="804"/>
+        <location filename="MKVExtractorQt.py" line="806"/>
         <source> The last command returned an error </source>
         <translation> La dernière commande a renvoyé une erreur </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="789"/>
+        <location filename="MKVExtractorQt.py" line="791"/>
         <source>This track can be renamed and must contain an extension to avoid reading errors.</source>
         <translation>Cette piste peut être renommée et doit contenir une extension pour eviter les erreurs de lecture.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="807"/>
+        <location filename="MKVExtractorQt.py" line="809"/>
         <source> Paused software time to read the subtitles </source>
         <translation> Mise en pause du logiciel le temps de lire les sous-titres </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="790"/>
+        <location filename="MKVExtractorQt.py" line="792"/>
         <source>chapters</source>
         <translation>chapitres</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="798"/>
+        <location filename="MKVExtractorQt.py" line="800"/>
         <source>tags</source>
         <translation>tags</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="742"/>
+        <location filename="MKVExtractorQt.py" line="744"/>
         <source>The subtitle language is not avaible in Tesseract list langs: {}</source>
         <translation>La langue du sous-titre n&apos;est pas disponible dans la liste des langues de Tesseract :{} </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="778"/>
+        <location filename="MKVExtractorQt.py" line="780"/>
         <source>All subtitles images could not be recognized.
 We must therefore specify the missing texts.</source>
         <translation>Tous les sous-titres des images n&apos;ont pas pu être reconnus.
 Il faut donc préciser les textes manquants.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="776"/>
+        <location filename="MKVExtractorQt.py" line="778"/>
         <source>Subtitle converter to images.</source>
         <translation>Convertion des sous titres en images.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="754"/>
+        <location filename="MKVExtractorQt.py" line="756"/>
         <source>No power change.</source>
         <translation>Pas de modification de la puissance.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="771"/>
+        <location filename="MKVExtractorQt.py" line="773"/>
         <source>Select the input MKV File</source>
         <translation>Sélectionner le fichier MKV</translation>
     </message>
@@ -206,42 +206,42 @@ Il faut donc préciser les textes manquants.</translation>
         </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="751"/>
+        <location filename="MKVExtractorQt.py" line="753"/>
         <source>The temporary files are the extracted tracks.</source>
         <translation>Les fichiers temporaires sont les pistes extraites.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="755"/>
+        <location filename="MKVExtractorQt.py" line="757"/>
         <source>Multiplying audio power by {}.</source>
         <translation>Multiplie la puissance audio par {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="758"/>
+        <location filename="MKVExtractorQt.py" line="760"/>
         <source>Convert the audio quality in {} kbits/s.</source>
         <translation>Convertit la qualité audio en {} kbits/s.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="761"/>
+        <location filename="MKVExtractorQt.py" line="763"/>
         <source>The audio will not use the same number of channels, the audio will be stereo (2 channels).</source>
         <translation>L&apos;audio ne conservera pas son nombre de canal, l&apos;audio sera en stéréo (2 canaux).</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="763"/>
+        <location filename="MKVExtractorQt.py" line="765"/>
         <source>Auto opening of subtitle srt files for correction. The software will be paused.</source>
         <translation>Ouvre automatiquement les fichiers sous-titres srt pour les corriger. Le logiciel sera mis en pause.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="777"/>
+        <location filename="MKVExtractorQt.py" line="779"/>
         <source>SRT subtitle creation.</source>
         <translation>Création du fichier sous-titre SRT.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="788"/>
+        <location filename="MKVExtractorQt.py" line="790"/>
         <source>Change the language if it&apos;s not right. &apos;und&apos; means &apos;Undetermined&apos;.</source>
         <translation>Changer la langue si ce n&apos;est pas la bonne. &apos;und&apos; signifie &apos;Indéterminé&apos;.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="791"/>
+        <location filename="MKVExtractorQt.py" line="793"/>
         <source>This track can be displayed via an icon click.</source>
         <translation>Cette piste peut être visualisée via un clique sur l&apos;icône.</translation>
     </message>
@@ -251,62 +251,62 @@ Il faut donc préciser les textes manquants.</translation>
         <translation type="obsolete">Choisir le bon nombre d&apos;images par seconde si besoin. Utile en cas de décalage avec l&apos;audio.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="805"/>
+        <location filename="MKVExtractorQt.py" line="807"/>
         <source> {} execution is finished </source>
         <translation> L&apos;éxécution de {} est términée </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="808"/>
+        <location filename="MKVExtractorQt.py" line="810"/>
         <source> {} execution in progress </source>
         <translation> L&apos;éxécution de {} est en cours </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="750"/>
+        <location filename="MKVExtractorQt.py" line="752"/>
         <source>Delete temporary files</source>
         <translation>Supprimer les fichiers temporaires de la ré-encapsulation</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="753"/>
+        <location filename="MKVExtractorQt.py" line="755"/>
         <source>Increase the sound power</source>
         <translation>Amplifier la puissance audio</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="756"/>
+        <location filename="MKVExtractorQt.py" line="758"/>
         <source>Power x {}</source>
         <translation>Puissance x {}</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="757"/>
+        <location filename="MKVExtractorQt.py" line="759"/>
         <source>List of available flow rates of conversion</source>
         <translation>Liste des débits de conversion disponibles</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="759"/>
+        <location filename="MKVExtractorQt.py" line="761"/>
         <source>{} kbits/s</source>
         <translation>{} kbits/s</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="760"/>
+        <location filename="MKVExtractorQt.py" line="762"/>
         <source>Switch to stereo during conversion</source>
         <translation>Passer en stéréo lors de la conversion</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="762"/>
+        <location filename="MKVExtractorQt.py" line="764"/>
         <source>Opening subtitles before encapsulation</source>
         <translation>Ouvrir les sous-titres avant la ré-encapsulation</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="787"/>
+        <location filename="MKVExtractorQt.py" line="789"/>
         <source>If the remuxed file has reading problems, change this value.</source>
         <translation>Si le fichier ré-encapsulé à des problèmes de lecture, changer cette valeur.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="794"/>
+        <location filename="MKVExtractorQt.py" line="796"/>
         <source>Work with attachment number {}.</source>
         <translation>Travailler sur le fichier joint n° {}.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="795"/>
+        <location filename="MKVExtractorQt.py" line="797"/>
         <source>Work with {}.</source>
         <translation>Travailler sur les {}.</translation>
     </message>
@@ -321,22 +321,22 @@ Il faut donc préciser les textes manquants.</translation>
         <translation type="obsolete">Erreur : Trop d&apos;arguments donnés : {}</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="792"/>
+        <location filename="MKVExtractorQt.py" line="794"/>
         <source>This track can not be displayed.</source>
         <translation>Cette piste ne peut pas être visualisée.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="806"/>
+        <location filename="MKVExtractorQt.py" line="808"/>
         <source> MKV File Tracks </source>
         <translation> Pistes du fichier MKV </translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="752"/>
+        <location filename="MKVExtractorQt.py" line="754"/>
         <source>Use FFMpeg for the conversion.</source>
         <translation>Utiliser FFMpeg pour la conversion.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="730"/>
+        <location filename="MKVExtractorQt.py" line="732"/>
         <source>About MKV Extractor Gui</source>
         <translation>À propos de MKV Extractor Gui</translation>
     </message>
@@ -346,7 +346,7 @@ Il faut donc préciser les textes manquants.</translation>
         <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;MKV Extractor Qt v5.1.1&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;GUI d&apos;extraction, modification et de ré-encapsulage des pistes d&apos;un fichier matroska (MKV).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Ce logiciel fait suite à plusieurs autres qui étaient codés en Bash.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Ce logiciel est sous licence &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;&lt;a href=&quot;{}&quot;&gt;GNU GPL v3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Un grand merci aux forums python &lt;a href=&quot;http://www.developpez.net/forums/f96/autres-langages/python-zope/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;developpez.net&lt;/span&gt;&lt;/a&gt; pour leur patience.&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;Créé par &lt;span style=&quot; font-weight:600;&quot;&gt;Belleguic Terence&lt;/span&gt; (Hizoka), Novembre 2013&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="744"/>
+        <location filename="MKVExtractorQt.py" line="746"/>
         <source>Help me!</source>
         <translation>À l&apos;aide !</translation>
     </message>
@@ -356,27 +356,27 @@ Il faut donc préciser les textes manquants.</translation>
         <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Vous êtes perdu ? Vous avez besoin d&apos;aide ?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Normalement toutes les informations nécessaires sont présentes:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Lisez les informations de la barre d&apos;état lors du déplacement de la souris sur les widgets&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Malgré tout, si vous avez besoin de plus amples informations:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Forum Ubuntu-fr.org: &lt;a href=&quot;http://forum.ubuntu-fr.org/viewtopic.php?id=293216&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;topic&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;- Mon adresse mail : &lt;a href=&quot;mailto:hizo@free.fr &quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;hizo@free.fr &lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Merci de l&apos;intérêt que vous portez à ce logiciel.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="747"/>
+        <location filename="MKVExtractorQt.py" line="749"/>
         <source>Edition of files who have the md5: {}</source>
         <translation>Édition des fichiers ayant le md5 : {}</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="736"/>
+        <location filename="MKVExtractorQt.py" line="738"/>
         <source>Wrong arguments</source>
         <translation>Mauvais arguments</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="737"/>
+        <location filename="MKVExtractorQt.py" line="739"/>
         <source>The &lt;b&gt;{}&lt;/b&gt; file given as argument does not exist.</source>
         <translation>Le fichier &lt;b&gt;{}&lt;/b&gt; donné en argument n&apos;existe pas.</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="738"/>
+        <location filename="MKVExtractorQt.py" line="740"/>
         <source>&lt;b&gt;Too many arguments given:&lt;/b&gt; {}</source>
         <translation>&lt;b&gt;Trop d&apos;arguments donnés :&lt;/b&gt; {}</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="739"/>
+        <location filename="MKVExtractorQt.py" line="741"/>
         <source>Space available</source>
         <translation>Espace disponible</translation>
     </message>
@@ -386,17 +386,17 @@ Il faut donc préciser les textes manquants.</translation>
         <translation type="obsolete">Pas assez de place disponible (necessite 2 fois plus que la taille du MKV)</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="741"/>
+        <location filename="MKVExtractorQt.py" line="743"/>
         <source>Tesseract langs error</source>
         <translation>Erreur de langue avec Tesseract</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="748"/>
+        <location filename="MKVExtractorQt.py" line="750"/>
         <source>Image progression : {} on {}</source>
         <translation>Progression des images : {} sur {}</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="740"/>
+        <location filename="MKVExtractorQt.py" line="742"/>
         <source>Not enough space available.
 
 It is advisable to have at least twice the size of free space on the disk file.</source>
@@ -407,10 +407,10 @@ Il est conseillé d&apos;avoir au moins deux fois la taille du fichier d&apos;es
     <message>
         <location filename="MKVExtractorQt.py" line="745"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Are you lost? Do you need help? &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Normally all necessary information is present: &lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Read the information in the status bar when moving the mouse on widgets &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Though, if you need more information: &lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Forum Ubuntu-fr.org: &lt;a href=&quot;http://forum.ubuntu-fr.org/viewtopic.php?id=293216&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;topic&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;- My email address: &lt;a href=&quot;mailto:hizo@free.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;hizo@free.fr &lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Thank you for your interest in this program.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Vous êtes perdu ? Vous avez besoin d&apos;aide ?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Normalement toutes les informations nécessaires sont présentes:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Lisez les informations de la barre d&apos;état lors du déplacement de la souris sur les widgets&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Malgré tout, si vous avez besoin de plus amples informations:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Forum Ubuntu-fr.org: &lt;a href=&quot;http://forum.ubuntu-fr.org/viewtopic.php?id=293216&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;topic&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;- Mon adresse mail : &lt;a href=&quot;mailto:hizo@free.fr &quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;hizo@free.fr &lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Merci de l&apos;intérêt que vous portez à ce logiciel.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Vous êtes perdu ? Vous avez besoin d&apos;aide ?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Normalement toutes les informations nécessaires sont présentes:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Lisez les informations de la barre d&apos;état lors du déplacement de la souris sur les widgets&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Malgré tout, si vous avez besoin de plus amples informations:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Forum Ubuntu-fr.org: &lt;a href=&quot;http://forum.ubuntu-fr.org/viewtopic.php?id=293216&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;topic&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;- Mon adresse mail : &lt;a href=&quot;mailto:hizo@free.fr &quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;hizo@free.fr &lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Merci de l&apos;intérêt que vous portez à ce logiciel.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="800"/>
+        <location filename="MKVExtractorQt.py" line="802"/>
         <source>Change the fps value if needed. Useful in case of audio lag. Normal : 23.976, 25.000 and 30.000.</source>
         <translation>Changer le nombre d&apos;images par seconde si besoin. Utile en cas de décalage avec l&apos;audio.</translation>
     </message>
@@ -420,19 +420,19 @@ Il est conseillé d&apos;avoir au moins deux fois la taille du fichier d&apos;es
         <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;MKV Extractor Qt v{}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;GUI d&apos;extraction, modification et de ré-encapsulage des pistes d&apos;un fichier matroska (MKV).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Ce logiciel fait suite à plusieurs autres qui étaient codés en Bash.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Ce logiciel est sous licence &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;&lt;a href=&quot;{}&quot;&gt;GNU GPL v3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Un grand merci aux forums python &lt;a href=&quot;http://www.developpez.net/forums/f96/autres-langages/python-zope/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;developpez.net&lt;/span&gt;&lt;/a&gt; pour leur patience.&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;Créé par &lt;span style=&quot; font-weight:600;&quot;&gt;Belleguic Terence&lt;/span&gt; (Hizoka), Novembre 2013&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="734"/>
+        <location filename="MKVExtractorQt.py" line="736"/>
         <source>This file is not supported by mkvmerge.
 Do you want convert this file in mkv ?</source>
         <translation>Ce fichier n&apos;est pas supporté par mkvmerge.
 Vouslez-vous le convertir en mkv ?</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="733"/>
+        <location filename="MKVExtractorQt.py" line="735"/>
         <source>Not supported file</source>
         <translation>Fichier non compatible</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="780"/>
+        <location filename="MKVExtractorQt.py" line="782"/>
         <source>MKV Merge Gui or MKV Extractor Qt ?</source>
         <translation>MKV Merge Gui ou MKV Extractor Qt ?</translation>
     </message>
@@ -450,7 +450,7 @@ Si vous voulez juste faire ça, vous devriez utiliser MMG (MKV Merge Gui) qui es
 Quel logiciel voulez-vous utiliser ?</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="781"/>
+        <location filename="MKVExtractorQt.py" line="783"/>
         <source>You want extract and reencapsulate the tracks without use other options.
 
 If you just need to make this, you should use MMG (MKV Merge gui) who is more adapted for this job.
@@ -463,29 +463,34 @@ Si vous voulez juste faire ça, vous devriez utiliser MMG (MKV Merge Gui) qui es
 Quel logiciel voulez-vous utiliser ?</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="774"/>
+        <location filename="MKVExtractorQt.py" line="776"/>
         <source>Select the output folder to use for convert the file</source>
         <translation>Sélectionner le dossier de sortie à utiliser pour convertir le fichier</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="731"/>
+        <location filename="MKVExtractorQt.py" line="733"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;MKV Extractor Qt v{}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;GUI to extract/edit/remux the tracks of a matroska (MKV) file.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This program follows several others that were coded in Bash and it codec in python3 + QT5.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;This software is licensed under &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;&lt;a href=&quot;{}&quot;&gt;GNU GPL v3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Thanks to the &lt;a href=&quot;http://www.developpez.net/forums/f96/autres-langages/python-zope/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;developpez.net&lt;/span&gt;&lt;/a&gt; python forums for their patience&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;Created by &lt;span style=&quot; font-weight:600;&quot;&gt;Belleguic Terence&lt;/span&gt; (Hizoka), November 2013&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;MKV Extractor Qt v{}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;GUI d&apos;extraction, modification et de ré-encapsulage des pistes d&apos;un fichier matroska (MKV).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Ce logiciel fait suite à plusieurs autres qui étaient codés en Bash et est codé en python3 + QT5.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Ce logiciel est sous licence &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;&lt;a href=&quot;{}&quot;&gt;GNU GPL v3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Un grand merci aux forums python &lt;a href=&quot;http://www.developpez.net/forums/f96/autres-langages/python-zope/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;developpez.net&lt;/span&gt;&lt;/a&gt; pour leur patience.&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;Créé par &lt;span style=&quot; font-weight:600;&quot;&gt;Belleguic Terence&lt;/span&gt; (Hizoka), Novembre 2013&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="783"/>
+        <location filename="MKVExtractorQt.py" line="785"/>
         <source>audio</source>
         <translation>audio</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="784"/>
+        <location filename="MKVExtractorQt.py" line="786"/>
         <source>subtitles</source>
         <translation>sous-titres</translation>
     </message>
     <message>
-        <location filename="MKVExtractorQt.py" line="785"/>
+        <location filename="MKVExtractorQt.py" line="787"/>
         <source>video</source>
         <translation>vidéo</translation>
+    </message>
+    <message>
+        <location filename="MKVExtractorQt.py" line="747"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Are you lost? Do you need help? &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Normally all necessary information is present: &lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Read the information in the status bar when moving the mouse on widgets &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Though, if you need more information: &lt;/span&gt;&lt;/p&gt;&lt;p&gt;- Forum Ubuntu-fr.org: &lt;a href=&quot;http://forum.ubuntu-fr.org/viewtopic.php?id=1508741&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;topic&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;- My email address: &lt;a href=&quot;mailto:hizo@free.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;hizo@free.fr &lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Thank you for your interest in this program.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

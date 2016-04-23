@@ -1,3 +1,13 @@
+mkv-extractor-qt5 (5.3.0-0~trusty) trusty; urgency=low ()
+
+  [english]
+    - Bug fixed
+
+  [français]
+    - Correction de bug
+
+ -- hizoka <hizo@free.fr>  Mon, 23 Nov 2015 19:26:08 +0100
+
 mkv-extractor-qt (5.2.2-3~trusty) trusty; urgency=low ()
 
   [english]

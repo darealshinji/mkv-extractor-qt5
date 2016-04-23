@@ -1,22 +1,24 @@
-Source: mkv-extractor-qt
+Source: mkv-extractor-qt5
+Priority: standard
+Section: video
 Maintainer: Terence Belleguic <hizo@free.fr>
 Uploaders: Marshall Banana <djcj@gmx.de>
 Build-Depends:
  debhelper (>= 9),
- pyqt4-dev-tools,
+ pyqt5-dev-tools,
  python3 (>= 3.4.0),
- qt4-linguist-tools
+ qttools5-dev-tools
 Standards-Version: 3.9.6
-Priority: standard
-Section: video
+Homepage: http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
 
-Package: mkv-extractor-qt
+Package: mkv-extractor-qt5
 Architecture: all
 Depends:
  ${misc:Depends},
  mkvtoolnix,
  ${python3:Depends},
- python3-pyqt4
+ python3-pyqt5,
+ python-support (>= 0.90)
 Recommends:
  libav-tools | ffmpeg,
  mkclean,
@@ -24,7 +26,6 @@ Recommends:
  tesseract-ocr-fra,
  mkvalidator,
  subptools | ogmrip
-Homepage: http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
 Description: Graphical mkv demultiplexer
  Features:
   * DTS to AC3 conversion via ffmpeg

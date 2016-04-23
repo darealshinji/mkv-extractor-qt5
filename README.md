@@ -18,7 +18,7 @@ http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
 
 
 Requires Python 3.4 or higher.<br>
-Build dependencies: `pyqt4-dev-tools qt4-linguist-tools`<br>
+Build dependencies: `pyqt5-dev-tools qttools5-dev-tools`<br>
 Runtime dependency: `mkvtoolnix` (http://www.bunkus.org/videotools/mkvtoolnix/)
 
 Other branches:<br>

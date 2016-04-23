@@ -699,6 +699,7 @@ class MKVExtractorQt(QMainWindow):
             if not find:
                 QMessageBox(3, "Erreur de traduction", "Aucun fichier de traduction <b>française</b> trouvé.<br/>Utilisation de la langue <b>anglaise</b>.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
                 self.ui.lang_en.setChecked(True)
+                Configs["Language"] = "en_US"
 
             else:
                 ### Chargement de la traduction
@@ -711,6 +712,7 @@ class MKVExtractorQt(QMainWindow):
             if not find:
                 QMessageBox(3, "Chyba překladu", "No translation file <b>Czech</b> found. Use <b>English</b> language. Soubor s překladem do <b>češtiny</b> nenalezen. Použít <b>anglický</b> jazyk.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
                 self.ui.lang_en.setChecked(True)
+                Configs["Language"] = "en_US"
 
             else:
                 ### Chargement de la traduction
@@ -742,7 +744,7 @@ class MKVExtractorQt(QMainWindow):
                     "ErrorTesseract" : self.tr("The subtitle language is not avaible in Tesseract list langs: {}"),
 
                     "Help_title" : self.tr("Help me!"),
-                    "Help" : self.tr("""<html><head/><body><p align="center"><span style=" font-weight:600;">Are you lost? Do you need help? </span></p><p><span style=" font-weight:600;">Normally all necessary information is present: </span></p><p>- Read the information in the status bar when moving the mouse on widgets </p><p><span style=" font-weight:600;">Though, if you need more information: </span></p><p>- Forum Ubuntu-fr.org: <a href="http://forum.ubuntu-fr.org/viewtopic.php?id=293216"><span style=" text-decoration: underline; color:#0057ae;">topic</span></a></p><p>- My email address: <a href="mailto:hizo@free.fr"><span style=" text-decoration: underline; color:#0057ae;">hizo@free.fr </span></a></p><p><span style=" font-weight:600;">Thank you for your interest in this program.</span></p></body></html>"""),
+                    "Help" : self.tr("""<html><head/><body><p align="center"><span style=" font-weight:600;">Are you lost? Do you need help? </span></p><p><span style=" font-weight:600;">Normally all necessary information is present: </span></p><p>- Read the information in the status bar when moving the mouse on widgets </p><p><span style=" font-weight:600;">Though, if you need more information: </span></p><p>- Forum Ubuntu-fr.org: <a href="http://forum.ubuntu-fr.org/viewtopic.php?id=1508741"><span style=" text-decoration: underline; color:#0057ae;">topic</span></a></p><p>- My email address: <a href="mailto:hizo@free.fr"><span style=" text-decoration: underline; color:#0057ae;">hizo@free.fr </span></a></p><p><span style=" font-weight:600;">Thank you for your interest in this program.</span></p></body></html>"""),
 
                     "IMGViewerMD5" : self.tr("Edition of files who have the md5: {}"),
                     "IMGProgression" : self.tr("Image progression : {} on {}"),

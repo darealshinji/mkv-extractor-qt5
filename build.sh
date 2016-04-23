@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# pyqt5-dev-tools
+
 # Fichier servant :
 # - Lors de la creation du paquet sources
 # - Apres la creation d'un paquet source, les fichiers sont supprimés, il faut donc les recréer
@@ -8,13 +10,17 @@ chemin="$(cd "$(dirname "$0")";pwd)"
 cd "${chemin}"
 
 # Mise à jour des fichiers ts
-pylupdate4 ui_MKVExtractorQt.ui MKVExtractorQt.py -ts MKVExtractorQt_fr_FR.ts MKVExtractorQt_cs_CZ.ts
+pylupdate5 ui_MKVExtractorQt.ui MKVExtractorQt.py -ts MKVExtractorQt_fr_FR.ts MKVExtractorQt_cs_CZ.ts
 
 # Convertion des fichiers ts en qm
-lrelease-qt4 *.ts
+[[ -e "/usr/lib/x86_64-linux-gnu/qt5/bin/lrelease" ]] && /usr/lib/x86_64-linux-gnu/qt5/bin/lrelease *.ts
+[[ -e "/usr/lib/i386-linux-gnu/qt5/bin/lrelease" ]] && /usr/lib/i386-linux-gnu/qt5/bin/lrelease *.ts
+
+# Création d'un fichier source python (contient les icones)
+pyrcc5 MKVRessources.qrc -o MKVRessources_rc.py
 
 # Conversion de l'interface graphique en fichier python
-pyuic4 ui_MKVExtractorQt.ui -o ui_MKVExtractorQt.py
+pyuic5 ui_MKVExtractorQt.ui -o ui_MKVExtractorQt.py
 
 ### Creation d'un systeme d'icone de secoure sur le fichier python ci-dessus
 # Modification du systeme des icones en utilisant la fonction ci-dessous
@@ -39,7 +45,4 @@ def IconBis(Icon):
     else:
         return QtGui.QPixmap(':/img/{}.png'.format(Icon))""" >> ui_MKVExtractorQt.py
 
-
-# Création d'un fichier source python (contient les icones)
-pyrcc4 MKVRessources.qrc -o MKVRessources_rc.py -py3
 

@@ -24,7 +24,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="MKVRessources.qrc">
-    <normaloff>:/img/mkv-extractor-qt.png</normaloff>:/img/mkv-extractor-qt.png</iconset>
+    <normaloff>:/img/mkv-extractor-qt5.png</normaloff>:/img/mkv-extractor-qt5.png</iconset>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -1053,7 +1053,7 @@ p, li { white-space: pre-wrap; }
   <action name="about">
    <property name="icon">
     <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/mkv-extractor-qt.png</normaloff>:/img/mkv-extractor-qt.png</iconset>
+     <normaloff>:/img/mkv-extractor-qt5.png</normaloff>:/img/mkv-extractor-qt5.png</iconset>
    </property>
    <property name="text">
     <string>About MKV Extractor Qt</string>
@@ -1252,7 +1252,7 @@ p, li { white-space: pre-wrap; }
      <string notr="true">Version Française</string>
     </property>
     <property name="statusTip">
-     <string notr="true">Traduire le logiciel en langue Française.</string>
+     <string notr="true">Traduit le logiciel en langue Française.</string>
     </property>
    </action>
    <action name="lang_cs">

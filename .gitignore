@@ -6,8 +6,9 @@ __pycache__/
 *.qm
 
 MKVRessources_rc.py
-ui_MKVExtractorQt.py
-MKVExtractorQt_new.py
+ui_MKVExtractorQt5.py
+MKVExtractorQt5-standalone.py
+tmp*
 
 # editor and backup stuff
 *~

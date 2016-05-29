@@ -10,7 +10,7 @@ Features:
   * Extract and re-encapsule tracks
   * And more again
 
-Copyright (C) 2013-2015 Terence Belleguic <hizo@free.fr>
+Copyright (C) 2013-2016 Terence Belleguic <hizo@free.fr>
 
 https://launchpad.net/~hizo/+archive/mkv-extractor-gui<br>
 https://launchpad.net/~djcj/+archive/ubuntu/mkvtoolnix (inofficial)<br>

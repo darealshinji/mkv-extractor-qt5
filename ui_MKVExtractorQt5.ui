@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>mkv_extractor_qt</class>
- <widget class="QMainWindow" name="mkv_extractor_qt">
+ <class>mkv_extractor_qt5</class>
+ <widget class="QMainWindow" name="mkv_extractor_qt5">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -31,191 +31,32 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QSplitter" name="splitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
       <property name="childrenCollapsible">
        <bool>false</bool>
       </property>
-      <widget class="QFrame" name="feedback_frame">
-       <property name="minimumSize">
-        <size>
-         <width>50</width>
-         <height>150</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QPushButton" name="view_info">
-            <property name="minimumSize">
-             <size>
-              <width>28</width>
-              <height>28</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>28</width>
-              <height>28</height>
-             </size>
-            </property>
-            <property name="statusTip">
-             <string>Hide / Show the information feedback box.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="MKVRessources.qrc">
-              <normaloff>:/img/layer-visible-on.png</normaloff>:/img/layer-visible-on.png</iconset>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_6">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>28</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>28</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Information feedback:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="out_info">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>28</width>
-              <height>28</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>28</width>
-              <height>28</height>
-             </size>
-            </property>
-            <property name="statusTip">
-             <string>Export info to ~/InfoMKVExtractorQt.txt.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="MKVRessources.qrc">
-              <normaloff>:/img/document-export.png</normaloff>:/img/document-export.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>16</width>
-              <height>16</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTextEdit" name="reply_info">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <weight>50</weight>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="lineWidth">
-           <number>1</number>
-          </property>
-          <property name="midLineWidth">
-           <number>0</number>
-          </property>
-          <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOn</enum>
-          </property>
-          <property name="undoRedoEnabled">
-           <bool>false</bool>
-          </property>
-          <property name="lineWrapMode">
-           <enum>QTextEdit::WidgetWidth</enum>
-          </property>
-          <property name="lineWrapColumnOrWidth">
-           <number>0</number>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-          <property name="html">
-           <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="textInteractionFlags">
-           <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
       <widget class="QStackedWidget" name="stackedMiddle">
        <property name="minimumSize">
         <size>
@@ -228,7 +69,16 @@ p, li { white-space: pre-wrap; }
        </property>
        <widget class="QWidget" name="TracksPage">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <property name="margin">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
           <number>0</number>
          </property>
          <item>
@@ -251,7 +101,7 @@ p, li { white-space: pre-wrap; }
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout">
                 <property name="spacing">
-                 <number>-1</number>
+                 <number>6</number>
                 </property>
                 <property name="bottomMargin">
                  <number>0</number>
@@ -312,6 +162,9 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="placeholderText">
                    <string>MKV Title</string>
+                  </property>
+                  <property name="clearButtonEnabled">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -382,7 +235,7 @@ p, li { white-space: pre-wrap; }
                   <string notr="true">ID</string>
                  </property>
                  <property name="textAlignment">
-                  <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                  <set>AlignCenter</set>
                  </property>
                 </column>
                 <column>
@@ -390,11 +243,11 @@ p, li { white-space: pre-wrap; }
                   <string notr="true"/>
                  </property>
                  <property name="textAlignment">
-                  <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                  <set>AlignCenter</set>
                  </property>
                  <property name="icon">
-                  <iconset resource="MKVRessources.qrc">
-                   <normaloff>:/img/checkbox.png</normaloff>:/img/checkbox.png</iconset>
+                  <iconset theme="checkbox">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </column>
                 <column>
@@ -405,23 +258,8 @@ p, li { white-space: pre-wrap; }
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="MKVRessources.qrc">
-                   <normaloff>:/img/mixer-video.png</normaloff>:/img/mixer-video.png</iconset>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string notr="true"/>
-                 </property>
-                 <property name="toolTip">
-                  <string/>
-                 </property>
-                 <property name="textAlignment">
-                  <set>AlignHCenter|AlignVCenter|AlignCenter</set>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="MKVRessources.qrc">
-                   <normaloff>:/img/layer-visible-off.png</normaloff>:/img/layer-visible-off.png</iconset>
+                  <iconset theme="applications-multimedia">
+                   <normaloff>.</normaloff>.</iconset>
                  </property>
                 </column>
                 <column>
@@ -429,7 +267,7 @@ p, li { white-space: pre-wrap; }
                   <string>Name/Information</string>
                  </property>
                  <property name="textAlignment">
-                  <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                  <set>AlignCenter</set>
                  </property>
                 </column>
                 <column>
@@ -437,7 +275,7 @@ p, li { white-space: pre-wrap; }
                   <string>Language/fps/Size</string>
                  </property>
                  <property name="textAlignment">
-                  <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                  <set>AlignCenter</set>
                  </property>
                 </column>
                 <column>
@@ -445,7 +283,7 @@ p, li { white-space: pre-wrap; }
                   <string>Codec</string>
                  </property>
                  <property name="textAlignment">
-                  <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                  <set>AlignCenter</set>
                  </property>
                 </column>
                </widget>
@@ -467,8 +305,8 @@ p, li { white-space: pre-wrap; }
                    <string>Remux</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="MKVRessources.qrc">
-                    <normaloff>:/img/view-refresh.png</normaloff>:/img/view-refresh.png</iconset>
+                   <iconset theme="view-refresh">
+                    <normaloff>.</normaloff>.</iconset>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -482,45 +320,45 @@ p, li { white-space: pre-wrap; }
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="option_vobsub_srt">
+                 <widget class="QToolButton" name="option_vobsub_srt">
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
                   <property name="statusTip">
-                   <string>Automatic conversion from vobsub to SRT.</string>
+                   <string>Convertion subtitles option.</string>
                   </property>
                   <property name="text">
                    <string>SUB to SRT</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="MKVRessources.qrc">
-                    <normaloff>:/img/document-export.png</normaloff>:/img/document-export.png</iconset>
+                   <iconset theme="qtesseract5">
+                    <normaloff>.</normaloff>.</iconset>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
                   </property>
+                  <property name="popupMode">
+                   <enum>QToolButton::MenuButtonPopup</enum>
+                  </property>
+                  <property name="toolButtonStyle">
+                   <enum>Qt::ToolButtonTextBesideIcon</enum>
+                  </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QToolButton" name="option_dts_ac3">
+                 <widget class="QToolButton" name="option_audio">
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
                   <property name="statusTip">
-                   <string>Convert DTS tracks automatically to AC3, which is much more compatible. Options are available.</string>
+                   <string>Convertion audio option.</string>
                   </property>
                   <property name="text">
-                   <string>DTS to AC3</string>
+                   <string>Audio Convert</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="MKVRessources.qrc">
-                    <normaloff>:/img/media-tape.png</normaloff>:/img/media-tape.png</iconset>
+                   <iconset theme="media-tape">
+                    <normaloff>.</normaloff>.</iconset>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -545,187 +383,335 @@ p, li { white-space: pre-wrap; }
        </widget>
        <widget class="QWidget" name="SubsPage">
         <layout class="QVBoxLayout" name="verticalLayout_6">
+         <property name="bottomMargin">
+          <number>20</number>
+         </property>
          <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Subtitles recognized:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="image_viewer">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>70</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>70</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="statusTip">
+              <string>Tesseract couldn't recognize the subtitle file. It must be done manually.</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_2">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>10</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QPushButton" name="sub_previous">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string/>
+               </property>
+               <property name="statusTip">
+                <string>Previous subtitle image.</string>
+               </property>
+               <property name="text">
+                <string>Previous</string>
+               </property>
+               <property name="icon">
+                <iconset resource="MKVRessources.qrc">
+                 <normaloff>:/img/go-previous.png</normaloff>:/img/go-previous.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="sub_text">
+               <property name="font">
+                <font>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="plainText">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="sub_next">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string/>
+               </property>
+               <property name="statusTip">
+                <string>Next subtitle image.</string>
+               </property>
+               <property name="text">
+                <string>Next</string>
+               </property>
+               <property name="icon">
+                <iconset resource="MKVRessources.qrc">
+                 <normaloff>:/img/go-next.png</normaloff>:/img/go-next.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="page">
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="topMargin">
+            <number>0</number>
            </property>
-           <property name="title">
-            <string>Subtitles recognized:</string>
+           <property name="bottomMargin">
+            <number>0</number>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QLabel" name="image_viewer">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>70</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>70</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="statusTip">
-                 <string>Tesseract couldn't recognize the subtitle file. It must be done manually.</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line_2">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>10</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_6">
-                <item>
-                 <widget class="QPushButton" name="sub_previous">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="statusTip">
-                   <string>Previous subtitle image.</string>
-                  </property>
-                  <property name="text">
-                   <string>Previous</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="MKVRessources.qrc">
-                    <normaloff>:/img/go-previous.png</normaloff>:/img/go-previous.png</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPlainTextEdit" name="sub_text">
-                  <property name="font">
-                   <font>
-                    <weight>50</weight>
-                    <bold>false</bold>
-                   </font>
-                  </property>
-                  <property name="plainText">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="sub_next">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="statusTip">
-                   <string>Next subtitle image.</string>
-                  </property>
-                  <property name="text">
-                   <string>Next</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="MKVRessources.qrc">
-                    <normaloff>:/img/go-next.png</normaloff>:/img/go-next.png</iconset>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Configuration  edition</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="configuration_table">
+             <property name="editTriggers">
+              <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+             </property>
+             <property name="showDropIndicator" stdset="0">
+              <bool>false</bool>
+             </property>
+             <property name="dragDropOverwriteMode">
+              <bool>false</bool>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="sortingEnabled">
+              <bool>true</bool>
+             </property>
+             <attribute name="horizontalHeaderDefaultSectionSize">
+              <number>100</number>
+             </attribute>
+             <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+              <bool>false</bool>
+             </attribute>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>Options</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Values</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Default Values</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="configuration_reset">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>&amp;Reset</string>
+               </property>
+               <property name="icon">
+                <iconset theme="draw-eraser">
+                 <normaloff>.</normaloff>.</iconset>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Delete the actual value will use the default value</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="configuration_ok">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>OK</string>
+               </property>
+               <property name="icon">
+                <iconset theme="dialog-ok">
+                 <normaloff>.</normaloff>.</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
       </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="Line" name="line">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
      </widget>
     </item>
     <item>
@@ -757,8 +743,8 @@ p, li { white-space: pre-wrap; }
          <string>Execute</string>
         </property>
         <property name="icon">
-         <iconset resource="MKVRessources.qrc">
-          <normaloff>:/img/run-build.png</normaloff>:/img/run-build.png</iconset>
+         <iconset theme="run-build">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -786,25 +772,25 @@ p, li { white-space: pre-wrap; }
          <string>Stop</string>
         </property>
         <property name="icon">
-         <iconset resource="MKVRessources.qrc">
-          <normaloff>:/img/process-stop.png</normaloff>:/img/process-stop.png</iconset>
+         <iconset theme="process-stop">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="mkv_resume">
+       <widget class="QPushButton" name="mkv_pause">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="statusTip">
-         <string>Press button to resume.</string>
+         <string>Press button for pause between 2 jobs.</string>
         </property>
         <property name="text">
-         <string>Resume</string>
+         <string>Pause</string>
         </property>
         <property name="icon">
-         <iconset resource="MKVRessources.qrc">
-          <normaloff>:/img/view-refresh.png</normaloff>:/img/view-refresh.png</iconset>
+         <iconset theme="media-playback-pause">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -851,11 +837,14 @@ p, li { white-space: pre-wrap; }
          <string>Quit</string>
         </property>
         <property name="icon">
-         <iconset resource="MKVRessources.qrc">
-          <normaloff>:/img/application-exit.png</normaloff>:/img/application-exit.png</iconset>
+         <iconset theme="application-exit">
+          <normaloff>.</normaloff>.</iconset>
         </property>
         <property name="shortcut">
          <string notr="true">Alt+Q</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -869,16 +858,16 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>657</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
     <property name="title">
-     <string>File</string>
+     <string>Fi&amp;le</string>
     </property>
-    <addaction name="mkv_open"/>
+    <addaction name="input_file"/>
     <addaction name="separator"/>
-    <addaction name="mkv_folder"/>
+    <addaction name="output_folder"/>
     <addaction name="separator"/>
     <addaction name="soft_quit_2"/>
    </widget>
@@ -907,24 +896,36 @@ p, li { white-space: pre-wrap; }
      <bool>false</bool>
     </property>
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <property name="separatorsCollapsible">
      <bool>false</bool>
     </property>
-    <addaction name="help"/>
+    <addaction name="option_debug"/>
     <addaction name="separator"/>
     <addaction name="about"/>
+    <addaction name="about_qtesseract5"/>
+    <addaction name="they_talk_about"/>
+    <addaction name="help_mkvextractorqt5"/>
+    <addaction name="separator"/>
+    <addaction name="mkvtoolnix"/>
+    <addaction name="separator"/>
     <addaction name="about_qt"/>
    </widget>
    <widget class="QMenu" name="menuOptions">
     <property name="title">
      <string>Options</string>
     </property>
-    <addaction name="option_mkv_folder"/>
-    <addaction name="option_del_config"/>
+    <addaction name="option_recent_infos"/>
     <addaction name="separator"/>
-    <addaction name="option_clean"/>
+    <addaction name="option_configuration_table"/>
+    <addaction name="separator"/>
+    <addaction name="option_feedback"/>
+    <addaction name="option_feedback_block"/>
+    <addaction name="separator"/>
+    <addaction name="option_aspect"/>
+    <addaction name="separator"/>
+    <addaction name="option_systray"/>
     <addaction name="separator"/>
     <addaction name="lang_en"/>
     <addaction name="lang_fr"/>
@@ -936,13 +937,85 @@ p, li { white-space: pre-wrap; }
    <addaction name="menuAide"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="mkv_open">
+  <widget class="QDockWidget" name="feedback_widget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>96</width>
+     <height>134</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>524287</width>
+     <height>524287</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>&amp;Information feedback:</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>4</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>100</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_8">
+     <property name="leftMargin">
+      <number>6</number>
+     </property>
+     <property name="topMargin">
+      <number>6</number>
+     </property>
+     <property name="rightMargin">
+      <number>6</number>
+     </property>
+     <property name="bottomMargin">
+      <number>6</number>
+     </property>
+    </layout>
+   </widget>
+  </widget>
+  <action name="input_file">
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/document-open.png</normaloff>:/img/document-open.png</iconset>
+    <iconset theme="document-open">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Open an MKV file</string>
+    <string>&amp;Open an MKV file</string>
    </property>
    <property name="iconText">
     <string>Open an MKV file</string>
@@ -957,13 +1030,13 @@ p, li { white-space: pre-wrap; }
     <string notr="true">F2</string>
    </property>
   </action>
-  <action name="mkv_folder">
+  <action name="output_folder">
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/document-open-folder.png</normaloff>:/img/document-open-folder.png</iconset>
+    <iconset theme="folder-open">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Output folder</string>
+    <string>Output &amp;folder</string>
    </property>
    <property name="toolTip">
     <string>Output folder</string>
@@ -977,11 +1050,11 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="soft_quit_2">
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/application-exit.png</normaloff>:/img/application-exit.png</iconset>
+    <iconset theme="application-exit">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
    <property name="toolTip">
     <string>Quit</string>
@@ -1001,11 +1074,11 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/run-build.png</normaloff>:/img/run-build.png</iconset>
+    <iconset theme="run-build">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Start job queue</string>
+    <string>&amp;Start job queue</string>
    </property>
    <property name="statusTip">
     <string>Launch extract/convert/mux tracks.</string>
@@ -1019,11 +1092,11 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/dialog-ok.png</normaloff>:/img/dialog-ok.png</iconset>
+    <iconset theme="dialog-ok">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Check MKV file</string>
+    <string>&amp;Check MKV file</string>
    </property>
    <property name="statusTip">
     <string>Verify Matroska files for specification conformance with MKValidator.</string>
@@ -1037,11 +1110,11 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/draw-eraser.png</normaloff>:/img/draw-eraser.png</iconset>
+    <iconset theme="draw-eraser">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Optimize MKV file</string>
+    <string>&amp;Optimize MKV file</string>
    </property>
    <property name="statusTip">
     <string>Clean/Optimize Matroska files with MKClean.</string>
@@ -1052,14 +1125,14 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="about">
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/mkv-extractor-qt5.png</normaloff>:/img/mkv-extractor-qt5.png</iconset>
+    <iconset theme="mkv-extractor-qt5">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>About MKV Extractor Qt</string>
+    <string>&amp;About MKV Extractor Qt</string>
    </property>
    <property name="statusTip">
-    <string>Display information about MKV Extractor Qt.</string>
+    <string>Display information about MKV Extractor Qt5.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::AboutRole</enum>
@@ -1073,11 +1146,11 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/mkvinfo.png</normaloff>:/img/mkvinfo.png</iconset>
+    <iconset theme="mkvinfo">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>View MKV information</string>
+    <string>&amp;View MKV information</string>
    </property>
    <property name="statusTip">
     <string>Display information about the MKV file with mkvinfo.</string>
@@ -1095,7 +1168,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/img/qt.png</normaloff>:/img/qt.png</iconset>
    </property>
    <property name="text">
-    <string>About Qt</string>
+    <string>About &amp;Qt</string>
    </property>
    <property name="statusTip">
     <string>Display information about Qt.</string>
@@ -1112,26 +1185,26 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/edit-copy.png</normaloff>:/img/edit-copy.png</iconset>
+    <iconset theme="edit-copy">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Use the same output folder as the MKV file</string>
+    <string>&amp;Use the same output folder as the MKV file</string>
    </property>
    <property name="statusTip">
     <string>Change the output folder automatically to use the same folder as the MKV file.</string>
    </property>
   </action>
-  <action name="option_del_config">
+  <action name="option_configuration_table">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/edit-delete.png</normaloff>:/img/edit-delete.png</iconset>
+    <iconset theme="document-edit">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Delete config file</string>
+    <string>C&amp;onfiguration  edition</string>
    </property>
    <property name="statusTip">
     <string>Delete config file and don't save the new values for this time.</string>
@@ -1142,11 +1215,11 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/mkvmerge.png</normaloff>:/img/mkvmerge.png</iconset>
+    <iconset theme="mkvmerge">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Edit MKV file</string>
+    <string>&amp;Edit MKV file</string>
    </property>
    <property name="statusTip">
     <string>Open the MKV file with mkvmerge GUI for more modifications.</string>
@@ -1163,11 +1236,11 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/video-x-generic.png</normaloff>:/img/video-x-generic.png</iconset>
+    <iconset theme="document-preview">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Replay MKV file</string>
+    <string>&amp;Replay MKV file</string>
    </property>
    <property name="statusTip">
     <string>Open the MKV file with the default application.</string>
@@ -1176,28 +1249,180 @@ p, li { white-space: pre-wrap; }
     <string notr="true">F9</string>
    </property>
   </action>
-  <action name="help">
+  <action name="help_mkvextractorqt5">
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/help-contents.png</normaloff>:/img/help-contents.png</iconset>
+    <iconset theme="help-contents">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Need help</string>
+    <string>&amp;Need help</string>
+   </property>
+   <property name="statusTip">
+    <string>Help me! I'm lost :(</string>
    </property>
    <property name="shortcut">
     <string notr="true">F1</string>
    </property>
   </action>
-  <action name="option_clean">
+  <action name="option_clan">
    <property name="icon">
-    <iconset resource="MKVRessources.qrc">
-     <normaloff>:/img/edit-clear.png</normaloff>:/img/edit-clear.png</iconset>
+    <iconset theme="edit-clear">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Clean the information feedback box</string>
+    <string>&amp;Clean the information feedback box</string>
    </property>
    <property name="statusTip">
     <string>Reset the information feedback box.</string>
+   </property>
+  </action>
+  <action name="option_recent_infos">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="edit-delete">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>Delete &amp;recent files/URLs list</string>
+   </property>
+   <property name="statusTip">
+    <string>Remove the Qt file who keeps the list of the recent files for the window selection.</string>
+   </property>
+  </action>
+  <action name="option_feedback">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="code-context">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>View &amp;information feedback box</string>
+   </property>
+   <property name="statusTip">
+    <string>Show or hide the information feedback box.</string>
+   </property>
+  </action>
+  <action name="option_feedback_block">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="document-encrypt">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Anchor information feedback box</string>
+   </property>
+   <property name="statusTip">
+    <string>Anchor or loose information feedback box.</string>
+   </property>
+  </action>
+  <action name="option_aspect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="window-duplicate">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Keep the window aspect and its position</string>
+   </property>
+   <property name="statusTip">
+    <string>Keep in memory the aspect and the position of the window for the next opened.</string>
+   </property>
+  </action>
+  <action name="option_debug">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="debug-run">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Debug mode</string>
+   </property>
+   <property name="statusTip">
+    <string>Enable this option for view more informations in feedback box.</string>
+   </property>
+  </action>
+  <action name="option_systray">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="mkv-extractor-qt5">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Use a system tray icon</string>
+   </property>
+   <property name="statusTip">
+    <string>Display a system tray icon of the software.</string>
+   </property>
+  </action>
+  <action name="option_wizard">
+   <property name="text">
+    <string>Ass&amp;istant</string>
+   </property>
+  </action>
+  <action name="mkvtoolnix">
+   <property name="icon">
+    <iconset theme="mkvmerge">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;MKVToolNix last version</string>
+   </property>
+   <property name="statusTip">
+    <string>Open the download page of MKVToolNix.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
+  </action>
+  <action name="they_talk_about">
+   <property name="icon">
+    <iconset theme="mkv-extractor-qt5">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;They talk about</string>
+   </property>
+   <property name="statusTip">
+    <string>They talk about MKV Extractor Gui.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
+  </action>
+  <action name="about_qtesseract5">
+   <property name="icon">
+    <iconset theme="qtesseract5">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>A&amp;bout Qtesseract5</string>
+   </property>
+   <property name="statusTip">
+    <string>Display information about Qtesseract5.</string>
    </property>
   </action>
   <actiongroup name="actionGroupName8">
@@ -1234,7 +1459,7 @@ p, li { white-space: pre-wrap; }
       <normaloff>:/img/EN.png</normaloff>:/img/EN.png</iconset>
     </property>
     <property name="text">
-     <string notr="true">English version</string>
+     <string notr="true">&amp;English version</string>
     </property>
     <property name="statusTip">
      <string notr="true">Change the display language to English.</string>
@@ -1249,7 +1474,7 @@ p, li { white-space: pre-wrap; }
       <normaloff>:/img/FR.png</normaloff>:/img/FR.png</iconset>
     </property>
     <property name="text">
-     <string notr="true">Version Française</string>
+     <string notr="true">&amp;Version Française</string>
     </property>
     <property name="statusTip">
      <string notr="true">Traduit le logiciel en langue Française.</string>
@@ -1264,7 +1489,7 @@ p, li { white-space: pre-wrap; }
       <normaloff>:/img/CS.png</normaloff>:/img/CS.png</iconset>
     </property>
     <property name="text">
-     <string notr="true">Česká verze</string>
+     <string notr="true">Če&amp;ská verze</string>
     </property>
     <property name="statusTip">
      <string notr="true">Změnit jazyk rozhraní na češtinu.</string>
@@ -1299,7 +1524,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>soft_quit_2</sender>
    <signal>triggered()</signal>
-   <receiver>mkv_extractor_qt</receiver>
+   <receiver>mkv_extractor_qt5</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1315,16 +1540,16 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>soft_quit</sender>
    <signal>clicked()</signal>
-   <receiver>mkv_extractor_qt</receiver>
+   <receiver>mkv_extractor_qt5</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>808</x>
-     <y>612</y>
+     <x>613</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel">
-     <x>571</x>
-     <y>25</y>
+     <x>328</x>
+     <y>285</y>
     </hint>
    </hints>
   </connection>

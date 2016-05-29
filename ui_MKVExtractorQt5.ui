@@ -783,7 +783,7 @@
          <bool>true</bool>
         </property>
         <property name="statusTip">
-         <string>Press button for pause between 2 jobs.</string>
+         <string>Press button for pause between 2 jobs or during the SUB to SRT convert.</string>
         </property>
         <property name="text">
          <string>Pause</string>

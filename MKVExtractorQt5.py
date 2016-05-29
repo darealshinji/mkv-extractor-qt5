@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-
 from PyQt5.QtWidgets import QPushButton, QSystemTrayIcon, QWidget, QTextEdit, QShortcut, QComboBox, QApplication, QAction, QDockWidget, QInputDialog, QVBoxLayout, QDesktopWidget, QMessageBox, QActionGroup, QTableWidgetItem, QCheckBox, QMainWindow, QMenu
 from PyQt5.QtCore import QFileInfo, QStandardPaths, QTemporaryDir, QTranslator, QThread, QLibraryInfo, QDir, QMimeType, QMimeDatabase, Qt, QSettings, QProcess, QUrl, QLocale
 from PyQt5.QtGui import QTextCursor, QIcon, QKeySequence, QCursor, QDesktopServices, QPixmap
@@ -505,15 +504,13 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Connexions des boutons du bas (au clic)
         self.ui.mkv_stop.clicked.connect(partial(self.WorkStop, "Stop"))
-        self.ui.mkv_pause.clicked.connect(lambda: Configs.setValue("WorkPause", True))
+        self.ui.mkv_pause.clicked.connect(self.WorkPauseBefore)
         self.ui.mkv_execute.clicked.connect(self.CommandCreate)
         self.ui.soft_quit.__class__ = QuitButton # Utilisation de la class QuitButton pour la prise en charge du clic droit
 
         ### Connexions du QProcess
         self.process.readyReadStandardOutput.connect(self.WorkReply) # Retours du travail
         self.process.finished.connect(self.WorkFinished) # Fin du travail
-
-
 
 
     #========================================================================
@@ -646,7 +643,8 @@ class MKVExtractorQt5(QMainWindow):
                     "AboutText" : self.tr("""<html><head/><body><p align="center"><span style=" font-size:12pt; font-weight:600;">MKV Extractor Qt v{}</span></p><p><span style=" font-size:10pt;">GUI to extract/edit/remux the tracks of a matroska (MKV) file.</span></p><p><span style=" font-size:10pt;">This program follows several others that were coded in Bash and it codec in python3 + QT5.</span></p><p><span style=" font-size:8pt;">This software is licensed under </span><span style=" font-size:8pt; font-weight:600;"><a href="{}">GNU GPL v3</a></span><span style=" font-size:8pt;">.</span></p><p>Thanks to the <a href="http://www.developpez.net/forums/f96/autres-langages/python-zope/"><span style=" text-decoration: underline; color:#0057ae;">developpez.net</span></a> python forums for their patience</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> (Hizoka), November 2013</p></body></html>"""),
 
                     "AboutQtesseract5Title" : self.tr("About Qtesseract5"),
-                    "AboutQtesseract5Text" : self.tr("""<html><head/><body><p><b>Qtesseract5</b> is a software who converts the IDX/SUB file in SRT (text) file. For that works, it use <i>subp2pgm</i> (export the images files from SUB file), <i>Tesseract</i> (for read their files) and <i>subptools</i> (to create a SRT file).</p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> <hizo@free.fr>, April 2016</p></body></html>"""),
+                    "AboutQtesseract5Text" : self.tr("""<html><head/><body><p><b>Qtesseract5</b> is a software who converts the IDX/SUB file in SRT (text) file. For that works, it use <i>subp2pgm</i> (export the images files from SUB file), <i>Tesseract</i> (for read their files) and <i>subptools</i> (to create a SRT file).</p><p><a href="https://forum.ubuntu-fr.org/viewtopic.php?pid=21507283">Topic on ubuntu-fr.org</a></p><p align="right">Created by <span style=" font-weight:600;">Belleguic Terence</span> <hizo@free.fr>, April 2016</p></body></html>"""),
+
 
                     "TheyTalkAboutTitle" : self.tr("They talk about MKV Extractor Gui"),
                     "TheyTalkAboutText" : self.tr("""<html><head/><body><p><a href="http://sysads.co.uk/2014/09/install-mkv-extractor-qt-5-1-4-ubuntu-14-04/"><span style=" text-decoration: underline; color:#0057ae;">sysads.co.uk</span></a> (English)</p><p><a href="http://www.softpedia.com/reviews/linux/mkv-extractor-qt-review-496919.shtml"><span style=" text-decoration: underline; color:#0057ae;">softpedia.com</span></a> (English)</p><p><a href="http://linux.softpedia.com/get/Multimedia/Video/MKV-Extractor-Qt-103555.shtml"><span style=" text-decoration: underline; color:#0057ae;">linux.softpedia.com</span></a> (English)</p><p><a href="http://zenway.ru/page/mkv-extractor-qt"><span style=" text-decoration: underline; color:#0057ae;">zenway.ru</span></a> (Russian)</p><p><a href="http://linuxg.net/how-to-install-mkv-extractor-qt-5-1-4-on-ubuntu-14-04-linux-mint-17-elementary-os-0-3-deepin-2014-and-other-ubuntu-14-04-derivatives/">linuxg.net</span></a> (English)</p><p><a href="http://la-vache-libre.org/mkv-extractor-gui-virer-les-sous-titres-inutiles-de-vos-fichiers-mkv-et-plus-encore/">la-vache-libre.org</span></a> (French)</p><p><a href="http://passionexubuntu.altervista.org/index.php/it/kubuntu/1152-mkv-extractor-qt-vs-5-1-3-kde.html">passionexubuntu.altervista.org</span></a> (Italian)</p></body></html>"""),
@@ -2132,7 +2130,7 @@ class MKVExtractorQt5(QMainWindow):
                 IDX = Path('{}/{}_subtitles_{}.idx'.format(Configs.value("OutputFolder"), SubInfo[0], SubInfo[1]))
                 SRT = IDX.with_suffix(".srt")
                 SubToRemove.append(IDX)
-                CommandList.append(["Qtesseract", 'qtesseract5 -g -c {} -l "{}" "{}" "{}" '.format(Configs.value("TesseractCpu"), SubInfo[2], IDX, SRT)])
+                CommandList.append(["Qtesseract5", 'qtesseract5 -q -g -c {} -l "{}" "{}" "{}" '.format(Configs.value("TesseractCpu"), SubInfo[2], IDX, SRT)])
 
 
         ### Ajout de la commande mkvmerge à la liste des commandes à exécuter
@@ -2213,7 +2211,14 @@ class MKVExtractorQt5(QMainWindow):
             self.ui.mkv_execute.hide() # Cache le bouton exécuter
             self.ui.mkv_execute_2.setEnabled(False) # Grise le bouton exécuter
             self.ui.mkv_stop.show() # Affiche le bouton arrêter
-            if len(CommandList) > 1: self.ui.mkv_pause.show() # Affiche le bouton pause
+
+            qtesseract5 = False
+            for Command in CommandList:
+                if "Qtesseract5" in Command:
+                    qtesseract5 = True
+
+            if len(CommandList) > 1 or qtesseract5: self.ui.mkv_pause.show() # Affiche le bouton pause
+
             for widget in (self.ui.menubar, self.ui.tracks_bloc): widget.setEnabled(False)  # Blocage de widget
 
 
@@ -2288,10 +2293,10 @@ class MKVExtractorQt5(QMainWindow):
                     line = int((value * 100) / Configs.value("DurationFile"))
 
 
-            ## Qtesseract
-            elif Configs.value("Command")[0] == "Qtesseract":
+            ## Qtesseract5
+            elif Configs.value("Command")[0] == "Qtesseract5":
                 if "Temporary folder:" in line:
-                    Configs.setValue("QtesseractFolder", Path(line.split(": ")[1]))
+                    Configs.setValue("Qtesseract5Folder", Path(line.split(": ")[1]))
 
                 try:
                     line = int(line)
@@ -2322,7 +2327,7 @@ class MKVExtractorQt5(QMainWindow):
         ### Si le travail est annulé (via le bouton stop ou via la fermeture du logiciel) ou a renvoyée une erreur, mkvmerge renvoie 1 s'il y a des warnings
         if (Configs.value("Command")[0] == "FileToMKV" and self.process.exitCode() == 2) or (self.process.exitCode() != 0 and Configs.value("Command")[0] != "FileToMKV"):
             ## Arret du travail
-            if Configs.value("Command")[0] == "Qtesseract": self.WorkStop("SrtError")
+            if Configs.value("Command")[0] == "Qtesseract5": self.WorkStop("SrtError")
             else: self.WorkStop("Error")
 
             ## Arret de la fonction
@@ -2381,8 +2386,12 @@ class MKVExtractorQt5(QMainWindow):
 
         ### S'il reste des commandes, exécution de la commande suivante
         if CommandList:
-            ## Cache le bouton de pause s'il n'y a plus qu'une seule commande à lancer
-            if len(CommandList) == 1: self.ui.mkv_pause.hide()
+            qtesseract5 = False
+            for Command in CommandList:
+                if "Qtesseract5" in Command:
+                    qtesseract5 = True
+
+            if len(CommandList) == 1 and not qtesseract5: self.ui.mkv_pause.show() # Affiche le bouton pause
 
             ## Récupération de la commande suivante à exécuter
             Configs.setValue("Command", CommandList.pop(0))
@@ -2416,6 +2425,21 @@ class MKVExtractorQt5(QMainWindow):
             if Configs.value("SysTray"): self.SysTrayIcon.showMessage(self.Trad["SysTrayFinishTitle"], self.Trad["SysTrayTotalFinishText"], QSystemTrayIcon.Information, 3000)
 
 
+
+    #========================================================================
+    def WorkPauseBefore(self):
+        """Fonction différentiente entre la pause entre jobs et celle pendant l'utilisation de Qtesseract."""
+        if Configs.value("Command")[0] == "Qtesseract5":
+            ## Pause ependant la conversionde Tesseract
+            Path(Configs.value("Qtesseract5Folder"), "Pause").touch()
+            self.WorkPause()
+
+        else:
+            ## Pause entre les taches
+            Configs.setValue("WorkPause", True)
+
+
+
     #========================================================================
     def WorkPause(self):
         """Fonction de mise en pause du travail entre 2 commandes."""
@@ -2432,16 +2456,21 @@ class MKVExtractorQt5(QMainWindow):
         Resume.addButton(CancelButton, QMessageBox.RejectRole)
         Resume.setEscapeButton(CancelButton)
         Resume.setDefaultButton(ResumeButton)
-        Resume.exec_()
+        Resume.exec()
+
 
         ## Fin de la fonction
         if Resume.clickedButton() != ResumeButton:
-            ## Si la reprise n'est pas confirmée, on arrete le travail en cours
+            # Si la reprise n'est pas confirmée, on arrete le travail en cours
             self.WorkStop("Pause")
 
             return(False)
 
         else:
+            # Dans le cas spécifique de Qtesseract
+            if Configs.contains("Qtesseract5Folder") and Path(Configs.value("Qtesseract5Folder"), "Pause").exists():
+                Path(Configs.value("Qtesseract5Folder"), "Pause").unlink()
+
             return(True)
 
 
@@ -2449,9 +2478,14 @@ class MKVExtractorQt5(QMainWindow):
     #========================================================================
     def WorkStop(self, Type):
         """Fonction d'arrêt du travail en cours."""
+        ### Dans le cas spécifique de Qtesseract
+        if Configs.contains("Qtesseract5Folder"):
+            Path(Configs.value("Qtesseract5Folder"), "Stop").touch()
+            Configs.remove("Qtesseract5Folder")
+
         ### Type : Error (en cas de plantage), Stop (en cas d'arret du travail), Close (en cas de fermeture du logiciel), Pause (en cas d'annulation pendant la pause), SrtError (en cas d'erreur tesseract)
         ### En cas de pause, il n'y a pas de travail en cours
-        if not Type in ("Pause", "SrtError"):
+        if not Type in ("Pause"):
             ## Teste l'etat du process pour ne pas le killer plusieurs fois (stop puis error)
             if self.process.state() == 0: return
 
@@ -2461,12 +2495,6 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Suppression des fichiers temporaires
         self.RemoveTempFiles()
-
-        ### Suppression du dossier temporaire de Qtesseract5
-        if Configs.contains("QtesseractFolder"):
-            if Configs.value("QtesseractFolder").exists():
-                rmtree(str(Configs.value("QtesseractFolder")))
-                Configs.remove("QtesseractFolder")
 
         ### Réinitialisation de la liste des commandes
         CommandList.clear()
@@ -2586,9 +2614,17 @@ class MKVExtractorQt5(QMainWindow):
         except: pass
 
 
+        ### Suppression du dossier temporaire de Qtesseract5
+        if Configs.contains("Qtesseract5Folder") and Configs.value("Qtesseract5Folder").exists():
+            try:
+                rmtree(str(Configs.value("Qtesseract5Folder")))
+            except:
+                pass
+
+
         ### Suppression des clés qu'on ne garde pas
         # Options temporaires seulement
-        for Key in ("Reencapsulate", "VobsubToSrt", "DtsToAc3", "MKVLoaded", "ChaptersFile", "TagsFile", "TitleFile", "DurationFile", "Command", "FirstRun", "SuperBlockTemp", "WorkOldLine", "FolderTemp", "FolderTempWidget", "Info", "OutputFile", "AudioQuality", "AudioBoost", "AudioStereo", "SubtitlesOpen", "WorkPause", "AudioConvert", "AllTracks", "QtesseractFolder"): Configs.remove(Key)
+        for Key in ("Reencapsulate", "VobsubToSrt", "DtsToAc3", "MKVLoaded", "ChaptersFile", "TagsFile", "TitleFile", "DurationFile", "Command", "FirstRun", "SuperBlockTemp", "WorkOldLine", "FolderTemp", "FolderTempWidget", "Info", "OutputFile", "AudioQuality", "AudioBoost", "AudioStereo", "SubtitlesOpen", "WorkPause", "AudioConvert", "AllTracks", "Qtesseract5Folder"): Configs.remove(Key)
 
 
 
@@ -2596,7 +2632,7 @@ class MKVExtractorQt5(QMainWindow):
 #############################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setApplicationVersion("5.4.0")
+    app.setApplicationVersion("5.4.2")
     app.setApplicationName("MKV Extractor Qt5")
 
     ### Dossier du logiciel, utile aux traductions et à la liste des codecs

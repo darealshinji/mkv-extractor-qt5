@@ -7,11 +7,7 @@
 # - Lors de la creation du paquet sources
 # - Apres la creation d'un paquet source, les fichiers sont supprimés, il faut donc les recréer
 
-# if [[ ! $(which "pyrcc5") ]]
-# then
-#     echo "The pyrcc5 program is missing, installing of pyqt5-dev-tools package."
-#     sudo apt-get install pyqt5-dev-tools
-# fi
+# la paquet pyqt5-dev-tools est necessaire
 
 chemin="$(cd "$(dirname "$0")";pwd)"
 cd "${chemin}"
@@ -28,7 +24,7 @@ elif [[ -e "/usr/lib/i386-linux-gnu/qt5/bin/lrelease" ]]
 then
     /usr/lib/i386-linux-gnu/qt5/bin/lrelease *.ts QFileDialogCustom/*.ts
 else
-    echo "cannot find \`lrelease'"
+    echo "cannot find 'lrelease'"
     exit 1
 fi
 

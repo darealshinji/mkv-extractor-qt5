@@ -5,7 +5,7 @@ Inofficial working tree
 
 Features:
   * DTS to AC3 conversion via ffmpeg
-  * Automatic conversion from SUB to SRT via tesseract
+  * Automatic conversion from SUB to SRT via [Qtesseract5](https://github.com/darealshinji/Qtesseract5)
   * Read and extract joined files
   * Extract and re-encapsule tracks
   * And more again

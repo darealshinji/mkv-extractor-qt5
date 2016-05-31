@@ -15,17 +15,14 @@ Package: mkv-extractor-qt5
 Architecture: all
 Depends:
  ${misc:Depends},
- mkvtoolnix,
  ${python3:Depends},
  python3-pyqt5,
- python-support (>= 0.90)
+ mkvtoolnix
 Recommends:
  libav-tools | ffmpeg,
  mkclean,
- tesseract-ocr,
- tesseract-ocr-fra,
- mkvalidator,
- subptools | ogmrip
+ qtesseract5,
+ mkvalidator
 Description: Graphical mkv demultiplexer
  Features:
   * DTS to AC3 conversion via ffmpeg

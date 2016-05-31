@@ -1,3 +1,52 @@
+mkv-extractor-qt5 (5.4.2-0~xenial) xenial; urgency=low ()
+
+  [english]
+    - Add pause during SUB to SRT convert
+    - Icon remake
+
+  [français]
+    - Ajout de la pause pendant la conversion SUB vers SRT
+    - Icone refaite
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 12 May 2016 14:01:27 +0200
+
+mkv-extractor-qt5 (5.4.0-1~xenial) xenial; urgency=low ()
+
+  [english]
+    - Lot of bug fixes and revised code
+    - Update of the config system who can be edit
+    - Update of the icons
+    - Option to delete the qt file listing the recent files and URLs
+    - Add the filter "All files compatible"
+    - Add a pause button beetwen jobs
+    - Add audio convert options
+    - Add a systray icon option
+    - Use of mkvtoolnix-gui who replace mmg
+    - Error message if a file name contains a "
+    - Few dependancies removed
+    - More files compatibles with the mkv convert
+    - Convert subtitles use multiprocess now (creation of the Qtesseract5 software)
+    - A clic on the header of tracks selects all or nothing
+
+  [français]
+    - Beaucoup de corrections de bugs et revision du code
+    - Mise a jour du systeme de configuration qui peut etre modifie
+    - Mise a jour de la traduction francaise
+    - Mise a jour des icones
+    - Option de suppression du fichier qt listant les fichiers et urls recentes
+    - Ajout du filtre "Tous les fichiers compatibles"
+    - Ajout d'un bouton de pause entre les taches
+    - Ajout d'option de convertion audio
+    - Ajout d'une option d'icone de barre des tache
+    - Utilisation de mkvtoolnix-gui qui remplace mmg
+    - Message d'erreur si un fichier contient " dans son nom
+    - Suppression de quelques dependances
+    - Plus de fichiers compatibles pour la convertion en mkv
+    - La convertion des soustitres utilise maintenant plusieurs processeurs (creation d'un logiciel Qtesseract5)
+    - Un clic sur l'en-tete des pistes selectionne tout ou rien
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 21 Apr 2015 19:01:27 +0200
+
 mkv-extractor-qt5 (5.3.0-0~trusty) trusty; urgency=low ()
 
   [english]

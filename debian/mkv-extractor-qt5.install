@@ -1,4 +1,6 @@
-*.desktop      usr/share/applications
-icons/*        usr/share/icons/hicolor
-*.py           usr/share/mkv-extractor-qt5
-*.qm           usr/share/mkv-extractor-qt5
+*.desktop                       usr/share/applications
+*.svgz                          usr/share/icons/scalable/apps
+QFileDialogCustom/*.py          usr/share/mkv-extractor-qt5/QFileDialogCustom/
+QFileDialogCustom/*.qm          usr/share/mkv-extractor-qt5/QFileDialogCustom/
+*.py                            usr/share/mkv-extractor-qt5
+*.qm                            usr/share/mkv-extractor-qt5

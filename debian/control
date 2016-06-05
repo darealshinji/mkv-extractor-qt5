@@ -19,7 +19,7 @@ Depends:
  ${python3:Depends},
  python3-pyqt5,
  mkvtoolnix
-Recommends:
+Suggests:
  libav-tools | ffmpeg,
  mkclean,
  qtesseract5,

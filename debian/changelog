@@ -1,12 +1,14 @@
-mkv-extractor-qt5 (5.4.2-0~xenial) xenial; urgency=low ()
+mkv-extractor-qt5 (5.4.2-1~xenial) xenial; urgency=low ()
 
   [english]
     - Add pause during SUB to SRT convert
     - Icon remake
+    - Czech translation update
 
   [français]
     - Ajout de la pause pendant la conversion SUB vers SRT
     - Icone refaite
+    - Mise a jour de la traduction Tcheque
 
  -- Belleguic Terence <hizo@free.fr>  Thu, 12 May 2016 14:01:27 +0200
 

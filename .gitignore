@@ -8,7 +8,9 @@ __pycache__/
 MKVRessources_rc.py
 ui_MKVExtractorQt5.py
 MKVExtractorQt5-standalone.py
+mkv-extractor-qt5.svgz
 tmp*
+debian/
 
 # editor and backup stuff
 *~

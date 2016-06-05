@@ -3,11 +3,9 @@
 %:
 	dh ${@} --parallel --with python3
 
-override_dh_auto_clean:
-	dh_auto_clean
-	rm -f mkv-extractor-qt5.svgz
-
 override_dh_install:
+	dh_install
+	mkdir -p debian/mkv-extractor-qt5/usr/share/icons/hicolor/scalable/apps
 	scour --enable-id-stripping \
 		--shorten-ids \
 		--enable-comment-stripping \
@@ -15,8 +13,7 @@ override_dh_install:
 		--remove-metadata \
 		--indent=none \
 		-i mkv-extractor-qt5.svg \
-		-o mkv-extractor-qt5.svgz
-	dh_install
+	-o debian/mkv-extractor-qt5/usr/share/icons/hicolor/scalable/apps/mkv-extractor-qt5.svg
 
 override_dh_python3:
 	dh_python3 --ignore-shebangs

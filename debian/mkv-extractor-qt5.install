@@ -1,5 +1,6 @@
 *.desktop                       usr/share/applications
 QFileDialogCustom/*.py          usr/share/mkv-extractor-qt5/QFileDialogCustom/
 QFileDialogCustom/*.qm          usr/share/mkv-extractor-qt5/QFileDialogCustom/
+WhatsUp/*.py                    usr/share/mkv-extractor-qt5/WhatsUp
 *.py                            usr/share/mkv-extractor-qt5
 *.qm                            usr/share/mkv-extractor-qt5

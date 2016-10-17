@@ -1,14 +1,26 @@
-mkv-extractor-qt5 (5.4.2-2~xenial) xenial; urgency=low ()
+mkv-extractor-qt5 (5.4.3-0~xenial) xenial; urgency=low ()
+
+  [english]
+    - Code update of the volume boost
+    - Code update of the new version of Qtesseract5
+    - Code update of the software
+
+  [français]
+    - Mise à jour du code de boost du volume
+    - Mise à jour du code de la nouvelle version de Qtesseract5
+    - Mise à jour du code du logiciel
+
+ -- Belleguic Terence <hizo@free.fr>  Mon, 28 Sep 2016 14:40:27 +0200
+
+mkv-extractor-qt5 (5.4.2-0~xenial) xenial; urgency=low ()
 
   [english]
     - Add pause during SUB to SRT convert
     - Icon remake
-    - Czech translation update
 
   [français]
     - Ajout de la pause pendant la conversion SUB vers SRT
     - Icone refaite
-    - Mise a jour de la traduction Tcheque
 
  -- Belleguic Terence <hizo@free.fr>  Thu, 12 May 2016 14:01:27 +0200
 

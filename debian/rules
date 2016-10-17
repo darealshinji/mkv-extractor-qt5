@@ -1,19 +1,16 @@
 #!/usr/bin/make -f
 
+apps_d = debian/mkv-extractor-qt5/usr/share/icons/hicolor/scalable/apps
+
+
 %:
 	dh ${@} --parallel --with python3
 
 override_dh_install:
 	dh_install
-	mkdir -p debian/mkv-extractor-qt5/usr/share/icons/hicolor/scalable/apps
-	scour --enable-id-stripping \
-		--shorten-ids \
-		--enable-comment-stripping \
-		--disable-embed-rasters \
-		--remove-metadata \
-		--indent=none \
-		-i mkv-extractor-qt5.svg \
-	-o debian/mkv-extractor-qt5/usr/share/icons/hicolor/scalable/apps/mkv-extractor-qt5.svg
+	mkdir -p $(apps_d)
+	./optimize-svg.sh
+	mv mkv-extractor-qt5_optimized.svg $(apps_d)/mkv-extractor-qt5.svg
 
 override_dh_python3:
 	dh_python3 --ignore-shebangs

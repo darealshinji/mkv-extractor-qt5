@@ -9,7 +9,7 @@ Build-Depends:
  python3 (>= 3.4.0),
  python-scour,
  qttools5-dev-tools
-Standards-Version: 3.9.6
+Standards-Version: 3.9.7
 Homepage: http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
 
 Package: mkv-extractor-qt5

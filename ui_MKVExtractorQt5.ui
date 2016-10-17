@@ -904,9 +904,9 @@
     <addaction name="option_debug"/>
     <addaction name="separator"/>
     <addaction name="about"/>
-    <addaction name="about_qtesseract5"/>
     <addaction name="they_talk_about"/>
     <addaction name="help_mkvextractorqt5"/>
+    <addaction name="whatsup"/>
     <addaction name="separator"/>
     <addaction name="mkvtoolnix"/>
     <addaction name="separator"/>
@@ -1423,6 +1423,18 @@
    </property>
    <property name="statusTip">
     <string>Display information about Qtesseract5.</string>
+   </property>
+  </action>
+  <action name="whatsup">
+   <property name="icon">
+    <iconset theme="text-x-texinfo">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;What's up ?!</string>
+   </property>
+   <property name="statusTip">
+    <string>View the changelog file of the software.</string>
    </property>
   </action>
   <actiongroup name="actionGroupName8">

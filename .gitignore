@@ -5,6 +5,7 @@ __pycache__/
 # compiled Qt translations
 *.qm
 
+MKVRessources.qrc
 MKVRessources_rc.py
 ui_MKVExtractorQt5.py
 MKVExtractorQt5-standalone.py

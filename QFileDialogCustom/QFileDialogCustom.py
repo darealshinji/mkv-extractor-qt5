@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-
 import sys
 from pathlib import Path # Nécessaire pour la recherche de fichier
+
+from PyQt5.QtWidgets import QDialogButtonBox, QApplication, QFileDialog, QMessageBox
+from PyQt5.QtCore import QCoreApplication, Qt
 
 
 #############################################################################
@@ -21,32 +20,6 @@ class QFileDialogCustom(QFileDialog):
         self.Retour = ""
         self.DoubleClic = False
         self.AlreadyExists = False
-
-
-     #========================================================================
-    def LanguageChoice(self, Lang):
-        ### Chargement du fichier qm de traduction (anglais utile pour les textes singulier/pluriel)
-
-        appTranslator = QTranslator() # Création d'un QTranslator
-        Folder = Path(Path(sys.argv[0]).resolve().parent) # Dossier des traductions
-
-        ### Pour la trad française
-        if "fr" in Lang:
-            find = appTranslator.load("QFileDialogCustom_fr_FR", str(Folder))
-
-            ## Si le fichier n'a pas été trouvé, affiche une erreur et utilise la version anglaise
-            if not find:
-                QMessageBox(3, "Erreur de traduction", "Aucun fichier de traduction <b>française</b> trouvé.<br/>Utilisation de la langue <b>anglaise</b>.", QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
-
-            ## Chargement de la traduction
-            else:
-                app.installTranslator(appTranslator)
-
-            ## Mise à jour du fichier langage de Qt
-            global translator_qt
-            translator_qt = QTranslator() # Création d'un QTranslator
-            if translator_qt.load("qt_fr_FR", QLibraryInfo.location(QLibraryInfo.TranslationsPath)):
-                app.installTranslator(translator_qt)
 
 
     #========================================================================
@@ -105,9 +78,11 @@ class QFileDialogCustom(QFileDialog):
     #========================================================================
     def createWindow(self, Type="File", Action="Open", WidgetToAdd=None, Flags=None, FileName=None, Options=None, AlreadyExistsTest=True):
         """Fonction affichant la fenêtre."""
-        if Action == "Open": self.setAcceptMode(QFileDialog.AcceptOpen)
+        if Action == "Open":
+            self.setAcceptMode(QFileDialog.AcceptOpen)
 
-        elif Action == "Save": self.setAcceptMode(QFileDialog.AcceptSave)
+        elif Action == "Save":
+            self.setAcceptMode(QFileDialog.AcceptSave)
 
         self.setOption(QFileDialog.DontConfirmOverwrite, True) # La fenetre d'ecriture par dessus un fichier existant n'indique pas le resultat du choix donc inutile, il faut en faire une maison
         self.setOption(QFileDialog.DontUseNativeDialog, True)
@@ -122,9 +97,14 @@ class QFileDialogCustom(QFileDialog):
             self.setFileMode(QFileDialog.Directory) # Mode Folder
             self.setOption(QFileDialog.ShowDirsOnly, True)
 
-        if Flags != None: self.setWindowFlags(Flags)
-        if Options != None: self.setOptions(Options)
-        if FileName != None: self.selectFile(FileName) # Nécessaire car si on utilise HideNameFilterDetails et save, il utilise la 1ere extension dans le fichier
+        if Flags != None:
+            self.setWindowFlags(Flags)
+
+        if Options != None:
+            self.setOptions(Options)
+
+        if FileName != None:
+            self.selectFile(FileName) # Nécessaire car si on utilise HideNameFilterDetails et save, il utilise la 1ere extension dans le fichier
 
 
         ### Ajout du widget à la fenêtre de dialogue
@@ -155,36 +135,41 @@ class QFileDialogCustom(QFileDialog):
                 dialog.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
                 dialog.setDefaultButton(QMessageBox.Yes)
                 dialog.setEscapeButton(QMessageBox.No)
-                Choix = dialog.exec_()
+                Choix = dialog.exec()
 
                 self.AlreadyExists
 
                 # Si on ne le remplace pas, on renvoie une version vide
-                if Choix != QMessageBox.Yes: self.Retour = ""
+                if Choix != QMessageBox.Yes:
+                    self.Retour = ""
 
 
         ### Retour de la valeur choisie
         if Type == "File":
             if Action == "Open":
-                if Path(self.Retour).is_file(): return self.Retour
-                else: return ""
+                if Path(self.Retour).is_file():
+                    return self.Retour
+
+                else:
+                    return ""
 
             elif Action == "Save":
                 return self.Retour
 
         elif Type == "Folder":
-            if Path(self.Retour).is_dir(): return self.Retour
-            else: return ""
+            if Path(self.Retour).is_dir():
+                return self.Retour
+
+            else:
+                return ""
 
 
 
 #############################################################################
 if __name__ == '__main__':
-    print("popo")
     app = QApplication(sys.argv)
     app.setApplicationVersion("1.0")
     app.setApplicationName("QFileDialogCustom")
-    QFileDialogCustom = QFileDialogCustom()
-    QFileDialogCustom.setAttribute(Qt.WA_DeleteOnClose)
-    print("je suis la")
-    app.exec_()
+    QFileDialogClass = QFileDialogCustom()
+    QFileDialogClass.setAttribute(Qt.WA_DeleteOnClose)
+    app.exec()

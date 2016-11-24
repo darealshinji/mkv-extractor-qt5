@@ -1,3 +1,20 @@
+mkv-extractor-qt5 (5.4.4-0djcj1~xenial) xenial; urgency=low ()
+
+  [english]
+    - Update of the cz translation
+    - Bug correction (files extracted removed when the software is closed)
+    - Change the icon to svg
+    - Update the Debian files
+
+  [français]
+    - Mise à jour de la traduction tcheque
+    - Correction d'un bug (suppression des fichiers extraits lors de la
+      fermeture du logiciel)
+    - Changement de l'icone en svg
+    - Mise à jour des fichiers Debian
+
+ -- Marshall Banana <djcj@gmx.de>  Thu, 24 Nov 2016 18:43:40 +0100
+
 mkv-extractor-qt5 (5.4.4-0~xenial) xenial; urgency=low ()
 
   [english]
@@ -8,7 +25,8 @@ mkv-extractor-qt5 (5.4.4-0~xenial) xenial; urgency=low ()
 
   [français]
     - Mise à jour de la traduction tcheque
-    - Correction d'un bug (suppression des fichiers extraits lors de la fermeture du logiciel)
+    - Correction d'un bug (suppression des fichiers extraits lors de la
+      fermeture du logiciel)
     - Changement de l'icone en svg
     - Mise à jour des fichiers Debian
 

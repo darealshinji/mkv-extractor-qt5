@@ -44,8 +44,8 @@ class QuitButton(QPushButton):
 #############################################################################
 class QTextEditCustom(QTextEdit):
     """Sous classement d'un QTextEdit pour y modifier le menu du clic droit."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, Parent=None):
+        super().__init__(Parent)
 
         ### Création des raccourcis claviers qui serviront aux actions
         ExportShortcut = QShortcut("ctrl+e", self)
@@ -2674,12 +2674,14 @@ class MKVExtractorQt5(QMainWindow):
         ### En cas de pause, il n'y a pas de travail en cours
         if Type != "Pause":
             ## Teste l'etat du process pour ne pas le killer plusieurs fois (stop puis error)
-            if self.process.state() != 0:
-                ## Kill le boulot en cours
-                self.process.kill()
+            if self.process.state() == 0:
+                return
 
-                if not self.process.waitForFinished(1000):
-                    self.process.kill() # Attend que le travail soit arrêté pdt 1s
+            ## Kill le boulot en cours
+            self.process.kill()
+
+            if not self.process.waitForFinished(1000):
+                self.process.kill() # Attend que le travail soit arrété pdt 1s
 
 
         ### Suppression des fichiers temporaires
@@ -2850,7 +2852,7 @@ class MKVExtractorQt5(QMainWindow):
 #############################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setApplicationVersion("5.4.3")
+    app.setApplicationVersion("5.4.4")
     app.setApplicationName("MKV Extractor Qt5")
 
     ### Dossier du logiciel, utile aux traductions et à la liste des codecs

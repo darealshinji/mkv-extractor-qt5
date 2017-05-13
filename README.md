@@ -13,7 +13,6 @@ Features:
 Copyright (C) 2013-2016 Terence Belleguic <hizo@free.fr>
 
 https://launchpad.net/~hizo/+archive/mkv-extractor-gui<br>
-https://launchpad.net/~djcj/+archive/ubuntu/mkvtoolnix (inofficial)<br>
 http://forum.ubuntu-fr.org/viewtopic.php?id=1508741
 
 

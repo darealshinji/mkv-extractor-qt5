@@ -1,19 +1,60 @@
-mkv-extractor-qt5 (5.4.4-0djcj1~xenial) xenial; urgency=low ()
+mkv-extractor-qt5 (5.5.5-0~xenial) xenial; urgency=low ()
 
   [english]
-    - Update of the cz translation
-    - Bug correction (files extracted removed when the software is closed)
-    - Change the icon to svg
-    - Update the Debian files
+    - Fix the desktop file
+    - Fix the systray bug
+    - Fix the temporary folder bug
+    - Fix the icons of the tracks bug
+    - Add the qt style choice
 
   [français]
-    - Mise à jour de la traduction tcheque
-    - Correction d'un bug (suppression des fichiers extraits lors de la
-      fermeture du logiciel)
-    - Changement de l'icone en svg
-    - Mise à jour des fichiers Debian
+    - Correction du fichier desktop
+    - Correction d'un bug avec le systray
+    - Correction d'un bug sur le dossier temporaire
+    - Correction d'un bug avec les icones des fichiers joints
+    - Ajout du choix du style graphique
 
- -- Marshall Banana <djcj@gmx.de>  Thu, 24 Nov 2016 18:43:40 +0100
+ -- Belleguic Terence <hizo@free.fr>  Sat, 27 Jan 2018 12:20:04 +0200
+
+mkv-extractor-qt5 (5.5.3-0~xenial) xenial; urgency=low ()
+
+  [english]
+    - Fix the desktop file
+    - Fix the systray bug
+    - Fix the temporary folder bug
+    - Fix the icons of the tracksr bug
+
+  [français]
+    - Correction du fichier desktop
+    - Correction d'un bug avec le systray
+    - Correction d'un bug sur le dossier temporaire
+    - Correction d'un bug avec les icones des fichiers joints
+
+ -- Belleguic Terence <hizo@free.fr>  Sat, 27 Jan 2018 12:20:04 +0200
+
+mkv-extractor-qt5 (5.5.1-0~xenial) xenial; urgency=low ()
+
+  [english]
+    - Bug correction "can't pickle QTemporaryDir objects"
+
+
+  [français]
+    - Correction du bug "can't pickle QTemporaryDir objects"
+
+ -- Belleguic Terence <hizo@free.fr>  Mon, 20 Nov 2017 18:40:04 +0200
+
+mkv-extractor-qt5 (5.5.0-0~xenial) xenial; urgency=low ()
+
+  [english]
+    - Bug corrections
+    - Replacing the -I argument of mkvmerge with -J
+
+
+  [français]
+    - Correction de bugs
+    - Remplacement de l'argument -I de mkvmerge par -J
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 24 Nov 2016 10:40:04 +0200
 
 mkv-extractor-qt5 (5.4.4-0~xenial) xenial; urgency=low ()
 

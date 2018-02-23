@@ -15,7 +15,7 @@ from datetime import timedelta # utile pour le calcul de la progression de la co
 from pathlib import Path # Nécessaire pour la recherche de fichier
 import json # Necessaire au traitement des infos de mkvmerge
 
-from PyQt5.QtWidgets import QPushButton, QSystemTrayIcon, QWidget, QTextEdit, QShortcut, QComboBox, QApplication, QAction, QDockWidget, QDesktopWidget, QMessageBox, QActionGroup, QTableWidgetItem, QCheckBox, QMainWindow, QMenu, QDialog, QHBoxLayout, QVBoxLayout, QDialogButtonBox
+from PyQt5.QtWidgets import QPushButton, QSystemTrayIcon, QWidget, QTextEdit, QShortcut, QComboBox, QApplication, QAction, QDockWidget, QDesktopWidget, QMessageBox, QActionGroup, QTableWidgetItem, QCheckBox, QMainWindow, QMenu, QDialog, QHBoxLayout, QVBoxLayout, QDialogButtonBox, QStyleFactory
 from PyQt5.QtCore import QCoreApplication, QFileInfo, QStandardPaths, QTemporaryDir, QTranslator, QThread, QLibraryInfo, QDir, QMimeType, QMimeDatabase, Qt, QSettings, QProcess, QUrl, QLocale
 from PyQt5.QtGui import QTextCursor, QIcon, QKeySequence, QCursor, QDesktopServices, QPixmap
 
@@ -225,6 +225,16 @@ class MKVExtractorQt5(QMainWindow):
             ffconv = True
 
 
+        ### Remplissage du menu des styles Qt disponibles
+        for Style in QStyleFactory.keys(): # Styles disponibles
+            QtStyleList[Style] = QAction(Style, self) # Création d'une action stockée dans le dico
+            QtStyleList[Style].triggered.connect(partial(self.StyleChange, Style)) # Action créée pour cet element
+            self.ui.option_style.addAction(QtStyleList[Style]) # Ajout de l'action à la liste
+
+            if Style.lower() == Configs.value("QtStyle").lower(): # Si c'est le style actuel
+                self.StyleChange(Style)
+
+
         ### Mise en place du system tray
         menulist = QMenu() # Création d'un menu
         icon = QIcon.fromTheme("application-exit", QIcon(":/img/application-exit.png"))
@@ -382,6 +392,10 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Connexions de la grande partie des widgets (les autres sont ci-dessus ou via le fichier UI)
         self.ConnectActions()
+
+
+        ### Création du dossier temporaire
+        self.FolderTempCreate()
 
 
         ### Dans le cas du lancement du logiciel avec ouverture de fichier
@@ -547,6 +561,23 @@ class MKVExtractorQt5(QMainWindow):
         ### Connexions du QProcess
         self.process.readyReadStandardOutput.connect(self.WorkReply) # Retours du travail
         self.process.finished.connect(self.WorkFinished) # Fin du travail
+
+
+    #========================================================================
+    def StyleChange(self, Value):
+        """Fonction modifiant le style utilisé par Qt."""
+        ### Enregistrement de la valeur
+        Configs.setValue("QtStyle", Value)
+
+        ### Grise le style actuellement utilisé
+        for Style in QtStyleList.keys():
+            if Value == Style :
+                QtStyleList[Style].setEnabled(False)
+            else:
+                QtStyleList[Style].setEnabled(True)
+
+        ### Applique le style graphique
+        QApplication.setStyle(QStyleFactory.create(Value))
 
 
     #========================================================================
@@ -777,6 +808,7 @@ class MKVExtractorQt5(QMainWindow):
                      "OptionsQualityNoChange2": QCoreApplication.translate("Options", "The quality of the audio tracks will not be changed."),
                      "OptionsPowerNoChange1": QCoreApplication.translate("Options", "No change the power"),
                      "OptionsPowerNoChange2": QCoreApplication.translate("Options", "The power of the audio tracks will not be changed."),
+                     "OptionsStyles": QCoreApplication.translate("Options", "Use the {} style."),
 
                      "SelectedFile": QCoreApplication.translate("Select", "Selected file: {}."),
                      "SelectedFolder1": QCoreApplication.translate("Select", "Selected folder: {}."),
@@ -872,6 +904,8 @@ class MKVExtractorQt5(QMainWindow):
         self.Qtesseract5.setText("Open the sub file in Qtesseract5")
         self.Qtesseract5.setStatusTip("Open the sub file in Qtesseract5")
 
+        for Style in QtStyleList.keys():
+            QtStyleList[Style].setStatusTip(self.Trad["OptionsStyles"].format(Style))
 
         ### Si un dossier de sortie a déjà été sélectionné, mise à jour du statustip et affiche l'info
         if Configs.value("OutputFolder"):
@@ -1124,12 +1158,6 @@ class MKVExtractorQt5(QMainWindow):
 
                 if not OutputFolder.is_dir() or OutputFolder == Path():
                     return True
-
-
-                ## Création d'un dossier temporaire
-                if Folder == "FolderTemp":
-                    Configs.setValue("FolderParentTemp", str(OutputFolder))
-                    self.FolderTempCreate()
 
                 else:
                     Configs.setValue(Folder, OutputFolder)
@@ -1493,10 +1521,6 @@ class MKVExtractorQt5(QMainWindow):
         x = 0 # Sert à indiquer les numéros de lignes
         self.ComboBoxes = {} # Dictionnaire listant les combobox
         MKVDico.clear() # Mise au propre du dictionnaire
-
-
-        ### Création du dossier temporaire
-        self.FolderTempCreate()
 
 
         ### Désactivation des différentes options qui pourraient être activés
@@ -2872,7 +2896,7 @@ class MKVExtractorQt5(QMainWindow):
 #############################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setApplicationVersion("5.5.1")
+    app.setApplicationVersion("5.5.5")
     app.setApplicationName("MKV Extractor Qt5")
 
     ### Dossier du logiciel, utile aux traductions et à la liste des codecs
@@ -2886,6 +2910,7 @@ if __name__ == '__main__':
     MKVLanguages = [] # Liste qui contiendra et affichera dans les combobox les langues dispo (audio et sous titres)
     PowerList = {} # Dictionnaire qui contiendra les widgets de gestion de puissance de fichier AC3
     QualityList = {} # Dictionnaire qui contiendra les widgets de gestion de la qualité de fichier AC3
+    QtStyleList = {} # Dictionnaire qui contiendra les styles possibles pour qt
     TempFiles = [] # Liste des fichiers temporaires pré ré-encapsulage ou en cas d'arrêt du travail
     CommandList = [] # Liste des commandes à exécuter
     SubtitlesFiles = [] # Adresse des fichiers sous titres à ouvrir avant l'encapsulage
@@ -2917,7 +2942,8 @@ if __name__ == '__main__':
                      "AudioStereo": False, # Option de conversion en canal double
                      "SubtitlesOpen": False, # Option d'ouverture des sous-titres avant leur ré encapsulage
                      "SysTray": True, # Option affichant l'icône du system tray
-                     "WindowAspect": True # Conserver la fenêtre et sa géométrie
+                     "WindowAspect": True, # Conserver la fenêtre et sa géométrie
+                     "QtStyle": QApplication.style().objectName() # Conserver la fenêtre et sa géométrie
                     }
 
 

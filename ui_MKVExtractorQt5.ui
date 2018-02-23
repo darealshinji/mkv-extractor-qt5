@@ -916,6 +916,14 @@
     <property name="title">
      <string>Options</string>
     </property>
+    <widget class="QMenu" name="option_style">
+     <property name="statusTip">
+      <string/>
+     </property>
+     <property name="title">
+      <string>Q&amp;t styles</string>
+     </property>
+    </widget>
     <addaction name="option_recent_infos"/>
     <addaction name="separator"/>
     <addaction name="option_configuration_table"/>
@@ -923,6 +931,7 @@
     <addaction name="option_feedback"/>
     <addaction name="option_feedback_block"/>
     <addaction name="separator"/>
+    <addaction name="option_style"/>
     <addaction name="option_aspect"/>
     <addaction name="separator"/>
     <addaction name="option_systray"/>

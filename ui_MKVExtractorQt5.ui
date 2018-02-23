@@ -570,7 +570,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Configuration  edition</string>
+              <string>Edit configuration</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -1213,7 +1213,7 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>C&amp;onfiguration  edition</string>
+    <string>Edit c&amp;onfiguration</string>
    </property>
    <property name="statusTip">
     <string>Delete config file and don't save the new values for this time.</string>

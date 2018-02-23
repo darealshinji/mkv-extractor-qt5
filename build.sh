@@ -13,8 +13,8 @@ chemin="$(cd "$(dirname "$0")";pwd)"
 cd "${chemin}"
 
 ### Mise à jour des fichiers ts : -noobsolete
-pylupdate5 ui_MKVExtractorQt5.ui MKVExtractorQt5.py -ts MKVExtractorQt5_fr_FR.ts MKVExtractorQt5_cs_CZ.ts MKVExtractorQt5_es_ES.ts
-pylupdate5 QFileDialogCustom/QFileDialogCustom.py -ts QFileDialogCustom/QFileDialogCustom_fr_FR.ts QFileDialogCustom/QFileDialogCustom_cs_CZ.ts QFileDialogCustom/QFileDialogCustom_es_ES.ts
+pylupdate5 ui_MKVExtractorQt5.ui MKVExtractorQt5.py -ts MKVExtractorQt5_fr_FR.ts MKVExtractorQt5_cs_CZ.ts
+pylupdate5 QFileDialogCustom/QFileDialogCustom.py -ts QFileDialogCustom/QFileDialogCustom_fr_FR.ts QFileDialogCustom/QFileDialogCustom_cs_CZ.ts
 
 
 ### Convertion des fichiers ts en qm

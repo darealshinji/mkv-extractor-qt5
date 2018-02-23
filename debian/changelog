@@ -14,7 +14,7 @@ mkv-extractor-qt5 (5.5.5-0~xenial) xenial; urgency=low ()
     - Correction d'un bug avec les icones des fichiers joints
     - Ajout du choix du style graphique
 
- -- Belleguic Terence <hizo@free.fr>  Sat, 27 Jan 2018 12:20:04 +0200
+ -- Belleguic Terence <hizo@free.fr>  Sat, 27 Jan 2018 12:20:05 +0200
 
 mkv-extractor-qt5 (5.5.3-0~xenial) xenial; urgency=low ()
 

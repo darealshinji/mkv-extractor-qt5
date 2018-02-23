@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="fr_FR" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="fr_FR" sourcelanguage="en">
 <context>
     <name>About</name>
     <message>
@@ -602,7 +603,7 @@ Voulez-vous le convertir en mkv ?</translation>
     <message>
         <location filename="MKVExtractorQt5.py" line="810"/>
         <source>This track is a {} type and can be previewed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette piste est de type {} et peut être pré-visualisée.</translation>
     </message>
 </context>
 <context>
@@ -624,7 +625,8 @@ What software do you want use ?
 
 Si vous voulez juste faire ça, vous devriez utiliser MMG (MKV Merge Gui) qui est plus adapté à ce travail.
 
-Quel logiciel voulez-vous utiliser ?</translation>
+Quel logiciel voulez-vous utiliser ?
+</translation>
     </message>
 </context>
 <context>
@@ -678,7 +680,7 @@ Quel logiciel voulez-vous utiliser ?</translation>
     <message>
         <location filename="ui_MKVExtractorQt5.ui" line="155"/>
         <source>The title of the MKV file. This information can be edited. </source>
-        <translation>Le titre du fichier MKV. Cette information peut être modifiée.</translation>
+        <translation>Le titre du fichier MKV. Cette information peut être modifiée. </translation>
     </message>
     <message>
         <location filename="ui_MKVExtractorQt5.ui" line="164"/>

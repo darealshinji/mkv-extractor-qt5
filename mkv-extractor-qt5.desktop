@@ -1,5 +1,4 @@
 [Desktop Entry]
-Encoding=UTF-8
 Type=Application
 Name=MKV Extractor Qt5
 GenericName=MKV demuxer
@@ -8,9 +7,10 @@ GenericName[fr]=Démultiplexeur de MKV
 Comment=Extract tracks from mkv files
 Comment[de]=Extrahiere Spuren aus MKV-Dateien
 Comment[fr]=Extracteur de piste depuis des fichiers mkv
+TryExec=mkv-extractor-qt5
 Exec=mkv-extractor-qt5 %U
 Icon=mkv-extractor-qt5
 Categories=AudioVideo;AudioVideoEditing;
 Terminal=false
 StartupNotify=true
-MimeType=video/x-matroska;audio/x-matroska;audio/x-matroska;application/x-matroska;video/x-mastroska-3d;audio/webm;video/webm
+MimeType=video/x-matroska;audio/x-matroska;application/x-matroska;video/x-mastroska-3d;audio/webm;video/webm;

@@ -1148,10 +1148,15 @@ class MKVExtractorQt5(QMainWindow):
     def FolderTempCreate(self):
         """Fonction créant le dossier temporaire."""
         while True:
-            FolderTempWidget = QTemporaryDir(Configs.value("FolderParentTemp") + "/mkv-extractor-qt5-")
+            # Création du dossier temporaire
+            self.FolderTempWidget = QTemporaryDir(Configs.value("FolderParentTemp") + "/mkv-extractor-qt5-")
 
-            if FolderTempWidget.isValid():
-                Configs.setValue("FolderTemp", Path(FolderTempWidget.path())) # Dossier temporaire
+            # Suppression de l'auto suppression du dossier non adapté
+            self.FolderTempWidget.setAutoRemove(False)
+
+            # Si le dossier estvalide, on l'enregistre et arrête la boucle
+            if self.FolderTempWidget.isValid():
+                Configs.setValue("FolderTemp", Path(self.FolderTempWidget.path())) # Dossier temporaire
                 break
 
 
@@ -1734,7 +1739,7 @@ class MKVExtractorQt5(QMainWindow):
             MKVDico[x] = ["NoID", "Chapters", "x-office-address-book", "document-preview", info1, info2, "Chapters"]
 
             # Création du bouton de visualisation
-            Button = QPushButton(QIcon.fromTheme("x-office-address-book"), "")
+            Button = QPushButton(QIcon.fromTheme("x-office-address-book", QIcon(":/img/x-office-address-book.png")), "")
             Button.setFlat(True)
             Button.clicked.connect(partial(self.TrackView, x))
             Button.setStatusTip(self.Trad["TrackType2"].format(info1))
@@ -1767,7 +1772,7 @@ class MKVExtractorQt5(QMainWindow):
             MKVDico[x] = ["NoID", "Global tags", "text-html", "document-preview", info1, info2, "Tags"]
 
             # Création du bouton de visualisation
-            Button = QPushButton(QIcon.fromTheme("text-html"), "")
+            Button = QPushButton(QIcon.fromTheme("text-html", QIcon(":/img/text-html.png")), "")
             Button.setFlat(True)
             Button.clicked.connect(partial(self.TrackView, x))
             Button.setStatusTip(self.Trad["TrackType2"].format(info1))
@@ -1878,7 +1883,7 @@ class MKVExtractorQt5(QMainWindow):
             MKVDico[x] = [ID, "Attachment", icone, "document-preview", info1, info2, codec]
 
             # Création du bouton de visualisation
-            Button = QPushButton(QIcon.fromTheme(icone), "")
+            Button = QPushButton(QIcon.fromTheme(icone, QIcon(":/img/{}.png".format(icone))), "")
             Button.setFlat(True)
             Button.clicked.connect(partial(self.TrackView, x))
             Button.setStatusTip(StatusTip2)
@@ -2746,8 +2751,6 @@ class MKVExtractorQt5(QMainWindow):
         else:
             self.hide()
 
-        event.accept()
-
 
     #========================================================================
     def dragEnterEvent(self, event):
@@ -2849,8 +2852,8 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Suppression du dossier temporaire de Qtesseract5
-        if Configs.contains("Qtesseract5Folder") and Configs.value("Qtesseract5Folder").exists():
-            rmtree(str(Configs.value("Qtesseract5Folder")))
+        if self.FolderTempWidget.isValid():
+            self.FolderTempWidget.remove()
 
 
         ### Suppression des clés qu'on ne garde pas

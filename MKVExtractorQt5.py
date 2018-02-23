@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+
 """Logiciel graphique d'extraction des pistes de fichiers MKV."""
 
 ###############################
@@ -12,6 +13,7 @@ from shutil import disk_usage, rmtree # Utilisé pour tester la place restante
 from functools import partial # Utilisé pour envoyer plusieurs infos via les connexions
 from datetime import timedelta # utile pour le calcul de la progression de la conversion en ac3
 from pathlib import Path # Nécessaire pour la recherche de fichier
+import json # Necessaire au traitement des infos de mkvmerge
 
 from PyQt5.QtWidgets import QPushButton, QSystemTrayIcon, QWidget, QTextEdit, QShortcut, QComboBox, QApplication, QAction, QDockWidget, QDesktopWidget, QMessageBox, QActionGroup, QTableWidgetItem, QCheckBox, QMainWindow, QMenu, QDialog, QHBoxLayout, QVBoxLayout, QDialogButtonBox
 from PyQt5.QtCore import QCoreApplication, QFileInfo, QStandardPaths, QTemporaryDir, QTranslator, QThread, QLibraryInfo, QDir, QMimeType, QMimeDatabase, Qt, QSettings, QProcess, QUrl, QLocale
@@ -805,6 +807,7 @@ class MKVExtractorQt5(QMainWindow):
                      "TrackRename": QCoreApplication.translate("Track", "This track can be renamed by doubleclicking."),
                      "TrackTags": QCoreApplication.translate("Track", "tags"),
                      "TrackType": QCoreApplication.translate("Track", "This track is a {} type and cannot be previewed."),
+                     "TrackType2": QCoreApplication.translate("Track", "This track is a {} type and can be previewed."),
                      "TrackTypeAttachment": QCoreApplication.translate("Track", "This attachment file is a {} type, it can be extracted (speedy) and viewed by clicking."),
                      "TrackVideo": QCoreApplication.translate("Track", "Change the fps value if needed. Useful in case of audio lag. Normal : 23.976, 25.000 and 30.000."),
 
@@ -1144,19 +1147,11 @@ class MKVExtractorQt5(QMainWindow):
     #========================================================================
     def FolderTempCreate(self):
         """Fonction créant le dossier temporaire."""
-        try:
-            Configs.value("FolderTempWidget").remove()
-
-        except:
-            pass
-
-
         while True:
-            self.FolderTempWidget = QTemporaryDir(Configs.value("FolderParentTemp") + "/mkv-extractor-qt5-")
+            FolderTempWidget = QTemporaryDir(Configs.value("FolderParentTemp") + "/mkv-extractor-qt5-")
 
-            if self.FolderTempWidget.isValid():
-                Configs.setValue("FolderTempWidget", self.FolderTempWidget)
-                Configs.setValue("FolderTemp", Path(self.FolderTempWidget.path())) # Dossier temporaire
+            if FolderTempWidget.isValid():
+                Configs.setValue("FolderTemp", Path(FolderTempWidget.path())) # Dossier temporaire
                 break
 
 
@@ -1490,11 +1485,9 @@ class MKVExtractorQt5(QMainWindow):
         Configs.setValue("MKVLoaded", True) # Fichier MKV chargé
         Configs.setValue("AllTracks", False) # Mode sélection all
         Configs.setValue("SuperBlockTemp", True) # Sert à bloquer les signaux du tableau (impossible d'utiliser blocksignals)
-        TracksList.clear() # Liste des pistes du fichier MKV
         x = 0 # Sert à indiquer les numéros de lignes
         self.ComboBoxes = {} # Dictionnaire listant les combobox
         MKVDico.clear() # Mise au propre du dictionnaire
-        MKVFPS.clear() # Mise au propre du dictionnaire
 
 
         ### Création du dossier temporaire
@@ -1528,365 +1521,384 @@ class MKVExtractorQt5(QMainWindow):
             return
 
 
-        ### Récupération du retour de MKVInfo
-        for line in self.LittleProcess('env LANGUAGE=en mkvinfo "{}"'.format(Configs.value("InputFile"))):
-            # Récupération du titre du fichier MKV
-            if "+ Title:" in line:
-                Configs.setValue("TitleFile", line.split(": ")[1])
+        ### Récupération du retour de MKVMerge
+        JsonMKV = ""
 
-            # Récupération de la durée du fichier MKV
-            elif "+ Duration:" in line:
-                Configs.setValue("DurationFile", int(line.split(": ")[1].split(".")[0]))
+        for line in self.LittleProcess('mkvmerge -J "{}"'.format(Configs.value("InputFile"))):
+            JsonMKV += line
 
-            # Récupération de la numero de la piste pour être utilisé pour les fps ci après
-            elif "+ Track number:" in line:
-                Configs.setValue("Info", int(line.split(": ")[-1].split(")")[0]))
-
-            # Récupération de la durée du fichier MKV
-            elif "+ Default duration:" in line:
-                line = line.split("(")[1].split(" ")[0]
-                MKVFPS[Configs.value("Info")] = "{}fps".format(line)
+        # Convertion du json en un dictionnaire
+        JsonMKV = json.loads(JsonMKV)
 
 
-        ### Récupération retour de MKVMerge
-        for line in self.LittleProcess('env LANGUAGE=en mkvmerge -I "{}"'.format(Configs.value("InputFile"))):
-            # Passe la boucle si le retour est vide, ce qui arrive et provoque une erreur
-            if line == "":
-                continue
-
-            # Remplacement des \c en :
-            line = line.replace("\c", ":")
-
-            # Suppression de l'info codec codec_private_data
-            if "codec_private_data" in line:
-                CodecAVirer = line.split("codec_private_data:")[1].split(" ")[0]
-                line = line.replace(CodecAVirer, "")
-
-            # Si le 1er caractère est une majuscule, on ajoute la piste
-            if line[0].isupper():
-                TracksList.append(line)
-
-            # Sinon, c'est que les lignes sont découpées, on conserve donc la valeur en mémoire
-            else:
-                TracksList[-1] = TracksList[-1] + line
-
-
-        ### Affichage du titre ou du nom du fichier (sans extension) du fichier MKV
-        if Configs.contains("TitleFile"):
-            self.ui.mkv_title.setText(Configs.value("TitleFile"))
+        ### traitement des données de Json
+        # Titre du fichier MKV
+        if "title" in JsonMKV["container"]["properties"]:
+            # Si le titre existe
+            Configs.setValue("TitleFile", JsonMKV["container"]["properties"]["title"])
 
         else:
-            self.ui.mkv_title.setText(Configs.value("InputFile").stem)
+            # Sinon on utilise le nom du fichier
+            Configs.setValue("TitleFile", Configs.value("InputFile").stem)
+
+        # Envoie de la valeur titre
+        self.ui.mkv_title.setText(Configs.value("TitleFile"))
+
+        # Récupération de la durée du fichier MKV
+        if "duration" in JsonMKV["container"]["properties"]:
+            # Passage de nanosecondes à secondes 10 puissance 9
+            Configs.setValue("DurationFile", int(JsonMKV["container"]["properties"]["duration"]/10E9))
 
 
         ### Retours d'information
         self.SetInfo(self.Trad["WorkMerge"], "800080", True, True)
-        self.SetInfo(self.Trad["WorkCmd"].format("mkvmerge -I {}".format(Configs.value("InputFile"))))
+        self.SetInfo(self.Trad["WorkCmd"].format("mkvmerge -J {}".format(Configs.value("InputFile"))))
 
 
         ### Boucle traitant les pistes du fichier MKV
-        # Il ne faut pas remplacer x par enumerate car il ne faut pas toujours incrémenter
-        for Track in TracksList:
-            ## Envoie du retour de mkvmerge
-            self.SetInfo(Track)
+        ## Renvoie un truc du genre : 0 {"codec": "RealVideo", "id": 0, "properties": {... }}...
+        for Track in JsonMKV["tracks"]:
+            ID = Track["id"] # Récupération de l'ID de la piste
 
-            ## Traitement des pistes normales
-            if Track[:5] == "Track":
-                # Récupération du type de piste
-                TrackType = Track.split(": ")[1].split(" ")[0]
+            # Récupération du codec de la piste
+            if "codec_id" in Track["properties"]:
+                codec = Track["properties"]["codec_id"]
 
-                ## Traitement des pistes normales
-                if TrackType in ["video", "audio", "subtitles"]:
-                    ID = Track.split(": ")[0].split(" ")[2] # Récupération de l'ID de la piste
-                    codec1 = Track.split("codec_id:")[1].split(" ")[0] # Récupération du codec de la piste
+                if codec in CodecList:
+                     codecInfo = CodecList[codec][1]
+                     codec = CodecList[codec][0]
 
-                    # Traitement spécifique aux vidéos
-                    if TrackType == "video":
-                        # Mise à jour des variables
-                        TrackTypeName = self.Trad["Video"]
-                        icone = 'video-x-generic'
+                elif "codec" in Track:
+                    codecInfo = codec
+                    codec = Track["codec"]
 
-                        # Récupération de l'info1
-                        if " track_name:" in Track:
-                            info1 = Track.split(" track_name:")[1].split(" ")[0]
+                else:
+                    codecInfo = ""
+                    code = codec
 
-                        elif " display_dimensions:" in Track:
-                            info1 = Track.split(" display_dimensions:")[1].split(" ")[0]
-
-                        else:
-                            info1 = ""
-
-                        # Récupération du fps de la piste
-                        info2 = MKVFPS[int(ID)]
-
-                        # Item servant à remplir la combobox
-                        if info2 in ["23.976fps", "25.000fps", "30.000fps"]:
-                            ComboItems = ["23.976fps", "25.000fps", "30.000fps"] # Liste normale des fps
-
-                        else:
-                            ComboItems = ["23.976fps", "25.000fps", "30.000fps", info2] # Liste normale + valeur trouvée
-                            ComboItems.sort()
-
-                        # Texte à afficher
-                        Text = self.Trad["TrackVideo"]
-
-                    # Traitement spécifique à l'audio
-                    elif TrackType == "audio":
-                        # Mise à jour des variables
-                        TrackTypeName = self.Trad["Audio"]
-                        icone = 'audio-x-generic'
-
-                        # Récupération de l'info
-                        if " track_name:" in Track:
-                            info1 = Track.split(" track_name:")[1].split(" ")[0]
-
-                        elif " audio_sampling_frequency:" in Track:
-                            info1 = Track.split(" audio_sampling_frequency:")[1].split(" ")[0] + " Hz"
-
-                        else:
-                            info1 = ""
-
-                        # Récupération de la langue
-                        if " language:" in Track:
-                            info2 = Track.split(" language:")[1].split(" ")[0]
-
-                        else:
-                            info2 = "und"
-
-                        # Item servant à remplir la combobox
-                        ComboItems = MKVLanguages
-
-                        # Texte à afficher
-                        Text = self.Trad["TrackAudio"]
-
-                    # Traitement spécifique aux sous titres
-                    elif TrackType == "subtitles":
-                        # Mise à jour des variables
-                        TrackTypeName = self.Trad["Subtitles"]
-                        icone = 'text-x-generic'
-
-                        # Récupération de l'info
-                        if " track_name:" in Track:
-                            info1 = Track.split(" track_name:")[1].split(" ")[0]
-
-                        else:
-                            info1 = ""
-
-                        # Récupération de la langue
-                        if " language:" in Track:
-                            info2 = Track.split(" language:")[1].split(" ")[0]
-
-                        else:
-                            info2 = "und"
-
-                        # Item servant à remplir la combobox
-                        ComboItems = MKVLanguages
-
-                        # Texte à afficher
-                        Text = self.Trad["TrackAudio"]
-
-                    # Mise à jour du codec pour plus de lisibilité
-                    try:
-                        codec = CodecList[codec1][0]
-
-                    except:
-                        codec = codec1.replace("/", "_").lower()
-
-                    # Création, remplissage et connexion d'une combobox qui est envoyée dans une nouvelle ligne du tableau
-                    self.ui.mkv_tracks.insertRow(x)
-                    self.ComboBoxes[x] = QComboBox()
-                    self.ui.mkv_tracks.setCellWidget(x, 4, self.ComboBoxes[x])
-                    self.ComboBoxes[x].addItems(ComboItems)
-                    self.ComboBoxes[x].currentIndexChanged['QString'].connect(partial(self.ComboModif, x))
-
-                    # Envoie de l'info
-                    self.ComboBoxes[x].setStatusTip(Text)
-
-                    # Traitement global des pistes simples avec remplacement des caractères spéciaux
-                    info1 = info1.replace(r"\s", " ").replace(r"\2", '"').replace(r"\c", ":").replace(r"\h", "#")
-                    info2 = info2.replace(r"\s", " ").replace(r"\2", '"').replace(r"\c", ":").replace(r"\h", "#")
-
-                    # Ajout de la piste au dico
-                    MKVDico[x] = [ID, "Track", icone, "unknown", info1, info2, codec]
-
-                    # Envoie des informations dans le tableaux
-                    self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem(ID)) # Envoie de l'ID
-                    self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
-                    self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
-                    self.ui.mkv_tracks.item(x, 1).setStatusTip(self.Trad["TrackID1"].format(ID)) # StatusTip
-                    self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(QIcon.fromTheme(icone, QIcon(":/img/{}.png".format(icone))), "")) # Envoie de l'icône
-                    self.ui.mkv_tracks.item(x, 2).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
-                    self.ui.mkv_tracks.item(x, 2).setStatusTip(self.Trad["TrackType"].format(TrackTypeName)) # StatusTip
-                    self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(info1)) # Envoie de l'information
-                    self.ui.mkv_tracks.item(x, 3).setStatusTip(self.Trad["TrackRename"]) # StatusTip
-
-                    # Sélection de la valeur de la combobox
-                    self.ComboBoxes[x].setCurrentIndex(self.ComboBoxes[x].findText(info2))
-
-                    # Dans le cas de codec AAC
-                    if "aac" in codec:
-                        # Création d'une combobox, remplissage, mise à jour du statustip, connexion, sélection de la valeur et envoie de la combobox dans le tableau
-                        name = "{}-aac".format(x)
-                        self.ComboBoxes[name] = QComboBox()
-                        self.ui.mkv_tracks.setCellWidget(x, 5, self.ComboBoxes[name])
-                        self.ComboBoxes[name].addItems(['aac', 'aac sbr'])
-                        self.ComboBoxes[name].setStatusTip(self.Trad["TrackAac"])
-                        self.ComboBoxes[name].currentIndexChanged['QString'].connect(partial(self.ComboModif, name))
-                        self.ComboBoxes[name].setCurrentIndex(self.ComboBoxes[name].findText(codec))
-
-                    # pour les autres audios
-                    else:
-                        self.ui.mkv_tracks.setItem(x, 5, QTableWidgetItem(codec))
-                        self.ui.mkv_tracks.item(x, 5).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
-                        self.ui.mkv_tracks.item(x, 5).setStatusTip(CodecList[codec1][1])
-
-                    # Incrémentation du numéro de ligne
-                    x += 1
+            elif "codec" in Track:
+                codecInfo = ""
+                codec = Track["codec"]
 
             else:
-                # Traitement spécifique aux fichiers joints
-                if Track[:10] == "Attachment":
-                    # mise à jour des variables
-                    ID = Track.split(": ")[0].split(" ")[2]
-                    typecodec = Track.split(" type '")[1].split("'")[0]
-                    typetrack = typecodec.split("/")[0]
-                    info2 = Track.split(" size ")[1].split(" ")[0]
-                    StatusTip1 = self.Trad["TrackID2"].format(info2)
-                    StatusTip2 = self.Trad["TrackTypeAttachment"].format(info2)
-                    StatusTip3 = self.Trad["TrackAttachment"]
-                    Item1 = ID
+                codecInfo = ""
+                codec = "Unknow"
 
-                    # Récupération du codec qui peut ne pas être présent (comme dans le cas d'un fichier binaire)
-                    try:
-                        codec = typecodec.split("/")[1]
+            # Traitement des videos
+            if Track["type"] == "video":
+                # Mise à jour des variables
+                TrackTypeName = self.Trad["Video"]
+                icone = 'video-x-generic'
 
-                    except:
-                        codec = typecodec
+                # Récupération de l'info1
+                if "track_name" in Track["properties"]:
+                    info1 = Track["properties"]["track_name"]
 
-                    # Récupération de l'info avec remplacement des \s par des espaces
-                    if " description " in Track:
-                        info1 = Track.split(" description '")[1].split("'")[0].replace(r"\s", " ")
+                elif "display_dimensions" in Track["properties"]:
+                    info1 = Track["properties"]["display_dimensions"]
 
-                    elif " file name " in Track:
-                        info1 = Track.split(" file name '")[1].split("'")[0].replace(r"\s", " ")
+                elif "pixel_dimensions" in Track["properties"]:
+                    info1 = Track["properties"]["pixel_dimensions"]
+
+                else:
+                    info1 = ""
+
+
+                # Liste normale des fps
+                ComboItems = ["23.976fps", "25.000fps", "30.000fps"]
+
+                # Récupération du fps de la piste
+                if "default_duration" in Track["properties"]:
+                    infoTemp = Track["properties"]["default_duration"]
+
+                    if infoTemp in [40000000, 40001000]:
+                        info2 = "25.000fps"
+
+                    elif infoTemp == 41708000:
+                        info2 = "23.976fps"
+
+                    elif infoTemp == 33333000:
+                        info2 = "30.000fps"
 
                     else:
-                        info1 = "No info"
+                        cal = "%.3f" % float(1000000000 / infoTemp)
+                        info2 = "{}fps".format(cal)
+                        ComboItems.append(str(info2)) # Ajout de la valeur inconnue
+                        ComboItems.sort()
 
-                    # Mise à jour du codec pour plus de lisibilité
-                    if codec == "x-truetype-font":
-                        codec = "font"
-
-                    elif codec == "vnd.ms-opentype":
-                        codec = "font OpenType"
-
-                    elif codec == "x-msdos-program":
-                        codec = "application msdos"
-
-                    elif codec == "plain":
-                        codec = "text"
-
-                    elif codec in ["ogg", "ogm"]:
-                        typetrack = "media" # Ils sont reconnus entant qu'applications
-
-                    elif codec == "x-flac":
-                        codec = "flac"
-
-                    elif codec == "x-flv":
-                        codec = "flv"
-
-                    elif codec == "x-ms-bmp":
-                        codec = "bmp"
-
-                    # Icône du type de piste
-                    machin = QMimeDatabase().mimeTypeForName(typecodec)
-                    icone = QIcon().fromTheme(QMimeType(machin).iconName(), QIcon().fromTheme(QMimeType(machin).genericIconName())).name()
-
-                    # Dans le cas où l'icône n'a pas été déterminée
-                    if not icone:
-                        if "application" in typetrack:
-                            icone = "system-run"
-
-                        elif typetrack == "image":
-                            icone = "image-x-generic"
-
-                        elif typetrack == "text":
-                            icone = "accessories-text-editor"
-
-                        elif typetrack in ["media", "video", "audio"]:
-                            icone = "applications-multimedia"
-
-                        elif typetrack == "web":
-                            icone = "applications-internet"
-
-                        else:
-                            icone = "unknown"
-
-                    # Mise à jour du dictionnaire des pistes du fichier MKV
-                    MKVDico[x] = [ID, "Attachment", icone, "document-preview", info1, info2, codec]
-
-                # Traitement spécifique aux chapitres
-                elif Track[:8] == "Chapters":
-                    # Mise à jour des variables
-                    icone = "x-office-address-book"
-                    info1 = self.Trad["TrackChapters"]
-                    info2 = Track.split(": ")[1].split(" ")[0] + " " + info1
-                    StatusTip1 = self.Trad["TrackID3"].format(info2)
-                    StatusTip2 = self.Trad["TrackType"].format(info2)
-                    StatusTip3 = ""
-                    Item1 = "chapters"
-                    codec = "" # Texte bidon permettant le blocage
-
-                    # Mise à jour du dictionnaire des pistes du fichier MKV
-                    MKVDico[x] = ["NoID", "Chapters", icone, "document-preview", info1, info2, "Chapters"]
+                # Texte à afficher
+                Text = self.Trad["TrackVideo"]
 
 
-                # Traitement spécifique aux tags
-                elif Track[:11] == "Global tags":
-                    # Mise à jour des variables
-                    icone = "text-html"
-                    info1 = self.Trad["TrackTags"]
-                    info2 = Track.split(": ")[1].split(" ")[0] + " " + info1
-                    StatusTip1 = self.Trad["TrackID3"].format(info2)
-                    StatusTip2 = self.Trad["TrackType"].format(info2)
-                    StatusTip3 = ""
-                    Item1 = "tags"
-                    codec = "" # Texte bidon permettant le blocage
+            # Traitement des audios
+            elif Track["type"] in ["audio", "subtitles"]:
+                # Variables spécifiques à l'audio
+                if Track["type"] == "audio":
+                    TrackTypeName = self.Trad["Audio"]
+                    icone = 'audio-x-generic'
 
-                    # Mise à jour du dictionnaire des pistes du fichier MKV
-                    MKVDico[x] = ["NoID", "Global tags", icone, "document-preview", info1, info2, "Tags"]
+                    # Récupération de l'info1
+                    if "track_name" in Track["properties"]:
+                        info1 = Track["properties"]["track_name"]
 
-                # Dans les autres cas on saute la boucle
+                    elif "audio_sampling_frequency" in Track["properties"]:
+                        info1 = Track["properties"]["audio_sampling_frequency"]
+
+                    else:
+                        info1 = ""
+
+                # Variables spécifiques aux sous titres
                 else:
-                    continue
+                    # Mise à jour des variables
+                    TrackTypeName = self.Trad["Subtitles"]
+                    icone = 'text-x-generic'
+
+                    # Récupération de l'info1
+                    if "track_name" in Track["properties"]:
+                        info1 = Track["properties"]["track_name"]
+
+                    else:
+                        info1 = ""
+
+                # Variables communes
+                # Récupération de la langue
+                if "language" in Track["properties"]:
+                    info2 = Track["properties"]["language"]
+
+                else:
+                    info2 = "und"
+
+                # Item servant à remplir la combobox
+                ComboItems = MKVLanguages
+
+                # Texte à afficher
+                Text = self.Trad["TrackAudio"]
 
 
-                # Création du bouton de visualisation
-                Button = QPushButton(QIcon.fromTheme(icone), "")
-                Button.setFlat(True)
-                Button.clicked.connect(partial(self.TrackView, x))
-                Button.setStatusTip(StatusTip2)
+            # Création, remplissage et connexion d'une combobox qui est envoyée dans une nouvelle ligne du tableau
+            self.ui.mkv_tracks.insertRow(x)
+            self.ComboBoxes[x] = QComboBox()
+            self.ui.mkv_tracks.setCellWidget(x, 4, self.ComboBoxes[x])
+            self.ComboBoxes[x].addItems(ComboItems)
+            self.ComboBoxes[x].currentIndexChanged['QString'].connect(partial(self.ComboModif, x))
 
+            # Envoie de l'info
+            self.ComboBoxes[x].setStatusTip(Text)
 
-                # Envoie des informations dans le tableaux
-                self.ui.mkv_tracks.insertRow(x) # Création de ligne
-                self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem(Item1)) # Remplissage des cellules
-                self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem(""))
-                self.ui.mkv_tracks.setCellWidget(x, 2, Button) # Envoie du bouton
-                self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(info1))
-                self.ui.mkv_tracks.setItem(x, 4, QTableWidgetItem(info2))
+            # Ajout de la piste au dico
+            MKVDico[x] = [ID, "Track", icone, "unknown", info1, info2, codec]
+
+            # Envoie des informations dans le tableaux
+            self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem(ID)) # Envoie de l'ID
+            self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem("")) # Texte bidon permettant d'envoyer la checkbox
+            self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
+            self.ui.mkv_tracks.item(x, 1).setStatusTip(self.Trad["TrackID1"].format(ID)) # StatusTip
+            self.ui.mkv_tracks.setItem(x, 2, QTableWidgetItem(QIcon.fromTheme(icone, QIcon(":/img/{}.png".format(icone))), "")) # Envoie de l'icône
+            self.ui.mkv_tracks.item(x, 2).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
+            self.ui.mkv_tracks.item(x, 2).setStatusTip(self.Trad["TrackType"].format(TrackTypeName)) # StatusTip
+            self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(info1)) # Envoie de l'information
+            self.ui.mkv_tracks.item(x, 3).setStatusTip(self.Trad["TrackRename"]) # StatusTip
+
+            # Sélection de la valeur de la combobox
+            self.ComboBoxes[x].setCurrentIndex(self.ComboBoxes[x].findText(str(info2)))
+
+            # Dans le cas de codec AAC
+            if "aac" in codec:
+                # Création d'une combobox, remplissage, mise à jour du statustip, connexion, sélection de la valeur et envoie de la combobox dans le tableau
+                name = "{}-aac".format(x)
+                self.ComboBoxes[name] = QComboBox()
+                self.ui.mkv_tracks.setCellWidget(x, 5, self.ComboBoxes[name])
+                self.ComboBoxes[name].addItems(['aac', 'aac sbr'])
+                self.ComboBoxes[name].setStatusTip(self.Trad["TrackAac"])
+                self.ComboBoxes[name].currentIndexChanged['QString'].connect(partial(self.ComboModif, name))
+                self.ComboBoxes[name].setCurrentIndex(self.ComboBoxes[name].findText(codec))
+
+            # pour les autres audios
+            else:
                 self.ui.mkv_tracks.setItem(x, 5, QTableWidgetItem(codec))
-                self.ui.mkv_tracks.item(x, 1).setStatusTip(StatusTip1) # Envoie des StatusTip
-                self.ui.mkv_tracks.item(x, 3).setStatusTip(StatusTip3)
-                self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
-                self.ui.mkv_tracks.item(x, 4).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
-                self.ui.mkv_tracks.item(x, 5).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+                self.ui.mkv_tracks.item(x, 5).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled) # Blocage de la modification
+                self.ui.mkv_tracks.item(x, 5).setStatusTip(codecInfo)
 
-                if Track[:11] == "Global tags":
-                    self.ui.mkv_tracks.item(x, 3).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+            # Incrémentation du numéro de ligne
+            x += 1
 
-                # Incrémentation du numéro de ligne
-                x += 1
+
+        ### Boucle traitant les chapitrages
+        ## Renvoie un truc du genre : 0 "num_entries": 15
+        for Chapter in JsonMKV["chapters"]:
+            # Mise à jour des variables
+            info1 = self.Trad["TrackChapters"]
+            info2 = "{} {}".format(Chapter["num_entries"], info1)
+
+            # Mise à jour du dictionnaire des pistes du fichier MKV
+            MKVDico[x] = ["NoID", "Chapters", "x-office-address-book", "document-preview", info1, info2, "Chapters"]
+
+            # Création du bouton de visualisation
+            Button = QPushButton(QIcon.fromTheme("x-office-address-book"), "")
+            Button.setFlat(True)
+            Button.clicked.connect(partial(self.TrackView, x))
+            Button.setStatusTip(self.Trad["TrackType2"].format(info1))
+
+            # Envoie des informations dans le tableaux
+            self.ui.mkv_tracks.insertRow(x) # Création de ligne
+            self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem("chapters")) # Remplissage des cellules
+            self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem(""))
+            self.ui.mkv_tracks.setCellWidget(x, 2, Button) # Envoie du bouton
+            self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(info1))
+            self.ui.mkv_tracks.setItem(x, 4, QTableWidgetItem(info2))
+            self.ui.mkv_tracks.setItem(x, 5, QTableWidgetItem("text"))
+            self.ui.mkv_tracks.item(x, 1).setStatusTip(self.Trad["TrackID3"].format(info1)) # Envoie des StatusTip
+            self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
+            self.ui.mkv_tracks.item(x, 4).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+            self.ui.mkv_tracks.item(x, 5).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+
+            # Incrémentation du numéro de ligne
+            x += 1
+
+
+        ### Boucle traitant les tags
+        ## Renvoie un truc du genre : 0 "num_entries": 15
+        for GlobalTag in JsonMKV["global_tags"]:
+            # Mise à jour des variables
+            info1 = self.Trad["TrackTags"]
+            info2 = "{} {}".format(GlobalTag["num_entries"], info1)
+
+            # Mise à jour du dictionnaire des pistes du fichier MKV
+            MKVDico[x] = ["NoID", "Global tags", "text-html", "document-preview", info1, info2, "Tags"]
+
+            # Création du bouton de visualisation
+            Button = QPushButton(QIcon.fromTheme("text-html"), "")
+            Button.setFlat(True)
+            Button.clicked.connect(partial(self.TrackView, x))
+            Button.setStatusTip(self.Trad["TrackType2"].format(info1))
+
+            # Envoie des informations dans le tableaux
+            self.ui.mkv_tracks.insertRow(x) # Création de ligne
+            self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem("tags")) # Remplissage des cellules
+            self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem(""))
+            self.ui.mkv_tracks.setCellWidget(x, 2, Button) # Envoie du bouton
+            self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(info1))
+            self.ui.mkv_tracks.setItem(x, 4, QTableWidgetItem(info2))
+            self.ui.mkv_tracks.setItem(x, 5, QTableWidgetItem("xml"))
+            self.ui.mkv_tracks.item(x, 1).setStatusTip(self.Trad["TrackID3"].format(info1)) # Envoie des StatusTip
+            self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
+            self.ui.mkv_tracks.item(x, 4).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+            self.ui.mkv_tracks.item(x, 5).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+
+            # Incrémentation du numéro de ligne
+            x += 1
+
+
+        ### Boucle traitant les fichiers joints du fichier MKV
+        ## Renvoie un truc du genre : 0 "content_type": "text/html", "description": "", "file_name": "index.php"...
+        for Attachment in JsonMKV["attachments"]:
+            # mise à jour des variables
+            ID = Attachment["id"]
+            Item1 = ID
+            info2 = "{} octets".format(Attachment["size"])
+            typecodec = Attachment["content_type"]
+            typetrack = typecodec.split("/")[0]
+
+            #* Utiliser les 2 infos ? verifier qu'ils ne sont pas vide ?
+
+            # Récupération de l'information 1
+            if "description" in Attachment and Attachment["description"]:
+                info1 = Attachment["description"]
+
+            elif "file_name" in Attachment:
+                info1 = Attachment["file_name"]
+
+            else:
+                info1 = "No info"
+
+            # Traitement des codecs
+            if "/" in typecodec:
+                typetrack = typecodec.split("/")[0]
+                codec = typecodec.split("/")[1]
+
+            else:
+                typetrack = typecodec
+                codec = typecodec
+
+            # Mise à jour du codec pour plus de lisibilité
+            if codec == "x-truetype-font":
+                codec = "font"
+
+            elif codec == "vnd.ms-opentype":
+                codec = "font OpenType"
+
+            elif codec == "x-msdos-program":
+                codec = "application msdos"
+
+            elif codec == "plain":
+                codec = "text"
+
+            elif codec in ["ogg", "ogm"]:
+                typetrack = "audio" # Ils sont reconnus en tant qu'applications
+
+            elif codec == "x-flac":
+                codec = "flac"
+
+            elif codec == "x-flv":
+                codec = "flv"
+
+            elif codec == "x-ms-bmp":
+                codec = "bmp"
+
+            # traitement des statustip
+            StatusTip1 = self.Trad["TrackID2"].format(ID)
+            StatusTip2 = self.Trad["TrackTypeAttachment"].format(typetrack)
+            StatusTip3 = self.Trad["TrackAttachment"]
+
+            # Icône du type de piste
+            machin = QMimeDatabase().mimeTypeForName(typecodec)
+            icone = QIcon().fromTheme(QMimeType(machin).iconName(), QIcon().fromTheme(QMimeType(machin).genericIconName())).name()
+
+            # Dans le cas où l'icône n'a pas été déterminée
+            if not icone:
+                if "application" in typetrack:
+                    icone = "system-run"
+
+                elif typetrack == "image":
+                    icone = "image-x-generic"
+
+                elif typetrack == "text":
+                    icone = "accessories-text-editor"
+
+                elif typetrack in ["media", "video", "audio"]:
+                    icone = "applications-multimedia"
+
+                elif typetrack == "web":
+                    icone = "applications-internet"
+
+                else:
+                    icone = "unknown"
+
+            # Mise à jour du dictionnaire des pistes du fichier MKV
+            MKVDico[x] = [ID, "Attachment", icone, "document-preview", info1, info2, codec]
+
+            # Création du bouton de visualisation
+            Button = QPushButton(QIcon.fromTheme(icone), "")
+            Button.setFlat(True)
+            Button.clicked.connect(partial(self.TrackView, x))
+            Button.setStatusTip(StatusTip2)
+
+            # Envoie des informations dans le tableaux
+            self.ui.mkv_tracks.insertRow(x) # Création de ligne
+            self.ui.mkv_tracks.setItem(x, 0, QTableWidgetItem(Item1)) # Remplissage des cellules
+            self.ui.mkv_tracks.setItem(x, 1, QTableWidgetItem(""))
+            self.ui.mkv_tracks.setCellWidget(x, 2, Button) # Envoie du bouton
+            self.ui.mkv_tracks.setItem(x, 3, QTableWidgetItem(info1))
+            self.ui.mkv_tracks.setItem(x, 4, QTableWidgetItem(info2))
+            self.ui.mkv_tracks.setItem(x, 5, QTableWidgetItem(codec))
+            self.ui.mkv_tracks.item(x, 1).setStatusTip(StatusTip1) # Envoie des StatusTip
+            self.ui.mkv_tracks.item(x, 3).setStatusTip(StatusTip3)
+            self.ui.mkv_tracks.item(x, 1).setCheckState(0) # Envoie de la checkbox
+            self.ui.mkv_tracks.item(x, 4).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+            self.ui.mkv_tracks.item(x, 5).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
+
+            # Incrémentation du numéro de ligne
+            x += 1
 
 
         ### Retours d'information, déblocage, curseur normal
@@ -1905,7 +1917,7 @@ class MKVExtractorQt5(QMainWindow):
 
             ## Extraction si le fichier n'existe pas
             if not Configs.value("ChaptersFile").exists():
-                with Configs.value("ChaptersFile").open('a') as ChaptersFile:
+                with Configs.value("ChaptersFile").open('w') as ChaptersFile:
                     for line in self.LittleProcess('mkvextract chapters "{}" -s'.format(Configs.value("InputFile"))):
                         ChaptersFile.write(line+'\n')
 
@@ -1920,7 +1932,7 @@ class MKVExtractorQt5(QMainWindow):
 
             ## Extraction si le fichier n'existe pas
             if not Configs.value("TagsFile").exists():
-                with Configs.value("TagsFile").open('a') as TagsFile:
+                with Configs.value("TagsFile").open('w') as TagsFile:
                     for line in self.LittleProcess('mkvextract tags "{}"'.format(Configs.value("InputFile"))):
                         TagsFile.write(line+'\n')
 
@@ -1931,7 +1943,7 @@ class MKVExtractorQt5(QMainWindow):
         ### Dans le cas de fichier joint
         elif MKVDico[x][1] == "Attachment":
             ## Teste la place disponible avant d'extraire
-            FileSize = int(MKVDico[x][5])
+            FileSize = int(MKVDico[x][5].split(" ")[0])
             FreeSpaceDisk = disk_usage(str(Configs.value("FolderTemp"))).free
 
             ## Teste de la place restante
@@ -2245,14 +2257,16 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Ajout de la commande mkvextract_tag à la liste des commandes à exécuter
-        # Si l'option MKV/ChaptersFile n'existe pas, il utilise le path du logiciel qui n'est du coup pas un fichier
-        if mkvextract_tag and not Configs.value("ChaptersFile", Path()).is_file():
+        if mkvextract_tag:
+            if Configs.value("TagsFile").exists():
+                Configs.value("TagsFile").unlink()
             CommandList.append(["MKVExtract Tags", mkvextract_tag])
 
 
         ### Ajout de la commande mkvextract_chap à la liste des commandes à exécuter
-        # Si l'option MKV/TagsFile n'existe pas, il utilise le path du logiciel qui n'est du coup pas un fichier
-        if mkvextract_chap and not Configs.value("TagsFile", Path()).is_file():
+        if mkvextract_chap:
+            if Configs.value("ChaptersFile").exists():
+                Configs.value("ChaptersFile").unlink()
             CommandList.append(["MKVExtract Chapters", mkvextract_chap])
 
 
@@ -2411,7 +2425,6 @@ class MKVExtractorQt5(QMainWindow):
         ### Récupération du retour (les 2 sorties sont sur la standard)
         data = self.process.readAllStandardOutput()
 
-
         ### Converti les data en textes et les traite
         for line in bytes(data).decode('utf-8').splitlines():
             ## Passe la boucle si le retour est vide, ce qui arrive et provoque une erreur
@@ -2430,7 +2443,19 @@ class MKVExtractorQt5(QMainWindow):
                 if line[-1] == "%":
                     line = int(line.split(": ")[1].strip()[0:-1])
 
-            ## MKVExtract renvoie une progression ou les contenus des fichiers de tags et chapitres. Les fichiers joints ne renvoient rien.
+            elif Configs.value("Command")[0] == "MKVExtract Tags":
+                with Configs.value("TagsFile").open('a') as TagsFile:
+                    TagsFile.write(line+'\n')
+
+                line = ""
+
+            elif Configs.value("Command")[0] == "MKVExtract Chapters":
+                with Configs.value("ChaptersFile").open('a') as ChaptersFile:
+                    ChaptersFile.write(line+'\n')
+
+                line = ""
+
+            ## MKVExtract renvoie une progression. Les fichiers joints ne renvoient rien.
             elif "MKVExtract" in Configs.value("Command")[0]:
                 # Récupère le nombre de retour en cas de présence de pourcentage
                 if line[-1] == "%":
@@ -2823,14 +2848,6 @@ class MKVExtractorQt5(QMainWindow):
             Configs.remove("WinGeometry")
 
 
-        ### Suppression du dossier temporaire
-        try:
-            Configs.value("FolderTempWidget").remove()
-
-        except:
-            pass
-
-
         ### Suppression du dossier temporaire de Qtesseract5
         if Configs.contains("Qtesseract5Folder") and Configs.value("Qtesseract5Folder").exists():
             rmtree(str(Configs.value("Qtesseract5Folder")))
@@ -2838,7 +2855,7 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Suppression des clés qu'on ne garde pas
         # Options temporaires seulement
-        for Key in ("Reencapsulate", "VobsubToSrt", "DtsToAc3", "MKVLoaded", "ChaptersFile", "TagsFile", "TitleFile", "DurationFile", "Command", "FirstRun", "SuperBlockTemp", "WorkOldLine", "FolderTemp", "FolderTempWidget", "Info", "OutputFile", "AudioQuality", "AudioBoost", "AudioStereo", "SubtitlesOpen", "WorkPause", "AudioConvert", "AllTracks", "Qtesseract5Folder", "Qtesseract5"):
+        for Key in ("Reencapsulate", "VobsubToSrt", "DtsToAc3", "MKVLoaded", "ChaptersFile", "TagsFile", "TitleFile", "DurationFile", "Command", "FirstRun", "SuperBlockTemp", "WorkOldLine", "FolderTemp", "Info", "OutputFile", "AudioQuality", "AudioBoost", "AudioStereo", "SubtitlesOpen", "WorkPause", "AudioConvert", "AllTracks", "Qtesseract5Folder", "Qtesseract5"):
             Configs.remove(Key)
 
 
@@ -2852,7 +2869,7 @@ class MKVExtractorQt5(QMainWindow):
 #############################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setApplicationVersion("5.4.4")
+    app.setApplicationVersion("5.5.1")
     app.setApplicationName("MKV Extractor Qt5")
 
     ### Dossier du logiciel, utile aux traductions et à la liste des codecs
@@ -2861,7 +2878,6 @@ if __name__ == '__main__':
 
     ### Création des dictionnaires et listes facilement modifiables partout
     MKVDico = {} # Dictionnaire qui contiendra toutes les pistes du fichier MKV
-    MKVFPS = {} # Dictionnaire qui contiendra les FPS des pistes du fichier MKV
     MD5Dico = {} # Dictionnaire qui contiendra les sous titres à reconnaître manuellement
     MKVDicoSelect = {} # Dictionnaire qui contiendra les pistes sélectionnées
     MKVLanguages = [] # Liste qui contiendra et affichera dans les combobox les langues dispo (audio et sous titres)
@@ -2870,7 +2886,6 @@ if __name__ == '__main__':
     TempFiles = [] # Liste des fichiers temporaires pré ré-encapsulage ou en cas d'arrêt du travail
     CommandList = [] # Liste des commandes à exécuter
     SubtitlesFiles = [] # Adresse des fichiers sous titres à ouvrir avant l'encapsulage
-    TracksList = [] # Liste brute des pistes retournée par MKVMerge -I
     WarningReply = [] # Retour de mkvmerge en cas de warning
 
 

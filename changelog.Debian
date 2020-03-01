@@ -1,0 +1,178 @@
+mkv-extractor-qt5 (5.5.5a-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Fix the desktop file
+    - Fix the systray bug
+    - Fix the temporary folder bug
+    - Fix the icons of the tracks bug
+    - Add the qt style choice
+
+  [français]
+    - Correction du fichier desktop
+    - Correction d'un bug avec le systray
+    - Correction d'un bug sur le dossier temporaire
+    - Correction d'un bug avec les icones des fichiers joints
+    - Ajout du choix du style graphique
+
+ -- Belleguic Terence <hizo@free.fr>  Sat, 27 Jan 2018 12:20:04 +0200
+
+mkv-extractor-qt5 (5.5.1-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Bug correction "can't pickle QTemporaryDir objects"
+
+
+  [français]
+    - Correction du bug "can't pickle QTemporaryDir objects"
+
+ -- Belleguic Terence <hizo@free.fr>  Mon, 20 Nov 2017 18:40:04 +0200
+
+mkv-extractor-qt5 (5.5.0-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Bug corrections
+    - Replacing the -I argument of mkvmerge with -J
+
+
+  [français]
+    - Correction de bugs
+    - Remplacement de l'argument -I de mkvmerge par -J
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 24 Nov 2016 10:40:04 +0200
+
+mkv-extractor-qt5 (5.4.4-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Update of the cz translation
+    - Bug correction (files extracted removed when the software is closed)
+    - Change the icon to svg
+    - Update the Debian files
+
+  [français]
+    - Mise à jour de la traduction tcheque
+    - Correction d'un bug (suppression des fichiers extraits lors de la fermeture du logiciel)
+    - Changement de l'icone en svg
+    - Mise à jour des fichiers Debian
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 24 Nov 2016 10:40:04 +0200
+
+mkv-extractor-qt5 (5.4.3-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Code update of the volume boost
+    - Code update of the new version of Qtesseract5
+    - Code update of the software
+
+  [français]
+    - Mise à jour du code de boost du volume
+    - Mise à jour du code de la nouvelle version de Qtesseract5
+    - Mise à jour du code du logiciel
+
+ -- Belleguic Terence <hizo@free.fr>  Mon, 28 Sep 2016 14:40:27 +0200
+
+
+mkv-extractor-qt5 (5.4.2-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Add pause during SUB to SRT convert
+    - Icon remake
+
+  [français]
+    - Ajout de la pause pendant la conversion SUB vers SRT
+    - Icone refaite
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 12 May 2016 14:01:27 +0200
+
+
+mkv-extractor-qt5 (5.4.0-1~bionic) bionic; urgency=low ()
+
+  [english]
+    - Lot of bug fixes and revised code
+    - Update of the config system who can be edit
+    - Update of the icons
+    - Option to delete the qt file listing the recent files and URLs
+    - Add the filter "All files compatible"
+    - Add a pause button beetwen jobs
+    - Add audio convert options
+    - Add a systray icon option
+    - Use of mkvtoolnix-gui who replace mmg
+    - Error message if a file name contains a "
+    - Few dependancies removed
+    - More files compatibles with the mkv convert
+    - Convert subtitles use multiprocess now (creation of the Qtesseract5 software)
+    - A clic on the header of tracks selects all or nothing
+
+  [français]
+    - Beaucoup de corrections de bugs et revision du code
+    - Mise a jour du systeme de configuration qui peut etre modifie
+    - Mise a jour de la traduction francaise
+    - Mise a jour des icones
+    - Option de suppression du fichier qt listant les fichiers et urls recentes
+    - Ajout du filtre "Tous les fichiers compatibles"
+    - Ajout d'un bouton de pause entre les taches
+    - Ajout d'option de convertion audio
+    - Ajout d'une option d'icone de barre des tache
+    - Utilisation de mkvtoolnix-gui qui remplace mmg
+    - Message d'erreur si un fichier contient " dans son nom
+    - Suppression de quelques dependances
+    - Plus de fichiers compatibles pour la convertion en mkv
+    - La convertion des soustitres utilise maintenant plusieurs processeurs (creation d'un logiciel Qtesseract5)
+    - Un clic sur l'en-tete des pistes selectionne tout ou rien
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 21 Apr 2015 19:01:27 +0200
+
+
+mkv-extractor-qt5 (5.3.0-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Bug fixed
+
+  [français]
+    - Correction de bug
+
+ -- hizoka <hizo@free.fr>  Mon, 23 Nov 2015 19:26:08 +0100
+
+
+mkv-extractor-qt5 (5.2.3-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Bug fixed
+    - The two versions are no longer antagonists
+
+  [français]
+    - Correction de bug
+    - Les 2 versions ne sont plus antagonistes
+
+ -- hizoka <hizo@free.fr>  Sun, 25 Oct 2015 09:06:00 +0100
+
+
+mkv-extractor-qt5 (5.2.2-3~bionic) bionic; urgency=low ()
+
+  [english]
+    - Folder select fixed
+    - Upadte About window
+    - Package fixed
+
+  [français]
+    - Séléction du dossier corrigé
+    - Mise à jour de la fenetre à propos
+    - Nom du paquet corrigé
+
+ -- hizoka <hizo@free.fr>  Sat, 1 Aug 2015 12:40:00 +0100
+
+
+mkv-extractor-qt5 (5.2.2-0~bionic) bionic; urgency=low ()
+
+  [english]
+    - Creation of the QT5 version
+    - Many little fix
+    - Window who propose to use mmg if you just reencapsulate
+    - Improvement of the icon system for the attached files
+
+  [français]
+    - Création de la version QT5
+    - Plusieurs petites corrections
+    - Ajout d'une fenetre proposant d'utiliser mmg lors d'un simple réencapsulage
+    - Amelioration du systeme d'icone des fichiers joints
+
+ -- hizoka <hizo@free.fr>  Wed, 15 Jul 2015 19:47:00 +0100

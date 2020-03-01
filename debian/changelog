@@ -1,3 +1,9 @@
+mkv-extractor-qt5 (5.5.5a-0~xenial) xenial; urgency=low ()
+
+  * Minor changes
+
+ -- Belleguic Terence <hizo@free.fr>  Sat, 27 Jan 2018 12:20:06 +0200
+
 mkv-extractor-qt5 (5.5.5-0~xenial) xenial; urgency=low ()
 
   [english]
@@ -22,7 +28,7 @@ mkv-extractor-qt5 (5.5.3-0~xenial) xenial; urgency=low ()
     - Fix the desktop file
     - Fix the systray bug
     - Fix the temporary folder bug
-    - Fix the icons of the tracksr bug
+    - Fix the icons of the tracks bug
 
   [français]
     - Correction du fichier desktop

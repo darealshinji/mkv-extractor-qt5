@@ -1559,8 +1559,8 @@ Jaký software chceš používat?</translation>
     </message>
     <message>
         <location filename="ui_MKVExtractorQt5.ui" line="1216"/>
-        <source>C&amp;onfiguration  edition</source>
-        <translation type="obsolete">Úprava &amp;nastavení</translation>
+        <source>Edit c&amp;onfiguration</source>
+        <translation>Úprava &amp;nastavení</translation>
     </message>
     <message>
         <location filename="ui_MKVExtractorQt5.ui" line="1219"/>
@@ -1736,11 +1736,6 @@ Jaký software chceš používat?</translation>
         <location filename="ui_MKVExtractorQt5.ui" line="924"/>
         <source>Q&amp;t styles</source>
         <translation>Q&amp;t styles</translation>
-    </message>
-    <message>
-        <location filename="ui_MKVExtractorQt5.ui" line="1216"/>
-        <source>Edit c&amp;onfiguration</source>
-        <translation>Úprava &amp;nastavení</translation>
     </message>
 </context>
 </TS>

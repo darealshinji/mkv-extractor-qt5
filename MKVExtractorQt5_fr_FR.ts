@@ -953,8 +953,8 @@ Quel logiciel voulez-vous utiliser ?
     </message>
     <message>
         <location filename="ui_MKVExtractorQt5.ui" line="1216"/>
-        <source>C&amp;onfiguration  edition</source>
-        <translation type="obsolete">Édition de la c&amp;onfiguration</translation>
+        <source>Edit c&amp;onfiguration</source>
+        <translation>Édition de la configuration</translation>
     </message>
     <message>
         <location filename="ui_MKVExtractorQt5.ui" line="1219"/>
@@ -1130,11 +1130,6 @@ Quel logiciel voulez-vous utiliser ?
         <location filename="ui_MKVExtractorQt5.ui" line="924"/>
         <source>Q&amp;t styles</source>
         <translation>Styles de Q&amp;t</translation>
-    </message>
-    <message>
-        <location filename="ui_MKVExtractorQt5.ui" line="1216"/>
-        <source>Edit c&amp;onfiguration</source>
-        <translation>Édition de la configuration</translation>
     </message>
 </context>
 </TS>

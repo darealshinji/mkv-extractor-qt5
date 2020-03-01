@@ -280,7 +280,7 @@ class MKVExtractorQt5(QMainWindow):
         menulist.addAction(self.option_stereo) # Ajout de l'action à la liste
 
         self.RatesMenu = QMenu(self) # Création d'un sous menu
-        ag = QActionGroup(self, exclusive=True) # Création d'un actiongroup
+        ag = QActionGroup(self) # Création d'un actiongroup
         QualityList["OptionsQualityNoChange"] = QAction('', self, checkable=True) # Création d'un item radio sans nom
         self.RatesMenu.addAction(ag.addAction(QualityList["OptionsQualityNoChange"])) # Ajout de l'item radio dans la sous liste
         for nb in [128, 192, 224, 256, 320, 384, 448, 512, 576, 640]: # Qualités utilisables
@@ -289,7 +289,7 @@ class MKVExtractorQt5(QMainWindow):
         menulist.addMenu(self.RatesMenu) # Ajout du sous menu dans le menu
 
         self.PowerMenu = QMenu(self) # Création d'un sous menu
-        ag = QActionGroup(self, exclusive=True) # Création d'un actiongroup
+        ag = QActionGroup(self) # Création d'un actiongroup
         PowerList["OptionsPowerNoChange"] = QAction('', self, checkable=True) # Création d'un item radio sans nom
         self.PowerMenu.addAction(ag.addAction(PowerList["OptionsPowerNoChange"])) # Ajout de l'item radio dans la sous liste
         for nb in [2, 3, 4, 5]: # Puissances utilisables

@@ -15,9 +15,9 @@ from datetime import timedelta # utile pour le calcul de la progression de la co
 from pathlib import Path # Nécessaire pour la recherche de fichier
 import json # Necessaire au traitement des infos de mkvmerge
 
-from PyQt5.QtWidgets import QPushButton, QSystemTrayIcon, QWidget, QTextEdit, QShortcut, QComboBox, QApplication, QAction, QDockWidget, QDesktopWidget, QMessageBox, QActionGroup, QTableWidgetItem, QCheckBox, QMainWindow, QMenu, QDialog, QHBoxLayout, QVBoxLayout, QDialogButtonBox, QStyleFactory
-from PyQt5.QtCore import QCoreApplication, QFileInfo, QStandardPaths, QTemporaryDir, QTranslator, QThread, QLibraryInfo, QDir, QMimeType, QMimeDatabase, Qt, QSettings, QProcess, QUrl, QLocale
-from PyQt5.QtGui import QTextCursor, QIcon, QKeySequence, QCursor, QDesktopServices, QPixmap
+from PyQt5.QtWidgets import QPushButton, QSystemTrayIcon, QWidget, QTextEdit, QShortcut, QComboBox, QApplication, QAction, QDockWidget, QDesktopWidget, QMessageBox, QActionGroup, QTableWidgetItem, QCheckBox, QMainWindow, QMenu, QDialog, QHBoxLayout, QVBoxLayout, QDialogButtonBox, QStyleFactory, QLineEdit, QFileDialog
+from PyQt5.QtCore import QCoreApplication, QFileInfo, QStandardPaths, QTemporaryDir, QTranslator, QThread, QLibraryInfo, QDir, QMimeType, QMimeDatabase, Qt, QSettings, QProcess, QUrl, QLocale, QSize, QFile
+from PyQt5.QtGui import QTextCursor, QIcon, QKeySequence, QCursor, QDesktopServices, QPixmap, QPainter
 
 from QFileDialogCustom.QFileDialogCustom import QFileDialogCustom # Version custom de sélecteur de fichier
 from WhatsUp.WhatsUp import WhatsUp
@@ -40,7 +40,6 @@ class QuitButton(QPushButton):
 
         # Acceptation de l'événement
         return super(type(self), self).mousePressEvent(event)
-
 
 
 #############################################################################
@@ -121,15 +120,19 @@ class QTextEditCustom(QTextEdit):
         text = self.toPlainText()
 
         # Arrête la fonction si pas de texte
-        if not text:
-            return
+        if not text: return
 
-        # Fichier de sortie
-        file = Path(QDir.homePath(), 'InfoMKVExtractorQt5.txt')
+        # Création du lien vers le fichier
+        ExportedFile = QFile(QDir.homePath() + '/InfoMKVExtractorQt5.txt')
 
-        # Enregistrement du texte
-        with file.open("w") as info_file:
-            info_file.write(text)
+        # Ouverture du fichier en écriture
+        ExportedFile.open(QFile.WriteOnly)
+
+        # Envoie du text au format bytes
+        ExportedFile.write(text.encode())
+
+        # Fermeture du fichier
+        ExportedFile.close()
 
 
 
@@ -142,6 +145,7 @@ class MKVExtractorQt5(QMainWindow):
         super(MKVExtractorQt5, self).__init__(parent)
         self.ui = Ui_mkv_extractor_qt5()
         self.ui.setupUi(self) # Lance la fonction définissant tous les widgets du fichier UI
+        self.setWindowTitle('MKV Extractor Qt v{}'.format(app.applicationVersion())) # Nom de la fenêtre
         self.show() # Affichage de la fenêtre principale
 
 
@@ -156,9 +160,6 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Gestion de la fenêtre
-        ## Nom de la fenêtre
-        self.setWindowTitle('MKV Extractor Qt v{}'.format(app.applicationVersion()))
-
         ## Remet les widgets comme ils l'étaient
         if Configs.contains("WinState"):
             self.restoreState(Configs.value("WinState"))
@@ -178,51 +179,8 @@ class MKVExtractorQt5(QMainWindow):
         self.ui.mkv_pause.setVisible(False) # Cache le bouton de pause
 
 
-        ### Recherche les différents logiciels complémentaires
-        ffconv = False
-
-
-        ### Cache les options dont les exécutables n'existe pas
-        for Executable, Widget in (("mkvalidator", self.ui.mk_validator), ("mkclean", self.ui.mk_clean), ("mkvinfo-gui", self.ui.mkv_info), ("qtesseract5", self.ui.option_vobsub_srt)):
-            x = QStandardPaths.findExecutable(Executable)
-            y = QStandardPaths.findExecutable(Executable, [QFileInfo(".").absoluteFilePath()])
-
-            # Définit l'adresse du programme
-            if not x and not y:
-                Widget.setVisible(False)
-
-        ## Cache le bouton whatsup
-        if not Path('/usr/share/doc/mkv-extractor-qt5/changelog.Debian.gz').exists():
-            self.ui.whatsup.setVisible(False)
-
-
-        ## Commande à utiliser pour mmg
-        if QStandardPaths.findExecutable("mmg"):
-            Configs.setValue("mmgExec", "mmg")
-
-        elif QStandardPaths.findExecutable("mkvtoolnix-gui"):
-            Configs.setValue("mmgExec", "mkvtoolnix-gui")
-
-        else:
-            self.ui.mkv_mkvmerge.setVisible(False) # Cache l'option mmg si le l'exécutable n'existe pas
-
-
-        ## Recherche ffmpeg et avconv qui font la même chose
-        # Cache les radiobutton et l'option de conversion
-        if not QStandardPaths.findExecutable("ffmpeg") and not QStandardPaths.findExecutable("avconv"):
-            self.ui.option_audio.setVisible(False)
-
-        # Sélection automatique ffmpeg
-        elif QStandardPaths.findExecutable("ffmpeg") and not QStandardPaths.findExecutable("avconv"):
-            Configs.setValue("FFMpeg", True)
-
-        # Sélection automatique avconv
-        elif not QStandardPaths.findExecutable("ffmpeg") and QStandardPaths.findExecutable("avconv"):
-            Configs.setValue("FFMpeg", False)
-
-        # Les deux sont dispo, utilisation de ffmpeg par defaut
-        else:
-            ffconv = True
+        ### Active les tooltips des actions dans les menus
+        for Widget in (self.ui.menuFichier, self.ui.menuActions, self.ui.menuAide, self.ui.menuAide): Widget.setToolTipsVisible(True)
 
 
         ### Remplissage du menu des styles Qt disponibles
@@ -231,8 +189,8 @@ class MKVExtractorQt5(QMainWindow):
             QtStyleList[Style].triggered.connect(partial(self.StyleChange, Style)) # Action créée pour cet element
             self.ui.option_style.addAction(QtStyleList[Style]) # Ajout de l'action à la liste
 
-            if Style.lower() == Configs.value("QtStyle").lower(): # Si c'est le style actuel
-                self.StyleChange(Style)
+            # Si c'est le style actuel
+            if Style.lower() == Configs.value("QtStyle").lower(): self.StyleChange(Style)
 
 
         ### Mise en place du system tray
@@ -244,45 +202,46 @@ class MKVExtractorQt5(QMainWindow):
         self.SysTrayIcon = QSystemTrayIcon(QIcon.fromTheme("mkv-extractor-qt5", QIcon(":/img/mkv-extractor-qt5.png")), self)
         self.SysTrayIcon.setContextMenu(menulist)
 
-        if not Configs.value("SysTray"):
-            self.ui.option_systray.setChecked(False)
-
-        else:
-            self.SysTrayIcon.show()
+        if not Configs.value("SysTray"): self.ui.option_systray.setChecked(False)
+        else: self.SysTrayIcon.show()
 
 
         ### Menu du bouton de conversion SUB => SRT
         menulist = QMenu() # Création d'un menu
+        menulist.setToolTipsVisible(True) # Active les tooltips des actions
+
         self.Qtesseract5 = QAction('', self, checkable=True) # Création d'un item sans texte
+        self.Qtesseract5.setIcon(QIcon.fromTheme("Qtesseract5", QIcon(":/img/qtesseract5.png")))
         menulist.addAction(self.Qtesseract5) # Ajout de l'action à la liste
+
+        menulist.addSeparator()
+        self.BDSup2Sub = QAction('', self) # Création d'un item sans texte
+        self.BDSup2Sub.setIcon(QIcon.fromTheme("BDSup2Sub", QIcon(":/img/BDSup2Sub.png")))
+        menulist.addAction(self.BDSup2Sub) # Ajout de l'action à la liste
+
         self.ui.option_vobsub_srt.setMenu(menulist) # Envoie de la liste dans le bouton
 
 
         ### Menu du bouton de conversion DTS => AC3
         menulist = QMenu() # Création d'un menu
+        menulist.setToolTipsVisible(True) # Active les tooltips des actions
 
         icon = QIcon.fromTheme("ffmpeg", QIcon(":/img/ffmpeg.png"))
         self.option_ffmpeg = QAction(icon, '', self, checkable=True) # Création d'un item sans texte
         menulist.addAction(self.option_ffmpeg) # Ajout de l'action à la liste
 
-        if Configs.value("FFMpeg"):
-            self.option_ffmpeg.setChecked(True)
-
-        if not ffconv:
-            self.option_ffmpeg.setVisible(False)
-
         icon = QIcon.fromTheme("audio-ac3", QIcon(":/img/audio-ac3.png"))
         self.option_to_ac3 = QAction(icon, '', self, checkable=True) # Création d'un item sans texte
         menulist.addAction(self.option_to_ac3) # Ajout de l'action à la liste
 
-        icon = QIcon.fromTheme("audio-headphones", QIcon(":/img/audio-headphones.png"))
+        icon = QIcon.fromTheme("stereo", QIcon(":/img/stereo.png"))
         self.option_stereo = QAction(icon, '', self, checkable=True) # Création d'un item sans texte
         menulist.addAction(self.option_stereo) # Ajout de l'action à la liste
 
         self.RatesMenu = QMenu(self) # Création d'un sous menu
         ag = QActionGroup(self) # Création d'un actiongroup
-        QualityList["OptionsQualityNoChange"] = QAction('', self, checkable=True) # Création d'un item radio sans nom
-        self.RatesMenu.addAction(ag.addAction(QualityList["OptionsQualityNoChange"])) # Ajout de l'item radio dans la sous liste
+        QualityList["NoChange"] = QAction('', self, checkable=True) # Création d'un item radio sans nom
+        self.RatesMenu.addAction(ag.addAction(QualityList["NoChange"])) # Ajout de l'item radio dans la sous liste
         for nb in [128, 192, 224, 256, 320, 384, 448, 512, 576, 640]: # Qualités utilisables
             QualityList[nb] = QAction('', self, checkable=True) # Création d'un item radio sans nom
             self.RatesMenu.addAction(ag.addAction(QualityList[nb])) # Ajout de l'item radio dans la sous liste
@@ -290,8 +249,8 @@ class MKVExtractorQt5(QMainWindow):
 
         self.PowerMenu = QMenu(self) # Création d'un sous menu
         ag = QActionGroup(self) # Création d'un actiongroup
-        PowerList["OptionsPowerNoChange"] = QAction('', self, checkable=True) # Création d'un item radio sans nom
-        self.PowerMenu.addAction(ag.addAction(PowerList["OptionsPowerNoChange"])) # Ajout de l'item radio dans la sous liste
+        PowerList["NoChange"] = QAction('', self, checkable=True) # Création d'un item radio sans nom
+        self.PowerMenu.addAction(ag.addAction(PowerList["NoChange"])) # Ajout de l'item radio dans la sous liste
         for nb in [2, 3, 4, 5]: # Puissances utilisables
             PowerList[nb] = QAction('', self, checkable=True) # Création d'un item radio sans nom
             self.PowerMenu.addAction(ag.addAction(PowerList[nb])) # Ajout de l'item radio dans la sous liste
@@ -311,21 +270,54 @@ class MKVExtractorQt5(QMainWindow):
         self.ui.option_reencapsulate.setMenu(menulist) # Envoie de la liste dans le bouton
 
 
+        ### Désactivation des options dont les exécutables n'existent pas
+        for Location, Widget in (("Location/BDSup2Sub", self.BDSup2Sub),
+                                 ("Location/MKClean", self.ui.mk_clean),
+                                 ("Location/MKVInfo", self.ui.mkv_info),
+                                 ("Location/MKVToolNix", self.ui.mkv_mkvmerge),
+                                 ("Location/MKValidator", self.ui.mk_validator),
+                                 ("Location/Qtesseract5", self.ui.option_vobsub_srt)):
+
+            # Définit l'adresse du programme
+            if not QFileInfo(Configs.value(Location).split(" -")[0]).isExecutable(): Widget.setEnabled(False)
+
+
+        ### Désactive le bouton whatsup s'il n'y a pas de changelog => en mettre un dans la version sans installation ?!
+        if not Path('/usr/share/doc/mkv-extractor-qt5/changelog.Debian.gz').exists(): self.ui.whatsup.setEnabled(False)
+
+
+        ### Recherche ffmpeg et avconv qui font la même chose
+        # Désactive les radiobutton et l'option de conversion
+        if not QFileInfo(Configs.value("Location/FFMpeg").split(" -")[0]).isExecutable() and not QFileInfo(Configs.value("Location/AvConv").split(" -")[0]).isExecutable():
+            Configs.setValue("FFMpeg", False)
+            self.option_ffmpeg.setEnabled(False)
+            self.ui.option_audio.setEnabled(False)
+
+        # Sélection automatique ffmpeg
+        elif QFileInfo(Configs.value("Location/FFMpeg").split(" -")[0]).isExecutable() and not QFileInfo(Configs.value("Location/AvConv").split(" -")[0]).isExecutable():
+            Configs.setValue("FFMpeg", True)
+            self.option_ffmpeg.setEnabled(False)
+
+        # Sélection automatique avconv
+        elif not QFileInfo(Configs.value("Location/FFMpeg").split(" -")[0]).isExecutable() and QFileInfo(Configs.value("Location/AvConv").split(" -")[0]).isExecutable():
+            Configs.setValue("FFMpeg", False)
+            self.option_ffmpeg.setEnabled(False)
+
+        # Les deux sont dispo, utilisation de ffmpeg par defaut
+        else:
+            Configs.setValue("FFMpeg", True)
+            self.option_ffmpeg.setChecked(True)
+
+
         ### Activation et modifications des préférences
-        QualityList[Configs.value("AudioQuality", "OptionsQualityNoChange")].setChecked(True) # Coche de la bonne valeur
-        PowerList[Configs.value("AudioBoost", "OptionsPowerNoChange")].setChecked(True) # Coche de la bonne valeur
+        QualityList[TempValues.value("AudioQuality")].setChecked(True) # Coche de la bonne valeur
+        PowerList[TempValues.value("AudioBoost")].setChecked(True) # Coche de la bonne valeur
 
-        if Configs.value("OutputSameFolder"):
-            self.ui.option_mkv_folder.setChecked(True)
+        if not Configs.value("RecentInfos"): self.ui.option_recent_infos.setChecked(True)
 
-        if not Configs.value("RecentInfos"):
-            self.ui.option_recent_infos.setChecked(True)
+        if not Configs.value("WindowAspect"): self.ui.option_aspect.setChecked(False)
 
-        if not Configs.value("WindowAspect"):
-            self.ui.option_aspect.setChecked(False)
-
-        if Configs.value("DebugMode"):
-            self.ui.option_debug.setChecked(True)
+        if Configs.value("DebugMode"): self.ui.option_debug.setChecked(True)
 
         if not Configs.value("Feedback"):
             self.ui.option_feedback.setChecked(False)
@@ -339,8 +331,8 @@ class MKVExtractorQt5(QMainWindow):
         ### Réinitialisation du dossier de sortie s'il n'existe pas
         if not Configs.contains("OutputFolder") or not Configs.value("OutputFolder").is_dir():
             Configs.setValue("OutputFolder", Path().resolve())
-
-            self.ui.option_mkv_folder.setChecked(True) # Activation de l'option même dossier afin qu'un dossier de sortie soit pris en compte au prochain MKV
+            self.OptionsValue("OutputSameFolder", True)
+            #self.ui.option_mkv_folder.setChecked(True) # Activation de l'option même dossier afin qu'un dossier de sortie soit pris en compte au prochain MKV
 
 
         ### Gestion la traduction, le widget n'est pas encore connecté
@@ -394,8 +386,16 @@ class MKVExtractorQt5(QMainWindow):
         self.ConnectActions()
 
 
+        ### Recherche et mise à jour de leurs adresses dans softwares locations
+        self.SoftwareFinding()
+
+
         ### Création du dossier temporaire
         self.FolderTempCreate()
+
+
+        ### Cache les boutons non fonctionnels
+        if Configs.value("HideOptions"): self.ui.option_hide_options.setChecked(True)
 
 
         ### Dans le cas du lancement du logiciel avec ouverture de fichier
@@ -498,6 +498,8 @@ class MKVExtractorQt5(QMainWindow):
         self.ui.option_feedback.toggled.connect(partial(self.OptionsValue, "Feedback"))
         self.ui.option_feedback_block.toggled.connect(partial(self.OptionsValue, "FeedbackBlock"))
         self.ui.option_aspect.toggled.connect(partial(self.OptionsValue, "WindowAspect"))
+        self.ui.option_hide_options.toggled.connect(partial(self.OptionsValue, "HideOptions"))
+        self.ui.option_softwares_locations.triggered.connect(lambda: (self.ui.stackedMiddle.setCurrentIndex(3)))
         self.ui.lang_en.triggered.connect(partial(self.OptionLanguage, "en_US"))
         self.ui.lang_fr.triggered.connect(partial(self.OptionLanguage, "fr_FR"))
         self.ui.lang_cs.triggered.connect(partial(self.OptionLanguage, "cs_CZ"))
@@ -519,8 +521,30 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Connexions des widgets de configuration (au clic ou changement de contenu)
         self.ui.configuration_table.itemChanged.connect(self.ConfigurationEdit)
-        self.ui.configuration_ok.clicked.connect(lambda: (self.ui.stackedMiddle.setCurrentIndex(0)))
+        self.ui.configuration_close.clicked.connect(lambda: (self.ui.stackedMiddle.setCurrentIndex(0)))
         self.ui.configuration_reset.clicked.connect(self.ConfigurationReset)
+
+
+        ### Connexions des widgets des locations de logiciels
+        self.ui.locations_close.clicked.connect(lambda: (self.ui.stackedMiddle.setCurrentIndex(0)))
+        self.ui.locations_reset.clicked.connect(partial(self.SoftwareFinding, True))
+        self.ui.button_avconv.clicked.connect(partial(self.SoftwareSelector, "Location/AvConv", self.ui.location_avconv))
+        self.ui.button_bdsup2sub.clicked.connect(partial(self.SoftwareSelector, "Location/BDSup2Sub", self.ui.location_bdsup2sub))
+        self.ui.button_ffmpeg.clicked.connect(partial(self.SoftwareSelector, "Location/FFMpeg", self.ui.location_ffmpeg))
+        self.ui.button_mkclean.clicked.connect(partial(self.SoftwareSelector, "Location/MKClean", self.ui.location_mkclean))
+        self.ui.button_mkvinfo.clicked.connect(partial(self.SoftwareSelector, "Location/MKVInfo", self.ui.location_mkvinfo))
+        self.ui.button_mkvtoolnix.clicked.connect(partial(self.SoftwareSelector, "Location/MKVToolNix", self.ui.location_mkvtoolnix))
+        self.ui.button_mkvalidator.clicked.connect(partial(self.SoftwareSelector, "Location/MKValidator", self.ui.location_mkvalidator))
+        self.ui.button_qtesseract5.clicked.connect(partial(self.SoftwareSelector, "Location/Qtesseract5", self.ui.location_qtesseract5))
+
+        self.ui.location_avconv.textChanged.connect(partial(self.SoftwareChanged, "Location/AvConv"))
+        self.ui.location_bdsup2sub.textChanged.connect(partial(self.SoftwareChanged, "Location/BDSup2Sub"))
+        self.ui.location_ffmpeg.textChanged.connect(partial(self.SoftwareChanged, "Location/FFMpeg"))
+        self.ui.location_mkclean.textChanged.connect(partial(self.SoftwareChanged, "Location/MKClean"))
+        self.ui.location_mkvinfo.textChanged.connect(partial(self.SoftwareChanged, "Location/MKVInfo"))
+        self.ui.location_mkvtoolnix.textChanged.connect(partial(self.SoftwareChanged, "Location/MKVToolNix"))
+        self.ui.location_mkvalidator.textChanged.connect(partial(self.SoftwareChanged, "Location/MKValidator"))
+        self.ui.location_qtesseract5.textChanged.connect(partial(self.SoftwareChanged, "Location/Qtesseract5"))
 
 
         ### Connexions du tableau listant les pistes du fichier mkv
@@ -533,7 +557,7 @@ class MKVExtractorQt5(QMainWindow):
         self.ui.option_reencapsulate.toggled.connect(partial(self.OptionsValue, "Reencapsulate"))
         self.ui.option_vobsub_srt.toggled.connect(partial(self.OptionsValue, "VobsubToSrt"))
         self.ui.option_audio.toggled.connect(partial(self.OptionsValue, "AudioConvert"))
-        self.ui.option_mkv_folder.toggled.connect(partial(self.OptionsValue, "OutputSameFolder"))
+        #self.ui.option_mkv_folder.toggled.connect(partial(self.OptionsValue, "OutputSameFolder")) ICI
         self.ui.option_systray.toggled.connect(partial(self.OptionsValue, "SysTray"))
         self.option_stereo.toggled.connect(partial(self.OptionsValue, "AudioStereo"))
         self.option_to_ac3.toggled.connect(partial(self.OptionsValue, "AudioToAc3"))
@@ -541,8 +565,8 @@ class MKVExtractorQt5(QMainWindow):
         self.option_subtitles_open.toggled.connect(partial(self.OptionsValue, "SubtitlesOpen"))
         self.option_ffmpeg.toggled.connect(partial(self.OptionsValue, "FFMpeg"))
         self.Qtesseract5.triggered.connect(partial(self.OptionsValue, "Qtesseract5"))
-        PowerList["OptionsPowerNoChange"].triggered.connect(partial(self.OptionsValue, "AudioBoost", "NoChange"))
-        QualityList["OptionsQualityNoChange"].triggered.connect(partial(self.OptionsValue, "AudioQuality", "NoChange"))
+        PowerList["NoChange"].triggered.connect(partial(self.OptionsValue, "AudioBoost", "NoChange"))
+        QualityList["NoChange"].triggered.connect(partial(self.OptionsValue, "AudioQuality", "NoChange"))
         for nb in [128, 192, 224, 256, 320, 384, 448, 512, 576, 640]: QualityList[nb].triggered.connect(partial(self.OptionsValue, "AudioQuality", nb))
         for nb in [2, 3, 4, 5]: PowerList[nb].triggered.connect(partial(self.OptionsValue, "AudioBoost", nb))
 
@@ -578,6 +602,185 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Applique le style graphique
         QApplication.setStyle(QStyleFactory.create(Value))
+
+
+
+    #========================================================================
+    def SoftwareFinding(self, Reset = False):
+        """Fonction vérifiant les adresses des executables et les affichant dans la page des executables."""
+        ### Si demande de reset
+        if Reset:
+            for Location in ("Location/AvConv", "Location/BDSup2Sub", "Location/FFMpeg", "Location/MKClean", "Location/MKVInfo", "Location/MKVToolNix", "Location/MKValidator", "Location/Qtesseract5"):
+                Configs.setValue(Location, "")
+
+
+        ### Traitement de tous les executables
+        for Location, Executable, Widget in (("Location/AvConv", "avconv", self.ui.location_avconv),
+                                             ("Location/BDSup2Sub", "bdsup2sub", self.ui.location_bdsup2sub),
+                                             ("Location/FFMpeg", "ffmpeg", self.ui.location_ffmpeg),
+                                             ("Location/MKClean", "mkclean", self.ui.location_mkclean),
+                                             ("Location/MKVInfo", "mkvinfo-gui", self.ui.location_mkvinfo),
+                                             ("Location/MKVToolNix", "mkvtoolnix-gui", self.ui.location_mkvtoolnix),
+                                             ("Location/MKValidator", "mkvalidator", self.ui.location_mkvalidator),
+                                             ("Location/Qtesseract5", "qtesseract5", self.ui.location_qtesseract5)):
+
+            ## Sauvegarde de la valeur initiale
+            InitialValue = Configs.value(Location)
+
+            ## Si la variable est vide, on recherche le logiciel
+            if not Configs.value(Location):
+                # Recherche le fichier dans le PATH
+                if QStandardPaths.findExecutable(Executable):
+                    Configs.setValue(Location, str(QStandardPaths.findExecutable(Executable)))
+
+                # Recherche le fichier à la base du logiciel
+                elif QStandardPaths.findExecutable(Executable, [QFileInfo(Executable).absoluteFilePath()]):
+                    Configs.setValue(Location, str(QStandardPaths.findExecutable(Executable, [QFileInfo(Executable).absoluteFilePath()])))
+
+                # Cas spécifique à BDSup2Sub
+                elif Location == "Location/BDSup2Sub":
+                    if QStandardPaths.findExecutable("BDSup2Sub.jar"):
+                        Configs.setValue("Location/BDSup2Sub", str(QStandardPaths.findExecutable("BDSup2Sub.jar")))
+
+                    elif QStandardPaths.findExecutable("bdsup2sub", [QFileInfo("BDSup2Sub.jar").absoluteFilePath()]):
+                        Configs.setValue("Location/BDSup2Sub", str(QStandardPaths.findExecutable("bdsup2sub", [QFileInfo("BDSup2Sub.jar").absoluteFilePath()])))
+
+                # Cas spécifique à MKVToolNix
+                elif Location == "Location/MKVToolNix":
+                    if QStandardPaths.findExecutable("mmg"):
+                        Configs.setValue("Location/MKVToolNix", str(QStandardPaths.findExecutable("mmg")))
+
+                    elif QStandardPaths.findExecutable("mmg", [QFileInfo("mmg").absoluteFilePath()]):
+                        Configs.setValue("Location/MKVToolNix", "{} --info".format(QStandardPaths.findExecutable("mmg", [QFileInfo("mmg").absoluteFilePath()])))
+
+                # Cas spécifique à MKVInfo
+                elif Location == "Location/MKVInfo":
+                    if QStandardPaths.findExecutable("mkvtoolnix-gui"):
+                        Configs.setValue("Location/MKVInfo", "{} --info".format(QStandardPaths.findExecutable("mkvtoolnix-gui")))
+
+                    elif QStandardPaths.findExecutable("mkvtoolnix-gui", [QFileInfo("mkvtoolnix-gui").absoluteFilePath()]):
+                        Configs.setValue("Location/MKVInfo", "{} --info".format(QStandardPaths.findExecutable("mkvtoolnix-gui", [QFileInfo("mkvtoolnix-gui").absoluteFilePath()])))
+
+                    elif QStandardPaths.findExecutable("mkvinfo"):
+                        Configs.setValue("Location/MKVInfo", "{} -g".format(QStandardPaths.findExecutable("mkvinfo")))
+
+                    elif QStandardPaths.findExecutable("mkvinfo", [QFileInfo("mkvinfo").absoluteFilePath()]):
+                        Configs.setValue("Location/MKVInfo", "{} --info".format(QStandardPaths.findExecutable("mkvinfo", [QFileInfo("mkvinfo").absoluteFilePath()])))
+
+
+            ## Si la valeur n'a pas évoluée, au demarrage, le setText ne sera pas "fonctionnel", on l'appelle manuellement
+            if InitialValue == Configs.value(Location): self.SoftwareChanged(Location, InitialValue, Widget)
+
+            ## Envoie de l'adresse dans le line edit
+            Widget.setText(Configs.value(Location))
+
+
+    #========================================================================
+    def SoftwareSelector(self, Location, Widget):
+        """Fonction de séléction des executables."""
+        ### Affichage de la fenêtre avec le bon dossier par défaut
+        if Configs.value(Location): FileDialog = QFileDialog.getOpenFileName(self, self.Trad["LocationTitle"], Configs.value(Location))
+        else: FileDialog = QFileDialog.getOpenFileName(self, self.Trad["LocationTitle"], QDir.homePath())
+
+        ### En cas d'annulation, on arrête là
+        if not FileDialog[0]: return
+
+        ### Mise à jour du widget
+        Widget.setText(FileDialog[0])
+
+
+    #========================================================================
+    def SoftwareChanged(self, Location, NewText, Widget = None):
+        """Fonction vérifiant que l'adresse de l'executable est valide."""
+        ### Mise à jour de la variable
+        Configs.setValue(Location, NewText)
+
+
+        ### Fait sauter les arguments afin de pouvoir tester uniquement l'executable
+        NewText = NewText.split(" -")[0]
+
+
+        ### Nom du widget appelant la fonction
+        if not Widget: Widget = self.sender()
+
+
+        ### Variable servant au (dé)grisement des options
+        OptionActive = False
+
+
+        ### Suppression des actions du widget
+        for Action in Widget.actions(): Widget.removeAction(Action)
+
+
+        ### Teste l'adresse et attribut une icone
+        if not NewText:
+            # Si l'adresse est introuvable, envoi d'une icone d'erreur dans le line edit
+            Action = QAction(QIcon.fromTheme("emblem-question", QIcon(":/img/emblem-question.svg")), "", Widget)
+            Action.setStatusTip(self.Trad["LocationNo"])
+
+        elif not Path(NewText.split(" -")[0]).exists():
+            # Si l'adresse est introuvable, envoi d'une icone d'erreur dans le line edit
+            Action = QAction(QIcon.fromTheme("emblem-error", QIcon(":/img/emblem-error.svg")), "", Widget)
+            Action.setStatusTip(self.Trad["LocationKO"])
+
+        elif not QFileInfo(NewText.split(" -")[0]).isExecutable():
+            # Si l'adresse est introuvable, envoi d'une icone d'erreur dans le line edit
+            Action = QAction(QIcon.fromTheme("emblem-important", QIcon(":/img/emblem-important.svg")), "", Widget)
+            Action.setStatusTip(self.Trad["LocationOKO"])
+
+        else:
+            Action = QAction(QIcon.fromTheme("emblem-succed", QIcon(":/img/emblem-succed.svg")), "", Widget)
+            Action.setStatusTip(self.Trad["LocationOK"])
+            OptionActive = True
+
+
+        ### Envoi de l'icone dans le line edit
+        Widget.addAction(Action, QLineEdit.LeadingPosition)
+
+
+        ### Récupération du widget de l'option
+        if Location == "LocationBDSup2Sub": OptionWidget = self.BDSup2Sub
+        elif Location == "LocationFFMpeg": OptionWidget = self.option_ffmpeg
+        elif Location == "LocationMKClean": OptionWidget = self.ui.mk_clean
+        elif Location == "LocationMKVInfo": OptionWidget = self.ui.mkv_info
+        elif Location == "LocationMKVToolNix": OptionWidget = self.ui.mkv_mkvmerge
+        elif Location == "LocationMKValidator": OptionWidget = self.ui.mk_validator
+        elif Location == "LocationQtesseract5": OptionWidget = self.ui.option_vobsub_srt
+        else: OptionWidget = None
+
+
+        ### Si un widget a été donné
+        if OptionWidget:
+            ## Mise à jour de l'état de l'option
+            OptionWidget.setEnabled(OptionActive)
+
+            ## Fait apparaitre/disparaitre si besoin l'option
+            if Configs.value("HideOptions") and not OptionActive: OptionWidget.setVisible(False)
+            else: OptionWidget.setVisible(True)
+
+
+        ### Recherche ffmpeg et avconv qui font la même chose
+        if Location in ("Location/FFMpeg", "LocationAvConv"):
+            # Désactive les radiobutton et l'option de conversion
+            if not QFileInfo(Configs.value("Location/FFMpeg").split(" -")[0]).isExecutable() and not QFileInfo(Configs.value("Location/AvConv").split(" -")[0]).isExecutable():
+                Configs.setValue("FFMpeg", False)
+                self.option_ffmpeg.setEnabled(False)
+                self.ui.option_audio.setEnabled(False)
+
+            # Sélection automatique ffmpeg
+            elif QFileInfo(Configs.value("Location/FFMpeg").split(" -")[0]).isExecutable() and not QFileInfo(Configs.value("Location/AvConv").split(" -")[0]).isExecutable():
+                Configs.setValue("FFMpeg", True)
+                self.option_ffmpeg.setEnabled(False)
+
+            # Sélection automatique avconv
+            elif not QFileInfo(Configs.value("Location/FFMpeg").split(" -")[0]).isExecutable() and QFileInfo(Configs.value("Location/AvConv").split(" -")[0]).isExecutable():
+                Configs.setValue("FFMpeg", False)
+                self.option_ffmpeg.setEnabled(False)
+
+            # Les deux sont dispo, utilisation de ffmpeg par defaut
+            else:
+                Configs.setValue("FFMpeg", True)
+                self.option_ffmpeg.setChecked(True)
 
 
     #========================================================================
@@ -658,6 +861,24 @@ class MKVExtractorQt5(QMainWindow):
                 self.activateWindow()
                 self.SysTrayIcon.hide()
 
+        ## Pour cacher ou afficher l'icône du systray
+        elif Option == "HideOptions":
+            for Location, Widget in (("Location/BDSup2Sub", self.BDSup2Sub),
+                                     ("Location/FFMpeg", self.option_ffmpeg),
+                                     ("Location/MKClean", self.ui.mk_clean),
+                                     ("Location/MKVInfo", self.ui.mkv_info),
+                                     ("Location/MKVToolNix", self.ui.mkv_mkvmerge),
+                                     ("Location/MKValidator", self.ui.mk_validator),
+                                     ("Location/Qtesseract5", self.ui.option_vobsub_srt)):
+                # S'il faut les afficher
+                if not Value:
+                    Widget.setVisible(True)
+
+                # S'il faut les cacher
+                else:
+                    if not QFileInfo(Configs.value(Location).split(" -")[0]).isExecutable():
+                        Widget.setVisible(False)
+
 
     #========================================================================
     def OptionLanguage(self, value):
@@ -712,7 +933,7 @@ class MKVExtractorQt5(QMainWindow):
 
 
                      "TheyTalkAboutTitle": QCoreApplication.translate("TheyTalkAbout", "They talk about MKV Extractor Gui"),
-                     "TheyTalkAboutText": QCoreApplication.translate("TheyTalkAbout", """<html><head/><body><p><a href="http://sysads.co.uk/2014/09/install-mkv-extractor-qt-5-1-4-ubuntu-14-04/"><span style=" text-decoration: underline; color:#0057ae;">sysads.co.uk</span></a> (English)</p><p><a href="http://www.softpedia.com/reviews/linux/mkv-extractor-qt-review-496919.shtml"><span style=" text-decoration: underline; color:#0057ae;">softpedia.com</span></a> (English)</p><p><a href="http://linux.softpedia.com/get/Multimedia/Video/MKV-Extractor-Qt-103555.shtml"><span style=" text-decoration: underline; color:#0057ae;">linux.softpedia.com</span></a> (English)</p><p><a href="http://zenway.ru/page/mkv-extractor-qt"><span style=" text-decoration: underline; color:#0057ae;">zenway.ru</span></a> (Russian)</p><p><a href="http://linuxg.net/how-to-install-mkv-extractor-qt-5-1-4-on-ubuntu-14-04-linux-mint-17-elementary-os-0-3-deepin-2014-and-other-ubuntu-14-04-derivatives/">linuxg.net</span></a> (English)</p><p><a href="http://la-vache-libre.org/mkv-extractor-gui-virer-les-sous-titres-inutiles-de-vos-fichiers-mkv-et-plus-encore/">la-vache-libre.org</span></a> (French)</p><p><a href="http://passionexubuntu.altervista.org/index.php/it/kubuntu/1152-mkv-extractor-qt-vs-5-1-3-kde.html">passionexubuntu.altervista.org</span></a> (Italian)</p></body></html>"""),
+                     "TheyTalkAboutText": QCoreApplication.translate("TheyTalkAbout", """<html><head/><body><p><a href="http://sysads.co.uk/2014/09/install-mkv-extractor-qt-5-1-4-ubuntu-14-04/"><span style=" text-decoration: underline; color:#0057ae;">sysads.co.uk</span></a> (English)</p><p><a href="http://www.softpedia.com/reviews/linux/mkv-extractor-qt-review-496919.shtml"><span style=" text-decoration: underline; color:#0057ae;">softpedia.com</span></a> (English)</p><p><a href="http://linux.softpedia.com/get/Multimedia/Video/MKV-Extractor-Qt-103555.shtml"><span style=" text-decoration: underline; color:#0057ae;">linux.softpedia.com</span></a> (English)</p><p><a href="http://zenway.ru/page/mkv-extractor-qt"><span style=" text-decoration: underline; color:#0057ae;">zenway.ru</span></a> (Russian)</p><p><a href="http://linuxg.net/how-to-install-mkv-extractor-qt-5-1-4-on-ubuntu-14-04-linux-mint-17-elementary-os-0-3-deepin-2014-and-other-ubuntu-14-04-derivatives/"><span style=" text-decoration: underline; color:#2980b9;">linuxg.net</span></a> (English)</p><p><a href="http://la-vache-libre.org/mkv-extractor-gui-virer-les-sous-titres-inutiles-de-vos-fichiers-mkv-et-plus-encore/"><span style=" text-decoration: underline; color:#2980b9;">la-vache-libre.org</span></a> (French)</p><p><a href="http://passionexubuntu.altervista.org/index.php/it/kubuntu/1152-mkv-extractor-qt-vs-5-1-3-kde.html"><span style=" text-decoration: underline; color:#2980b9;">passionexubuntu.altervista.org</span></a> (Italian)</p><p><a href="https://github.com/darealshinji/mkv-extractor-qt5"><span style=" text-decoration: underline; color:#2980b9;">an unofficial github </span></a>(English)</p><p><a href="https://gamblisfx.com/mkv-extractor-qt-5-2-1-extract-audio-and-video-from-mkv-files/"><span style=" text-decoration: underline; color:#2980b9;">gamblisfx.com</span></a><a href="https://github.com/darealshinji/mkv-extractor-qt5"><span style=" text-decoration: underline; color:#2980b9;"/></a>(English)</p><p><a href="https://aur.archlinux.org/packages/mkv-extractor-qt/"><span style=" text-decoration: underline; color:#2980b9;">An unofficial aur package</span></a></p><p><br/></p><p><br/></p><p><br/></p></body></html>"""),
 
                      "SysTrayQuit": QCoreApplication.translate("SysTray", "Quit"),
                      "SysTrayFinishTitle": QCoreApplication.translate("SysTray", "The command(s) have finished"),
@@ -722,6 +943,12 @@ class MKVExtractorQt5(QMainWindow):
                      "WhatsUpTitle": QCoreApplication.translate("WhatsUp", "MKV Extractor Qt5's changelog"),
 
                      "QTextEditStatusTip": QCoreApplication.translate("Main", "Use the right click for view options."),
+
+                     "LocationOK": QCoreApplication.translate("Main", "This location is valid."),
+                     "LocationKO": QCoreApplication.translate("Main", "This location is not valid."),
+                     "LocationNo": QCoreApplication.translate("Main", "No location for this command."),
+                     "LocationOKO": QCoreApplication.translate("Main", "This location is valid but not executable."),
+                     "LocationTitle": QCoreApplication.translate("Main", "Please select the executable file"),
 
                      "AllFiles": QCoreApplication.translate("Main", "All compatible Files"),
                      "MatroskaFiles": QCoreApplication.translate("Main", "Matroska Files"),
@@ -758,7 +985,7 @@ class MKVExtractorQt5(QMainWindow):
                      "ErrorSizeAttachement": QCoreApplication.translate("Errors", "Not enough space available in <b>{}</b> folder.<br/>Free space in the disk: <b>{}</b><br/>File size: <b>{}</b>."),
 
                      "HelpTitle": QCoreApplication.translate("Help", "Help me!"),
-                     "HelpText": QCoreApplication.translate("Help", """<html><head/><body><p align="center"><span style=" font-weight:600;">Are you lost? Do you need help? </span></p><p><span style=" font-weight:600;">Normally all necessary information is present: </span></p><p>- Read the information in the status bar when moving the mouse on widgets </p><p><span style=" font-weight:600;">Though, if you need more information: </span></p><p>- Forum Ubuntu-fr.org: <a href="https://forum.ubuntu-fr.org/viewtopic.php?id=1508741"><span style=" text-decoration: underline; color:#0057ae;">topic</span></a></p><p>- My email address: <a href="mailto:hizo@free.fr"><span style=" text-decoration: underline; color:#0057ae;">hizo@free.fr </span></a></p><p><span style=" font-weight:600;">Thank you for your interest in this program.</span></p></body></html>"""),
+                     "HelpText": QCoreApplication.translate("Help", """<html><head/><body><p align="center"><span style=" font-weight:600;">Are you lost? Do you need help? </span></p><p><span style=" font-weight:600;">Normally all necessary information is present: </span></p><p>- Read the informations in the status bar when moving the mouse on widgets </p><p>- Read the informations in some tooltips, wait 2-3 secondes on actions or buttons.</p><p><span style=" font-weight:600;">Though, if you need more information: </span></p><p>- Forum Ubuntu-fr.org: <a href="https://forum.ubuntu-fr.org/viewtopic.php?id=1508741"><span style=" text-decoration: underline; color:#0057ae;">topic</span></a></p><p>- My email address: <a href="mailto:hizo@free.fr"><span style=" text-decoration: underline; color:#0057ae;">hizo@free.fr </span></a></p><p><span style=" font-weight:600;">Thank you for your interest in this program.</span></p></body></html>"""),
 
                      "AlreadyExistsTest": QCoreApplication.translate("Main", "Skip the existing file test."),
                      "AudioQuality": QCoreApplication.translate("Main", "Quality of the ac3 file converted."),
@@ -772,6 +999,7 @@ class MKVExtractorQt5(QMainWindow):
                      "FolderParentTemp": QCoreApplication.translate("Main", "The folder to use for extract temporaly the attachements file to view them."),
                      "FFMpeg": QCoreApplication.translate("Main", "Use FFMpeg for the conversion."),
                      "LastFile": QCoreApplication.translate("Main", "Keep in memory the last file opened for open it at the next launch of MKV Extractor Qt."),
+                     "HideOptions": QCoreApplication.translate("Main", "Hide the disabled options."),
                      "MMGorMEQ": QCoreApplication.translate("Main", "Software to use for just encapsulate."),
                      "MMGorMEQCheckbox": QCoreApplication.translate("Main", "Skip the proposal to softaware to use."),
                      "ConfirmConvert": QCoreApplication.translate("Main", "Skip the confirmation of the conversion."),
@@ -786,12 +1014,14 @@ class MKVExtractorQt5(QMainWindow):
                      "SubtitlesOpen": QCoreApplication.translate("Main", "Opening subtitles before encapsulation."),
                      "SysTray": QCoreApplication.translate("Main", "Display or hide the system tray icon."),
                      "WindowAspect": QCoreApplication.translate("Main", "Keep in memory the aspect and the position of the window for the next opened."),
+                     "QtStyle": QCoreApplication.translate("Main", "Qt decoration."),
 
                      "OptionsDTStoAC31": QCoreApplication.translate("Options", "Convert in AC3"),
                      "OptionsDTStoAC32": QCoreApplication.translate("Options", "Convert audio tracks automatically to AC3."),
                      "OptionsDelTemp1": QCoreApplication.translate("Options", "Delete temporary files"),
                      "OptionsDelTemp2": QCoreApplication.translate("Options", "The temporary files are the extracted tracks."),
                      "OptionsFFMpeg": QCoreApplication.translate("Options", "Use FFMpeg for the conversion."),
+                     "OptionsFFMpegStatusTip": QCoreApplication.translate("Options", "If FFMpeg and AvConv are installed, use FFMpeg."),
                      "OptionsPowerList": QCoreApplication.translate("Options", "Increase the sound power"),
                      "OptionsPower": QCoreApplication.translate("Options", "No power change."),
                      "OptionsPowerX": QCoreApplication.translate("Options", "Multiplying audio power by {}."),
@@ -804,10 +1034,10 @@ class MKVExtractorQt5(QMainWindow):
                      "OptionsSub1": QCoreApplication.translate("Options", "Opening subtitles before encapsulation"),
                      "OptionsSub2": QCoreApplication.translate("Options", "Auto opening of subtitle srt files for correction. The software will be paused."),
                      "OptionUpdate": QCoreApplication.translate("Options", 'New value for <span style=" color:#0000c0;">{}</span> option: <span style=" color:#0000c0;">{}</span>'),
-                     "OptionsQualityNoChange1": QCoreApplication.translate("Options", "No change the quality"),
-                     "OptionsQualityNoChange2": QCoreApplication.translate("Options", "The quality of the audio tracks will not be changed."),
-                     "OptionsPowerNoChange1": QCoreApplication.translate("Options", "No change the power"),
-                     "OptionsPowerNoChange2": QCoreApplication.translate("Options", "The power of the audio tracks will not be changed."),
+                     "NoChange1": QCoreApplication.translate("Options", "No change the quality"),
+                     "NoChange2": QCoreApplication.translate("Options", "The quality of the audio tracks will not be changed."),
+                     "NoChange1": QCoreApplication.translate("Options", "No change the power"),
+                     "NoChange2": QCoreApplication.translate("Options", "The power of the audio tracks will not be changed."),
                      "OptionsStyles": QCoreApplication.translate("Options", "Use the {} style."),
 
                      "SelectedFile": QCoreApplication.translate("Select", "Selected file: {}."),
@@ -857,14 +1087,14 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Mise au propre du widget de retour d'info et envoie de langue
-        if not Configs.value("FirstRun", True): # Variable évitant l'envoie inutile d'info au démarrage
+        if not TempValues.value("FirstRun"): # Variable évitant l'envoie inutile d'info au démarrage
             self.ui.reply_info.clear()
 
             if Configs.value("DebugMode"):
                 self.SetInfo(self.Trad["OptionUpdate"].format("Language", value), newline=True)
 
         else:
-            Configs.setValue("FirstRun", False)
+            TempValues.setValue("FirstRun", False)
 
 
         ### Recharge le SysTrayQuit
@@ -873,6 +1103,8 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Recharge les textes des toolbutton
         self.option_ffmpeg.setText(self.Trad["OptionsFFMpeg"])
+        self.option_ffmpeg.setStatusTip(self.Trad["OptionsFFMpegStatusTip"])
+        self.option_ffmpeg.setToolTip(self.Trad["OptionsFFMpegStatusTip"])
         self.option_to_ac3.setText(self.Trad["OptionsDTStoAC31"])
         self.option_to_ac3.setStatusTip(self.Trad["OptionsDTStoAC32"])
         self.option_stereo.setText(self.Trad["OptionsStereo1"])
@@ -885,8 +1117,8 @@ class MKVExtractorQt5(QMainWindow):
         self.option_del_temp.setStatusTip(self.Trad["OptionsDelTemp2"])
         self.ui.reply_info.setStatusTip(self.Trad["QTextEditStatusTip"])
 
-        PowerList["OptionsPowerNoChange"].setText(self.Trad["OptionsPowerNoChange1"])
-        PowerList["OptionsPowerNoChange"].setStatusTip(self.Trad["OptionsPowerNoChange2"])
+        PowerList["NoChange"].setText(self.Trad["NoChange1"])
+        PowerList["NoChange"].setStatusTip(self.Trad["NoChange2"])
         for nb in [2, 3, 4, 5]:
             PowerList[nb].setText(self.Trad["OptionsPowerY"].format(nb))
             if nb == 1:
@@ -895,17 +1127,29 @@ class MKVExtractorQt5(QMainWindow):
             else:
                 PowerList[nb].setStatusTip(self.Trad["OptionsPowerX"].format(nb))
 
-        QualityList["OptionsQualityNoChange"].setText(self.Trad["OptionsQualityNoChange1"])
-        QualityList["OptionsQualityNoChange"].setStatusTip(self.Trad["OptionsQualityNoChange2"])
+        QualityList["NoChange"].setText(self.Trad["NoChange1"])
+        QualityList["NoChange"].setStatusTip(self.Trad["NoChange2"])
         for nb in [128, 192, 224, 256, 320, 384, 448, 512, 576, 640]:
             QualityList[nb].setStatusTip(self.Trad["OptionsQualityX"].format(nb))
             QualityList[nb].setText(self.Trad["OptionsQualityY"].format(nb))
 
-        self.Qtesseract5.setText("Open the sub file in Qtesseract5")
-        self.Qtesseract5.setStatusTip("Open the sub file in Qtesseract5")
+        self.Qtesseract5.setText("Open the SUB file in Qtesseract5")
+        self.Qtesseract5.setStatusTip("Open the SUB file in Qtesseract5.")
+        self.Qtesseract5.setToolTip("The SUB file will be open in Qtesseract5 gui for better configuration.")
 
-        for Style in QtStyleList.keys():
-            QtStyleList[Style].setStatusTip(self.Trad["OptionsStyles"].format(Style))
+        self.BDSup2Sub.setText("Open the SUP file in BDSup2Sub")
+        self.BDSup2Sub.setStatusTip("Open SUP sup file in BDSup2Sub.")
+        if not Path(Configs.value("Location/BDSup2Sub").split(" -")[0]).exists(): self.BDSup2Sub.setToolTip("BDSup2Sub isn't installed, impossible to convert SUP files to SUB files and open the SUP file into BDSup2Sub.")
+        elif not QFileInfo(Configs.value("Location/BDSup2Sub").split(" -")[0]).isExecutable(): self.BDSup2Sub.setToolTip("BDSup2Sub isn't executable, impossible to convert SUP files to SUB files and open the SUP file into BDSup2Sub.")
+        else: self.BDSup2Sub.setToolTip("The SUP file will be open in BDSup2Sub gui for better configuration.")
+
+
+        for Style in QtStyleList.keys(): QtStyleList[Style].setStatusTip(self.Trad["OptionsStyles"].format(Style))
+
+
+        ### Recharge les emplacements des executables
+        self.SoftwareFinding()
+
 
         ### Si un dossier de sortie a déjà été sélectionné, mise à jour du statustip et affiche l'info
         if Configs.value("OutputFolder"):
@@ -914,7 +1158,7 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Si un fichier mkv à déjà été chargé, relance le chargement du fichier pour tout traduire et remet en place les cases et boutons cochés
-        if Configs.value("MKVLoaded", False):
+        if TempValues.value("MKVLoaded"):
             ## Crée lka liste des  boutons cochés
             WidgetsList = []
             for Widget in [self.ui.option_reencapsulate, self.ui.option_vobsub_srt, self.ui.option_audio]:
@@ -986,10 +1230,15 @@ class MKVExtractorQt5(QMainWindow):
             self.ui.configuration_table.item(x, 0).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
             self.ui.configuration_table.item(x, 2).setFlags(Qt.NoItemFlags | Qt.ItemIsEnabled)
 
-            # Envoie du statustip
-            self.ui.configuration_table.item(x, 0).setStatusTip(self.Trad[Key])
-            self.ui.configuration_table.item(x, 1).setStatusTip(self.Trad[Key])
-            self.ui.configuration_table.item(x, 2).setStatusTip(self.Trad[Key])
+            # Si c'est la variable d'un executable, on cache la ligne
+            if Key[0:8] == 'Location':
+                self.ui.configuration_table.setRowHidden(x, True)
+
+            # Sinon on envoie du statustip
+            else:
+                self.ui.configuration_table.item(x, 0).setStatusTip(self.Trad[Key])
+                self.ui.configuration_table.item(x, 1).setStatusTip(self.Trad[Key])
+                self.ui.configuration_table.item(x, 2).setStatusTip(self.Trad[Key])
 
 
         ### Visuel du tableau
@@ -1127,8 +1376,7 @@ class MKVExtractorQt5(QMainWindow):
     def CheckSize(self, Folder, InputSize, OutputSize, Text):
         """Fonction vérifiant qu'il y a assez de place pour travailler."""
         ### Pas de teste si valeur le demandant
-        if Configs.value("CheckSizeCheckbox", False):
-            return False
+        if Configs.value("CheckSizeCheckbox", False): return False
 
 
         ### Affiche un message s'il n'y a pas la double de la place
@@ -1137,7 +1385,7 @@ class MKVExtractorQt5(QMainWindow):
             HumanOutputSize = self.HumanSize(int(OutputSize))
 
             ## Creation de la fenêtre d'information
-            ChoiceBox = QMessageBox(2, self.Trad["ErrorSizeTitle"], Text.format(Configs.value(Folder), HumanOutputSize, HumanInputSize), QMessageBox.NoButton, self, Qt.WindowSystemMenuHint)
+            ChoiceBox = QMessageBox(2, self.Trad["ErrorSizeTitle"], Text.format(TempValues.value(Folder), HumanOutputSize, HumanInputSize), QMessageBox.NoButton, self, Qt.WindowSystemMenuHint)
             CheckBox = QCheckBox(self.Trad["Convert0"], ChoiceBox)
             Button1 = QPushButton(QIcon.fromTheme("folder-open", QIcon(":/img/folder-open.png")), "Change the directory", ChoiceBox)
             Button2 = QPushButton(QIcon.fromTheme("dialog-ok", QIcon(":/img/dialog-ok.png")), "I don't care", ChoiceBox)
@@ -1153,14 +1401,14 @@ class MKVExtractorQt5(QMainWindow):
             ## Si on veut changer de répertoire
             if Choice == 2:
                 ## Affichage de la fenêtre
-                FileDialogCustom = QFileDialogCustom(self, self.Trad["SelectFolder"], str(Configs.value(Folder)))
+                FileDialogCustom = QFileDialogCustom(self, self.Trad["SelectFolder"], str(TempValues.value(Folder)))
                 OutputFolder = Path(FileDialogCustom.createWindow("Folder", "Open", None, Qt.Tool)[0])
 
                 if not OutputFolder.is_dir() or OutputFolder == Path():
                     return True
 
                 else:
-                    Configs.setValue(Folder, OutputFolder)
+                    TempValues.setValue(Folder, OutputFolder)
 
 
             ## Si on continue
@@ -1184,7 +1432,7 @@ class MKVExtractorQt5(QMainWindow):
 
             # Si le dossier estvalide, on l'enregistre et arrête la boucle
             if self.FolderTempWidget.isValid():
-                Configs.setValue("FolderTemp", Path(self.FolderTempWidget.path())) # Dossier temporaire
+                TempValues.setValue("FolderTemp", Path(self.FolderTempWidget.path())) # Dossier temporaire
                 break
 
 
@@ -1198,7 +1446,7 @@ class MKVExtractorQt5(QMainWindow):
 
     #========================================================================
     def HelpMKVExtractorQt5(self):
-        """Fenêtre à propos de Qtesseract5."""
+        """Fenêtre à propos de MKVExtractorQt5."""
         Win = QMessageBox(QMessageBox.NoIcon, self.Trad["HelpTitle"], self.Trad["HelpText"], QMessageBox.Close, self)
         Win.setIconPixmap(QPixmap(QIcon().fromTheme("mkv-extractor-qt5", QIcon(":/img/mkv-extractor-qt5.png")).pixmap(128)))
         Win.exec()
@@ -1206,7 +1454,7 @@ class MKVExtractorQt5(QMainWindow):
 
     #========================================================================
     def TheyTalkAbout(self):
-        """Fenêtre à propos de Qtesseract5."""
+        """Fenêtre à propos de MKVExtractorQt5."""
         Win = QMessageBox(QMessageBox.NoIcon, self.Trad["TheyTalkAboutTitle"], self.Trad["TheyTalkAboutText"], QMessageBox.Close, self)
         Win.setIconPixmap(QPixmap(QIcon().fromTheme("mkv-extractor-qt5", QIcon(":/img/mkv-extractor-qt5.png")).pixmap(128)))
         Win.exec()
@@ -1215,13 +1463,13 @@ class MKVExtractorQt5(QMainWindow):
     #========================================================================
     def MKVInfoGui(self):
         """Fonction ouvrant le fichier MKV avec le logiciel MKVInfo en mode détaché."""
-        self.process.startDetached('mkvinfo -g "{}"'.format(Configs.value("InputFile")))
+        self.process.startDetached('{} "{}"'.format(Configs.value("Location/MKVInfo"), Configs.value("InputFile")))
 
 
     #========================================================================
     def MKVMergeGui(self):
         """Fonction ouvrant le fichier MKV avec le logiciel mmg (avec le bon nom de commande) en mode détaché."""
-        self.process.startDetached('{} "{}"'.format(Configs.value("mmgExec"), Configs.value("InputFile")))
+        self.process.startDetached('{} "{}"'.format(Configs.value("Location/MKVToolNix"), Configs.value("InputFile")))
 
 
     #========================================================================
@@ -1258,35 +1506,35 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Code à exécuter
         TempFiles = [MKCleanTemp] # Ajout du fichier de sortie dans le listing des fichiers
-        Configs.setValue("Command", ["MKClean", 'mkclean --optimize "{}" "{}"'.format(Configs.value("InputFile"), MKCleanTemp)]) # Code à exécuter
+        TempValues.setValue("Command", ["MKClean", 'mkclean --optimize "{}" "{}"'.format(Configs.value("InputFile"), MKCleanTemp)]) # Code à exécuter
 
 
         ### Affichage des retours
-        self.SetInfo(self.Trad["WorkProgress"].format(Configs.value("Command")[0]), "800080", True, True) # Nom de la commande
-        self.SetInfo(self.Trad["WorkCmd"].format(Configs.value("Command")[1])) # Envoie d'informations
+        self.SetInfo(self.Trad["WorkProgress"].format(TempValues.value("Command")[0]), "800080", True, True) # Nom de la commande
+        self.SetInfo(self.Trad["WorkCmd"].format(TempValues.value("Command")[1])) # Envoie d'informations
 
 
         ### Lancement de la commande après blocage des widgets
         self.WorkInProgress(True)
-        self.process.start(Configs.value("Command")[1])
+        self.process.start(TempValues.value("Command")[1])
 
 
     #========================================================================
     def MKValidator(self):
         """Fonction lançant MKValidator sur le fichier MKV."""
         ### Code à exécuter
-        Configs.setValue("Command", ["MKValidator", 'mkvalidator "{}"'.format(Configs.value("InputFile"))])
+        TempValues.setValue("Command", ["MKValidator", 'mkvalidator "{}"'.format(Configs.value("InputFile"))])
 
 
         ### Affichage des retours
-        self.SetInfo(self.Trad["WorkProgress"].format(Configs.value("Command")[0]), "800080", True, True) # Nom de la commande
-        self.SetInfo(self.Trad["WorkCmd"].format(Configs.value("Command")[1])) # Envoie d'informations
+        self.SetInfo(self.Trad["WorkProgress"].format(TempValues.value("Command")[0]), "800080", True, True) # Nom de la commande
+        self.SetInfo(self.Trad["WorkCmd"].format(TempValues.value("Command")[1])) # Envoie d'informations
 
 
         ### Lancement de la commande après blocage des widgets
         self.WorkInProgress(True)
         self.ui.progressBar.setMaximum(0) # Mode pulsation de la barre de progression
-        self.process.start(Configs.value("Command")[1])
+        self.process.start(TempValues.value("Command")[1])
 
 
     #========================================================================
@@ -1317,8 +1565,7 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### En cas d'annulation
-        if OutputFile == Path():
-            return
+        if OutputFile == Path(): return
 
 
         ### Nettoyage graphique ici aussi afin de tout nettoyer avant la conversion pour un visuel plus joli
@@ -1329,8 +1576,7 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ## Désactivation des widgets
-        for widget in [self.ui.mkv_info, self.ui.mkv_view, self.ui.mkv_mkvmerge, self.ui.mk_validator, self.ui.mk_clean, self.ui.mkv_execute_2]:
-            widget.setEnabled(False)
+        for widget in [self.ui.mkv_info, self.ui.mkv_view, self.ui.mkv_mkvmerge, self.ui.mk_validator, self.ui.mk_clean, self.ui.mkv_execute_2]: widget.setEnabled(False)
 
 
         ## Affichage et nettoyage du tableau des pistes
@@ -1349,17 +1595,17 @@ class MKVExtractorQt5(QMainWindow):
         WarningReply.clear() # Réinitialisation des retours de warning de mkvmerge
         TempFiles.clear()
         TempFiles.append(OutputFile) # Ajout du fichier dans la liste en cas d'arrêt
-        Configs.setValue("Command", ["FileToMKV", 'mkvmerge -o "{}" "{}"'.format(OutputFile, File)]) # Commande de conversion
+        TempValues.setValue("Command", ["FileToMKV", 'mkvmerge -o "{}" "{}"'.format(OutputFile, File)]) # Commande de conversion
 
 
         ### Affichage des retours
-        self.SetInfo(self.Trad["WorkProgress"].format(Configs.value("Command")[0]), "800080", True, True) # Nom de la commande
-        self.SetInfo(self.Trad["WorkCmd"].format(Configs.value("Command")[1])) # Envoie d'informations
+        self.SetInfo(self.Trad["WorkProgress"].format(TempValues.value("Command")[0]), "800080", True, True) # Nom de la commande
+        self.SetInfo(self.Trad["WorkCmd"].format(TempValues.value("Command")[1])) # Envoie d'informations
 
 
         ### Lancement de la commande après blocage des widgets
         self.WorkInProgress(True)
-        self.process.start(Configs.value("Command")[1])
+        self.process.start(TempValues.value("Command")[1])
 
 
     #========================================================================
@@ -1412,7 +1658,7 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Modifications graphiques
         # Cela n'a lieu que si un dossier et un fichier mkv sont choisis
-        if Configs.value("MKVLoaded", False) and MKVDicoSelect:
+        if TempValues.value("MKVLoaded") and MKVDicoSelect:
             self.ui.option_reencapsulate.setEnabled(True) # Déblocage de widget
             self.ui.mkv_execute.setEnabled(True) # Déblocage de widget
             self.ui.mkv_execute_2.setEnabled(True) # Déblocage de widget
@@ -1421,11 +1667,11 @@ class MKVExtractorQt5(QMainWindow):
 
             for valeurs in MKVDicoSelect.values(): # Boucle sur la liste des lignes
                 # Recherche la valeur audio dans les sous listes
-                if valeurs[2] == "audio-x-generic":
+                if valeurs[2] == "audio-x-generic" and QFileInfo(Configs.value("Location/FFMpeg").split(" -")[0]).isExecutable():
                     self.ui.option_audio.setEnabled(True)
 
                 # Recherche la valeur vobsub dans les sous listes
-                elif "sub" in valeurs[-1]:
+                elif "sub" in valeurs[-1] and QFileInfo(Configs.value("Location/Qtesseract5").split(" -")[0]).isExecutable():
                     self.ui.option_vobsub_srt.setEnabled(True) # Déblocage de widget
 
 
@@ -1515,9 +1761,9 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Mise à jour des variables
-        Configs.setValue("MKVLoaded", True) # Fichier MKV chargé
-        Configs.setValue("AllTracks", False) # Mode sélection all
-        Configs.setValue("SuperBlockTemp", True) # Sert à bloquer les signaux du tableau (impossible d'utiliser blocksignals)
+        TempValues.setValue("MKVLoaded", True) # Fichier MKV chargé
+        TempValues.setValue("AllTracks", False) # Mode sélection all
+        TempValues.setValue("SuperBlockTemp", True) # Sert à bloquer les signaux du tableau (impossible d'utiliser blocksignals)
         x = 0 # Sert à indiquer les numéros de lignes
         self.ComboBoxes = {} # Dictionnaire listant les combobox
         MKVDico.clear() # Mise au propre du dictionnaire
@@ -1531,8 +1777,15 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Activation des widgets qui attendaient un fichier MKV valide
-        for widget in [self.ui.mkv_info, self.ui.mkv_view, self.ui.mkv_mkvmerge, self.ui.mk_validator, self.ui.mk_clean]:
-            widget.setEnabled(True)
+        self.ui.mkv_view.setEnabled(True)
+
+        if QFileInfo(Configs.value("Location/MKValidator").split(" -")[0]).isExecutable(): self.ui.mk_validator.setEnabled(True)
+
+        if QFileInfo(Configs.value("Location/MKClean").split(" -")[0]).isExecutable(): self.ui.mk_clean.setEnabled(True)
+
+        if QFileInfo(Configs.value("Location/MKVInfo").split(" -")[0]).isExecutable(): self.ui.mkv_info.setEnabled(True)
+
+        if QFileInfo(Configs.value("Location/MKVToolNix").split(" -")[0]).isExecutable(): self.ui.mkv_mkvmerge.setEnabled(True)
 
 
         ### Affichage et nettoyage du tableau des pistes
@@ -1553,8 +1806,7 @@ class MKVExtractorQt5(QMainWindow):
         ### Récupération du retour de MKVMerge
         JsonMKV = ""
 
-        for line in self.LittleProcess('mkvmerge -J "{}"'.format(Configs.value("InputFile"))):
-            JsonMKV += line
+        for line in self.LittleProcess('mkvmerge -J "{}"'.format(Configs.value("InputFile"))): JsonMKV += line
 
         # Convertion du json en un dictionnaire
         JsonMKV = json.loads(JsonMKV)
@@ -1564,20 +1816,19 @@ class MKVExtractorQt5(QMainWindow):
         # Titre du fichier MKV
         if "title" in JsonMKV["container"]["properties"]:
             # Si le titre existe
-            Configs.setValue("TitleFile", JsonMKV["container"]["properties"]["title"])
+            TempValues.setValue("TitleFile", JsonMKV["container"]["properties"]["title"])
 
         else:
             # Sinon on utilise le nom du fichier
-            Configs.setValue("TitleFile", Configs.value("InputFile").stem)
+            TempValues.setValue("TitleFile", Configs.value("InputFile").stem)
 
         # Envoie de la valeur titre
-        self.ui.mkv_title.setText(Configs.value("TitleFile"))
+        self.ui.mkv_title.setText(TempValues.value("TitleFile"))
 
         # Récupération de la durée du fichier MKV
         if "duration" in JsonMKV["container"]["properties"]:
-            # Passage de nanosecondes à secondes 10 puissance 9
-            Configs.setValue("DurationFile", int(JsonMKV["container"]["properties"]["duration"]/10E9))
-
+            # Passage de nanosecondes à secondes 10 puissance 9 => il se plante d'un 0 ?!...
+            TempValues.setValue("DurationFile", int(JsonMKV["container"]["properties"]["duration"]/10E8))
 
         ### Retours d'information
         self.SetInfo(self.Trad["WorkMerge"], "800080", True, True)
@@ -1932,7 +2183,7 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Retours d'information, déblocage, curseur normal
         self.SetInfo(self.Trad["WorkMerge"], "800080", True, False)
-        Configs.setValue("SuperBlockTemp", False) # Variable servant à bloquer les signaux du tableau (impossible autrement)
+        TempValues.setValue("SuperBlockTemp", False) # Variable servant à bloquer les signaux du tableau (impossible autrement)
         self.setCursor(Qt.ArrowCursor)
 
 
@@ -1942,45 +2193,44 @@ class MKVExtractorQt5(QMainWindow):
         ### Dans le cas d'un fichier de chapitrage
         if MKVDico[x][1] == "Chapters":
             ## Fichier de sortie
-            Configs.setValue("ChaptersFile", Path(Configs.value("FolderTemp"), "chapters.txt"))
+            TempValues.setValue("ChaptersFile", Path(TempValues.value("FolderTemp"), "chapters.txt"))
 
             ## Extraction si le fichier n'existe pas
-            if not Configs.value("ChaptersFile").exists():
-                with Configs.value("ChaptersFile").open('w') as ChaptersFile:
+            if not TempValues.value("ChaptersFile").exists():
+                with TempValues.value("ChaptersFile").open('w') as ChaptersFile:
                     for line in self.LittleProcess('mkvextract chapters "{}" -s'.format(Configs.value("InputFile"))):
                         ChaptersFile.write(line+'\n')
 
             ## Ouverture du fichier
-            QDesktopServices.openUrl(QUrl.fromLocalFile(str(Configs.value("ChaptersFile"))))
+            QDesktopServices.openUrl(QUrl.fromLocalFile(str(TempValues.value("ChaptersFile"))))
 
 
         ### Dans le cas de global tags
         elif MKVDico[x][1] == "Global tags":
             ## Fichier de sortie
-            Configs.setValue("TagsFile", Path(Configs.value("FolderTemp"), "tags.xml"))
+            TempValues.setValue("TagsFile", Path(TempValues.value("FolderTemp"), "tags.xml"))
 
             ## Extraction si le fichier n'existe pas
-            if not Configs.value("TagsFile").exists():
-                with Configs.value("TagsFile").open('w') as TagsFile:
+            if not TempValues.value("TagsFile").exists():
+                with TempValues.value("TagsFile").open('w') as TagsFile:
                     for line in self.LittleProcess('mkvextract tags "{}"'.format(Configs.value("InputFile"))):
                         TagsFile.write(line+'\n')
 
             ## Ouverture du fichier
-            QDesktopServices.openUrl(QUrl.fromLocalFile(str(Configs.value("TagsFile"))))
+            QDesktopServices.openUrl(QUrl.fromLocalFile(str(TempValues.value("TagsFile"))))
 
 
         ### Dans le cas de fichier joint
         elif MKVDico[x][1] == "Attachment":
             ## Teste la place disponible avant d'extraire
             FileSize = int(MKVDico[x][5].split(" ")[0])
-            FreeSpaceDisk = disk_usage(str(Configs.value("FolderTemp"))).free
+            FreeSpaceDisk = disk_usage(str(TempValues.value("FolderTemp"))).free
 
             ## Teste de la place restante
-            if self.CheckSize("FolderTemp", FileSize, FreeSpaceDisk, self.Trad["ErrorSizeAttachement"]):
-                return
+            if self.CheckSize("FolderTemp", FileSize, FreeSpaceDisk, self.Trad["ErrorSizeAttachement"]): return
 
             ## Fichier de sortie
-            fichier = Path(Configs.value("FolderTemp"), 'attachement_{0[0]}_{0[4]}'.format(MKVDico[x]))
+            fichier = Path(TempValues.value("FolderTemp"), 'attachement_{0[0]}_{0[4]}'.format(MKVDico[x]))
 
             ## Extraction si le fichier n'existe pas
             if not fichier.exists():
@@ -1994,8 +2244,7 @@ class MKVExtractorQt5(QMainWindow):
     def TrackModif(self, info):
         """Fonction mettant à jour les dictionnaires des pistes du fichier MKV lors de l'édition des textes."""
         ### Blocage de la fonction pendant le chargement des pistes
-        if Configs.value("SuperBlockTemp", False):
-            return
+        if TempValues.value("SuperBlockTemp"): return
 
 
         ### Récupération de la cellule modifiée
@@ -2011,7 +2260,7 @@ class MKVExtractorQt5(QMainWindow):
                     MKVDicoSelect[x] = MKVDico[x] # mise à jour de la liste des pistes cochées
 
             ## Blocage des boutons par defaut
-            for widget in (self.ui.mkv_execute, self.ui.mkv_execute_2, self.ui.option_audio, self.ui.option_vobsub_srt, self.ui.option_reencapsulate):
+            for widget in (self.ui.mkv_execute, self.ui.mkv_execute_2, self.ui.option_audio, self.ui.option_vobsub_srt, self.ui.option_reencapsulate, self.BDSup2Sub):
                 widget.setEnabled(False)
 
             ## Déblocage des options si besoin
@@ -2023,12 +2272,16 @@ class MKVExtractorQt5(QMainWindow):
                 # Boucle sur la liste des lignes
                 for valeurs in MKVDicoSelect.values():
                     # Recherche la valeur audio dans les sous listes
-                    if valeurs[2] == "audio-x-generic":
+                    if valeurs[2] == "audio-x-generic" and QFileInfo(Configs.value("Location/FFMpeg").split(" -")[0]).isExecutable():
                         self.ui.option_audio.setEnabled(True)
 
                     # Recherche la valeur vobsub dans les sous listes
-                    elif "sub" in valeurs[-1]:
+                    elif "sub" in valeurs[-1] and QFileInfo(Configs.value("Location/Qtesseract5").split(" -")[0]).isExecutable():
                         self.ui.option_vobsub_srt.setEnabled(True)
+
+                    # Recherche la valeur vobsub dans les sous listes
+                    elif "sup" in valeurs[-1] and QFileInfo(Configs.value("Location/BDSup2Sub").split(" -")[0]).isExecutable():
+                        self.BDSup2Sub.setEnabled(True)
 
             ## Décoche les boutons s'ils sont grisés
             for widget in [self.ui.option_vobsub_srt, self.ui.option_reencapsulate, self.ui.option_audio]:
@@ -2052,8 +2305,8 @@ class MKVExtractorQt5(QMainWindow):
         ### Ne traiter que la colonne des coches
         if Value == 1:
             ## Dans le cas où il faut tout cocher
-            if not Configs.value("AllTracks", False):
-                Configs.setValue("AllTracks", True)
+            if not TempValues.value("AllTracks"):
+                TempValues.setValue("AllTracks", True)
 
                 # Boucle traitant toutes les lignes du tableau
                 for x in range(self.ui.mkv_tracks.rowCount()):
@@ -2061,7 +2314,7 @@ class MKVExtractorQt5(QMainWindow):
 
             ## Dans le cas où il faut tout décocher
             else:
-                Configs.setValue("AllTracks", False)
+                TempValues.setValue("AllTracks", False)
 
                 # Boucle traitant toutes les lignes du tableau
                 for x in range(self.ui.mkv_tracks.rowCount()):
@@ -2075,8 +2328,7 @@ class MKVExtractorQt5(QMainWindow):
         FileSize = Path(Configs.value("InputFile")).stat().st_size
         FreeSpaceDisk = disk_usage(str(Configs.value("OutputFolder"))).free
 
-        if self.CheckSize("OutputFolder", FileSize, FreeSpaceDisk, self.Trad["ErrorSize"]):
-            return
+        if self.CheckSize("OutputFolder", FileSize, FreeSpaceDisk, self.Trad["ErrorSize"]): return
 
 
         ### Mise au propre et initialisation de variables
@@ -2094,7 +2346,7 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Si on veut uniquement ré-encapsuler sans rien d'autre, on affiche un message conseillant d'utiliser mmg
-        if Configs.value("Reencapsulate", False) and not Configs.value("AudioConvert", False) and not Configs.value("VobsubToSrt") and not Configs.value("SubtitlesOpen"):
+        if TempValues.value("Reencapsulate") and not TempValues.value("AudioConvert") and not TempValues.value("VobsubToSrt") and not TempValues.value("SubtitlesOpen"):
             if not Configs.value("MMGorMEQCheckbox"):
                 ### Création de la fenêtre
                 UseMMG = QMessageBox(4, self.Trad["UseMMGTitle"], self.Trad["UseMMGText"], QMessageBox.Cancel, self, Qt.WindowSystemMenuHint)
@@ -2160,21 +2412,18 @@ class MKVExtractorQt5(QMainWindow):
                 TempFiles.append(Path(File))
 
                 # En cas de modification audio
-                if Configs.value("AudioConvert", False) and (Configs.value("AudioBoost", "NoChange") != "NoChange" or Configs.value("AudioStereo", False) or Configs.value("AudioQuality", "NoChange") != "NoChange" or Configs.value("AudioToAc3")):
+                if TempValues.value("AudioConvert") and (TempValues.value("AudioBoost") != "NoChange" or TempValues.value("AudioStereo") or TempValues.value("AudioQuality", "NoChange") != "NoChange" or Configs.value("AudioToAc3")):
                     # Indique la piste audio
                     dts_ffmpeg += '-vn -map 0:{} '.format(Select[0])
 
                     # En cas de boost
-                    if Configs.value("AudioBoost", 1) > 1:
-                        dts_ffmpeg += '-af volume={} '.format(Configs.value("AudioBoost"))
+                    if TempValues.value("AudioBoost") != "NoChange": dts_ffmpeg += '-af volume={} '.format(TempValues.value("AudioBoost"))
 
                     # En cas de passage en stéréo
-                    if Configs.value("AudioStereo", False):
-                        dts_ffmpeg += '-ac 2 '
+                    if TempValues.value("AudioStereo"): dts_ffmpeg += '-ac 2 '
 
                     # En cas de modification de qualité
-                    if Configs.value("AudioQuality", "NoChange") != "NoChange":
-                        dts_ffmpeg += '-ab {0}k '.format(Configs.value("AudioQuality", 128))
+                    if TempValues.value("AudioQuality", "NoChange") != "NoChange": dts_ffmpeg += '-ab {0}k '.format(TempValues.value("AudioQuality", 128))
 
                     # En cas de passage en ac3
                     if Configs.value("AudioToAc3"):
@@ -2232,7 +2481,7 @@ class MKVExtractorQt5(QMainWindow):
                     mkvextract_track += '{0[0]}:"{1}/{0[0]}_subtitles_{0[4]}.idx" '.format(Select, Configs.value("OutputFolder"))
 
                     # Dans le cas d'un conversion SUB => AC3, maj de commandes
-                    if Configs.value("VobsubToSrt", False):
+                    if TempValues.value("VobsubToSrt"):
                         TempFiles.append(Path(Configs.value("OutputFolder"), "{0[0]}_subtitles_{0[4]}.srt".format(Select)))
                         mkvmerge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" "{1}/{0[0]}_subtitles_{0[4]}.srt" '.format(Select, Configs.value("OutputFolder"))
                         mkvextract_merge += '--track-name "0:{0[4]}" --language "0:{0[5]}" --compression "0:none" '.format(Select)
@@ -2262,7 +2511,7 @@ class MKVExtractorQt5(QMainWindow):
                 TempFiles.append(Path(Configs.value("OutputFolder"), "chapters.txt"))
                 mkvmerge += '--chapters "{}/chapters.txt" '.format(Configs.value("OutputFolder"))
                 mkvextract_chap = 'mkvextract chapters "{}" -s '.format(Configs.value("InputFile"))
-                Configs.setValue("ChaptersFile", Path(Configs.value("OutputFolder"), "chapters.txt"))
+                TempValues.setValue("ChaptersFile", Path(Configs.value("OutputFolder"), "chapters.txt"))
 
 
             ## Traitement des pistes de tags, maj de commandes
@@ -2270,7 +2519,7 @@ class MKVExtractorQt5(QMainWindow):
                 TempFiles.append(Path(Configs.value("OutputFolder"), "tags.xml"))
                 mkvmerge += '--global-tags "{}/tags.xml" '.format(Configs.value("OutputFolder"))
                 mkvextract_tag = 'mkvextract tags "{}" '.format(Configs.value("InputFile"))
-                Configs.setValue("TagsFile", Path(Configs.value("OutputFolder"), "tags.xml"))
+                TempValues.setValue("TagsFile", Path(Configs.value("OutputFolder"), "tags.xml"))
 
 
             ## Traitement des pistes jointes, maj de commandes
@@ -2287,15 +2536,15 @@ class MKVExtractorQt5(QMainWindow):
 
         ### Ajout de la commande mkvextract_tag à la liste des commandes à exécuter
         if mkvextract_tag:
-            if Configs.value("TagsFile").exists():
-                Configs.value("TagsFile").unlink()
+            if TempValues.value("TagsFile").exists():
+                TempValues.value("TagsFile").unlink()
             CommandList.append(["MKVExtract Tags", mkvextract_tag])
 
 
         ### Ajout de la commande mkvextract_chap à la liste des commandes à exécuter
         if mkvextract_chap:
-            if Configs.value("ChaptersFile").exists():
-                Configs.value("ChaptersFile").unlink()
+            if TempValues.value("ChaptersFile").exists():
+                TempValues.value("ChaptersFile").unlink()
             CommandList.append(["MKVExtract Chapters", mkvextract_chap])
 
 
@@ -2316,14 +2565,14 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Ajout des commandes de conversion des vobsub en srt
-        if Configs.value("VobsubToSrt", False):
+        if TempValues.value("VobsubToSrt"):
             ## Pour chaque fichier à convertir
             for SubInfo in SubConvert:
                 IDX = Path('{}/{}_subtitles_{}.idx'.format(Configs.value("OutputFolder"), SubInfo[0], SubInfo[1]))
                 SRT = IDX.with_suffix(".srt")
                 SubToRemove.append(IDX)
 
-                if Configs.value("Qtesseract5", False):
+                if TempValues.value("Qtesseract5"):
                     CommandList.append(["Qtesseract5", 'qtesseract5 -g 2 -v 1 -r -c 0 -w -r -t {} -l "{}" "{}" "{}" '.format(QThread.idealThreadCount(), SubInfo[2], IDX, SRT)])
 
                 else:
@@ -2331,31 +2580,30 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Ajout de la commande mkvmerge à la liste des commandes à exécuter
-        if Configs.value("Reencapsulate", False):
+        if TempValues.value("Reencapsulate"):
             ## Si l'option de renommage automatique n'est pas utilisée
             if not Configs.value("RemuxRename"):
                 # Fenêtre de sélection de sortie du fichier mkv
                 CheckBox = QCheckBox(self.Trad["RemuxRenameCheckBox"])
 
                 FileDialogCustom = QFileDialogCustom(self, self.Trad["RemuxRenameTitle"], str(Configs.value("OutputFolder")), "{}(*.mka *.mks *.mkv *.mk3d *.webm *.webmv *.webma)".format(self.Trad["MatroskaFiles"]))
-                Configs.setValue("OutputFile", Path(FileDialogCustom.createWindow("File", "Save", CheckBox, Qt.Tool, "MEG_{}".format(Configs.value("InputFile").name), AlreadyExistsTest=Configs.value("AlreadyExistsTest", False))))
+                TempValues.setValue("OutputFile", Path(FileDialogCustom.createWindow("File", "Save", CheckBox, Qt.Tool, "MEG_{}".format(Configs.value("InputFile").name), AlreadyExistsTest=Configs.value("AlreadyExistsTest", False))))
                 Configs.setValue("AlreadyExistsTest", CheckBox.isChecked())
 
                 # Mise à jour de la variable
                 Configs.setValue("RemuxRename", CheckBox.isChecked())
 
                 # Arrêt de la fonction si aucun fichier n'est choisi => utilise . si négatif
-                if Configs.value("OutputFile") == Path():
-                    return
+                if TempValues.value("OutputFile") == Path(): return
 
             else:
-                Configs.setValue("OutputFile", Path(Configs.value("OutputFolder"), "MEG_{}".format(Configs.value("InputFile").name)))
+                TempValues.setValue("OutputFile", Path(Configs.value("OutputFolder"), "MEG_{}".format(Configs.value("InputFile").name)))
 
             ## Ajout du fichier mkv à la liste des fichiers
-            TempFiles.append(Configs.value("OutputFile"))
+            TempFiles.append(TempValues.value("OutputFile"))
 
             ## Dans le cas où il faut ouvrir les fichiers srt avant leur encapsulage
-            if Configs.value("SubtitlesOpen"):
+            if TempValues.value("SubtitlesOpen"):
                 SubtitlesFiles.clear()
 
                 # Ajout des fichiers sous titres
@@ -2373,16 +2621,16 @@ class MKVExtractorQt5(QMainWindow):
 
 
             ## Récupération du titre du fichier dans le cas où il faut réencapsuler,
-            Configs.setValue("TitleFile", self.ui.mkv_title.text())
+            TempValues.setValue("TitleFile", self.ui.mkv_title.text())
 
             ## Si le titre est vide, il plante mkvmerge
-            if Configs.value("TitleFile"):
-                CommandList.append(["MKVMerge", 'mkvmerge -o "{}" --title "{}" {}'.format(Configs.value("OutputFile"), Configs.value("TitleFile"), mkvmerge)])
-                mkvextract_merge = 'mkvmerge -o "{}" --title "{}" {}'.format(Configs.value("OutputFile"), Configs.value("TitleFile"), mkvextract_merge)
+            if TempValues.value("TitleFile"):
+                CommandList.append(["MKVMerge", 'mkvmerge -o "{}" --title "{}" {}'.format(TempValues.value("OutputFile"), TempValues.value("TitleFile"), mkvmerge)])
+                mkvextract_merge = 'mkvmerge -o "{}" --title "{}" {}'.format(TempValues.value("OutputFile"), TempValues.value("TitleFile"), mkvextract_merge)
 
             else:
-                CommandList.append(["MKVMerge", 'mkvmerge -o "{}" {}'.format(Configs.value("OutputFile"), mkvmerge)])
-                mkvextract_merge = 'mkvmerge -o "{}" --title "{}" {}'.format(Configs.value("OutputFile"), Configs.value("InputFile").name, mkvextract_merge)
+                CommandList.append(["MKVMerge", 'mkvmerge -o "{}" {}'.format(TempValues.value("OutputFile"), mkvmerge)])
+                mkvextract_merge = 'mkvmerge -o "{}" --title "{}" {}'.format(TempValues.value("OutputFile"), Configs.value("InputFile").name, mkvextract_merge)
 
 
         ### Modifications graphiques
@@ -2390,16 +2638,16 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Code à exécuter
-        Configs.setValue("Command", CommandList.pop(0)) # Récupération de la 1ere commande
+        TempValues.setValue("Command", CommandList.pop(0)) # Récupération de la 1ere commande
 
 
         ### Envoie de textes
-        self.SetInfo(self.Trad["WorkProgress"].format(Configs.value("Command")[0]), "800080", True, True) # Nom de la commande
-        self.SetInfo(self.Trad["WorkCmd"].format(Configs.value("Command")[1])) # Envoie d'informations
+        self.SetInfo(self.Trad["WorkProgress"].format(TempValues.value("Command")[0]), "800080", True, True) # Nom de la commande
+        self.SetInfo(self.Trad["WorkCmd"].format(TempValues.value("Command")[1])) # Envoie d'informations
 
 
         ### Lancement de la commande
-        self.process.start(Configs.value("Command")[1])
+        self.process.start(TempValues.value("Command")[1])
 
 
     #========================================================================
@@ -2415,8 +2663,7 @@ class MKVExtractorQt5(QMainWindow):
 
             qtesseract5 = False
             for Command in CommandList:
-                if "Qtesseract5" in Command:
-                    qtesseract5 = True
+                if "Qtesseract5" in Command: qtesseract5 = True
 
             if len(CommandList) > 1 or qtesseract5:
                 self.ui.mkv_pause.show() # Affiche le bouton pause
@@ -2461,66 +2708,65 @@ class MKVExtractorQt5(QMainWindow):
                 continue
 
             ## Dans le cas d'un encapsulation
-            elif Configs.value("Command")[0] == "MKVMerge":
+            elif TempValues.value("Command")[0] == "MKVMerge":
                 # Récupère le nombre de retour en cas de présence de pourcentage
                 if line[-1] == "%":
                     line = int(line.split(": ")[1].strip()[0:-1]) #
 
             ## Dans le cas d'une conversion
-            elif Configs.value("Command")[0] == "FileToMKV":
+            elif TempValues.value("Command")[0] == "FileToMKV":
                 # Récupère le nombre de retour en cas de présence de pourcentage
                 if line[-1] == "%":
                     line = int(line.split(": ")[1].strip()[0:-1])
 
-            elif Configs.value("Command")[0] == "MKVExtract Tags":
-                with Configs.value("TagsFile").open('a') as TagsFile:
+            elif TempValues.value("Command")[0] == "MKVExtract Tags":
+                with TempValues.value("TagsFile").open('a') as TagsFile:
                     TagsFile.write(line+'\n')
 
                 line = ""
 
-            elif Configs.value("Command")[0] == "MKVExtract Chapters":
-                with Configs.value("ChaptersFile").open('a') as ChaptersFile:
+            elif TempValues.value("Command")[0] == "MKVExtract Chapters":
+                with TempValues.value("ChaptersFile").open('a') as ChaptersFile:
                     ChaptersFile.write(line+'\n')
 
                 line = ""
 
             ## MKVExtract renvoie une progression. Les fichiers joints ne renvoient rien.
-            elif "MKVExtract" in Configs.value("Command")[0]:
+            elif "MKVExtract" in TempValues.value("Command")[0]:
                 # Récupère le nombre de retour en cas de présence de pourcentage
                 if line[-1] == "%":
                     line = int(line.split(": ")[1].strip()[0:-1])
 
             ## MKValidator ne renvoie pas de pourcentage mais des infos ou des points, on vire les . qui indiquent un travail en cours
-            elif Configs.value("Command")[0] == "MKValidator":
+            elif TempValues.value("Command")[0] == "MKValidator":
                 line = line.strip().replace('.', '')
 
 
             ## MKClean renvoie une progression et des infos, on ne traite que les pourcentages
-            elif Configs.value("Command")[0] == "MKClean":
+            elif TempValues.value("Command")[0] == "MKClean":
                 if line[-1] == "%":
                     line = int(line.split(": ")[1].strip()[0:-1])
 
 
             ## FFMpeg ne renvoie pas de pourcentage mais la durée de vidéo encodée en autre
-            elif Configs.value("Command")[0] in ["ffmpeg", "avconv"]:
-                if "time=" in line and Configs.contains("DurationFile"):
+            elif TempValues.value("Command")[0] in ["ffmpeg", "avconv"]:
+                if "time=" in line and TempValues.contains("DurationFile"):
                     # Pour les versions renvoyant : 00:00:00
                     try:
                         value = line.split("=")[2].strip().split(".")[0].split(":")
-                        value = timedelta(hours=int(value[0]), minutes=int(value[1]), seconds=int(value[2])).seconds
+                        value2 = timedelta(hours=int(value[0]), minutes=int(value[1]), seconds=int(value[2])).seconds
 
                     # Pour les versions renvoyant : 00000 secondes
                     except:
-                        value = line.split("=")[2].strip().split(".")[0]
+                        value = "caca"
+                        value2 = line.split("=")[2].strip().split(".")[0]
 
                     # Pourcentage maison se basant sur la durée du fichier
-                    line = int((value * 100) / Configs.value("DurationFile"))
-
+                    line = int((value2 * 100) / TempValues.value("DurationFile"))
 
             ## Qtesseract5
-            elif Configs.value("Command")[0] == "Qtesseract5":
-                if "Temporary folder:" in line:
-                    Configs.setValue("Qtesseract5Folder", Path(line.split(": ")[1]))
+            elif TempValues.value("Command")[0] == "Qtesseract5":
+                if "Temporary folder:" in line: TempValues.setValue("Qtesseract5Folder", Path(line.split(": ")[1]))
 
                 try:
                     line = int((int(line.split("/")[0]) / int(line.split("/")[1])) * 100)
@@ -2530,8 +2776,8 @@ class MKVExtractorQt5(QMainWindow):
 
 
             ## Affichage du texte ou de la progression si c'est une nouvelle valeur
-            if line and line != Configs.value("WorkOldLine", ""): # Comparaison anti doublon
-                Configs.setValue("WorkOldLine", line) # Mise à jour de la variable anti doublon
+            if line and line != TempValues.value("WorkOldLine"): # Comparaison anti doublon
+                TempValues.setValue("WorkOldLine", line) # Mise à jour de la variable anti doublon
 
                 # Envoie du pourcentage à la barre de progression si c'est un nombre
                 if isinstance(line, int):
@@ -2540,7 +2786,7 @@ class MKVExtractorQt5(QMainWindow):
                 # Envoie de l'info à la boite de texte si c'est du texte
                 else:
                     # On ajoute le texte dans une variable en cas de conversion (utile pour le ressortir dans une fenêtre)
-                    if Configs.value("Command")[0] == "FileToMKV":
+                    if TempValues.value("Command")[0] == "FileToMKV":
                         WarningReply.append(line)
 
                     self.SetInfo(line)
@@ -2549,47 +2795,45 @@ class MKVExtractorQt5(QMainWindow):
     #========================================================================
     def WorkFinished(self):
         """Fonction appelée à la fin du travail, que ce soit une fin normale ou annulée."""
-        # Configs.value("Command")[0] : Nom de la commande
-        # Configs.value("Command")[1] : Commande à executer ou liste de fichiers
+        # TempValues.value("Command")[0] : Nom de la commande
+        # TempValues.value("Command")[1] : Commande à executer ou liste de fichiers
         ### Si le travail est annulé (via le bouton stop ou via la fermeture du logiciel) ou a renvoyée une erreur, mkvmerge renvoie 1 s'il y a des warnings
-        if (Configs.value("Command")[0] == "FileToMKV" and self.process.exitCode() == 2) or (self.process.exitCode() != 0 and Configs.value("Command")[0] != "FileToMKV"):
+        if (TempValues.value("Command")[0] == "FileToMKV" and self.process.exitCode() == 2) or (self.process.exitCode() != 0 and TempValues.value("Command")[0] != "FileToMKV"):
             ## Arrêt du travail
-            if Configs.value("Command")[0] == "Qtesseract5":
-                self.WorkStop("SrtError")
+            if TempValues.value("Command")[0] == "Qtesseract5": self.WorkStop("SrtError")
 
-            else:
-                self.WorkStop("Error")
+            else: self.WorkStop("Error")
 
             ## Arrêt de la fonction
             return
 
 
         ### Traitement différent en fonction de la commande, rien de particulier pour MKValidator, MKClean, FFMpeg
-        if Configs.value("Command")[0] == "Open Subtitles":
+        if TempValues.value("Command")[0] == "Open Subtitles":
             # Boucle ouvrant tous les fichiers srt d'un coup
             for Item in SubtitlesFiles:
                 QDesktopServices.openUrl(QUrl.fromLocalFile(str(Item)))
 
 
-        elif "MKVExtract" in Configs.value("Command")[0] == "MKVExtract" and (CommandList and "MKVExtract" in CommandList[0][0]): # Système n'affichant pas la fin tant qu'il y a des extractions
-            Configs.setValue("Command", CommandList.pop(0)) # Récupération de la commande suivante à exécuter
-            self.SetInfo(self.Trad["WorkCmd"].format(Configs.value("Command")[1]), newline=True) # Envoie d'informations
-            self.process.start(Configs.value("Command")[1]) # Lancement de la commande
+        elif "MKVExtract" in TempValues.value("Command")[0] == "MKVExtract" and (CommandList and "MKVExtract" in CommandList[0][0]): # Système n'affichant pas la fin tant qu'il y a des extractions
+            TempValues.setValue("Command", CommandList.pop(0)) # Récupération de la commande suivante à exécuter
+            self.SetInfo(self.Trad["WorkCmd"].format(TempValues.value("Command")[1]), newline=True) # Envoie d'informations
+            self.process.start(TempValues.value("Command")[1]) # Lancement de la commande
             return
 
 
         ### Indication de fin de pack de commande
-        if Configs.value("Command")[0] != "Open Subtitles":
-            self.SetInfo(self.Trad["WorkFinished"].format(Configs.value("Command")[0]), "800080", True) # Travail terminé
+        if TempValues.value("Command")[0] != "Open Subtitles":
+            self.SetInfo(self.Trad["WorkFinished"].format(TempValues.value("Command")[0]), "800080", True) # Travail terminé
             self.ui.progressBar.setValue(100) # Mise à 100% de la barre de progression pour signaler la fin ok
 
             if Configs.value("SysTray"):
-                self.SysTrayIcon.showMessage(self.Trad["SysTrayFinishTitle"], self.Trad["SysTrayFinishText"].format(Configs.value("Command")[0], QSystemTrayIcon.Information, 3000))
+                self.SysTrayIcon.showMessage(self.Trad["SysTrayFinishTitle"], self.Trad["SysTrayFinishText"].format(TempValues.value("Command")[0], QSystemTrayIcon.Information, 3000))
 
 
         ### Lancement de l'ouverture du fichier MKV, ici pour un soucis esthétique du texte affiché
         # Dans le cas d'une conversion
-        if Configs.value("Command")[0] == "FileToMKV":
+        if TempValues.value("Command")[0] == "FileToMKV":
             ## Si mkvmerge a renvoyé un warning, on l'indique
             if self.process.exitCode() == 1 and not Configs.value("ConfirmWarning"):
                 # Création d'une fenêtre de confirmation avec case à cocher pour se souvenir du choix
@@ -2609,9 +2853,9 @@ class MKVExtractorQt5(QMainWindow):
 
 
         ### Dans le cas ou il faut mettre en pause entre 2 jobs
-        if Configs.value("WorkPause", False) or Configs.value("Command")[0] == "Open Subtitles":
+        if TempValues.value("WorkPause") or TempValues.value("Command")[0] == "Open Subtitles":
             # Remise à False de la variable pause
-            Configs.setValue("WorkPause", False)
+            TempValues.setValue("WorkPause", False)
 
             # Mise en pause du travail avec arrêt si besoin
             if not self.WorkPause():
@@ -2622,36 +2866,35 @@ class MKVExtractorQt5(QMainWindow):
         if CommandList:
             qtesseract5 = False
             for Command in CommandList:
-                if "Qtesseract5" in Command:
-                    qtesseract5 = True
+                if "Qtesseract5" in Command: qtesseract5 = True
 
             if len(CommandList) == 1 and not qtesseract5:
                 self.ui.mkv_pause.show() # Affiche le bouton pause
 
             ## Récupération de la commande suivante à exécuter
-            Configs.setValue("Command", CommandList.pop(0))
+            TempValues.setValue("Command", CommandList.pop(0))
 
             ## Mise à 0% de la barre de progression pour signaler le début du travail
             self.ui.progressBar.setValue(0)
 
             ## Évite de dire que la cmd mkmerge se lance et que le log est en pause
-            if Configs.value("Command")[0] != "Open Subtitles":
-                self.SetInfo(self.Trad["WorkProgress"].format(Configs.value("Command")[0]), "800080", True, True)
+            if TempValues.value("Command")[0] != "Open Subtitles":
+                self.SetInfo(self.Trad["WorkProgress"].format(TempValues.value("Command")[0]), "800080", True, True)
 
             ## Dans le cas des commandes bidons
-            if Configs.value("Command")[1] != "echo":
-                self.SetInfo(self.Trad["WorkCmd"].format(Configs.value("Command")[1]))
+            if TempValues.value("Command")[1] != "echo":
+                self.SetInfo(self.Trad["WorkCmd"].format(TempValues.value("Command")[1]))
 
             ## Lancement de la commande suivante
-            self.process.start(Configs.value("Command")[1])
+            self.process.start(TempValues.value("Command")[1])
 
 
         ### Si c'était la dernière commande
         else:
             ## Si l'option de suppression des fichiers temporaire est activée lors du merge
-            if Configs.value("DelTemp") and Configs.value("Command")[0] == "MKVMerge":
+            if Configs.value("DelTemp") and TempValues.value("Command")[0] == "MKVMerge":
                 # Suppression du fichier mkv de sortie de la liste
-                TempFiles.remove(Configs.value("OutputFile"))
+                TempFiles.remove(TempValues.value("OutputFile"))
 
                 # Suppression des fichiers temporaires
                 self.RemoveTempFiles()
@@ -2667,14 +2910,14 @@ class MKVExtractorQt5(QMainWindow):
     def WorkPauseBefore(self):
         """Fonction différentiente entre la pause entre jobs et celle pendant l'utilisation de Qtesseract."""
         ### Pause dépendante de la conversion de Tesseract
-        if Configs.value("Command")[0] == "Qtesseract5":
-            Path(Configs.value("Qtesseract5Folder"), "Pause").touch()
+        if TempValues.value("Command")[0] == "Qtesseract5":
+            Path(TempValues.value("Qtesseract5Folder"), "Pause").touch()
             self.WorkPause()
 
 
         ### Pause entre les taches
         else:
-            Configs.setValue("WorkPause", True)
+            TempValues.setValue("WorkPause", True)
 
 
     #========================================================================
@@ -2705,8 +2948,8 @@ class MKVExtractorQt5(QMainWindow):
 
         else:
             ## Dans le cas spécifique de Qtesseract
-            if Configs.contains("Qtesseract5Folder") and Path(Configs.value("Qtesseract5Folder"), "Pause").exists():
-                Path(Configs.value("Qtesseract5Folder"), "Pause").unlink()
+            if TempValues.contains("Qtesseract5Folder") and Path(TempValues.value("Qtesseract5Folder"), "Pause").exists():
+                Path(TempValues.value("Qtesseract5Folder"), "Pause").unlink()
 
             return True
 
@@ -2715,13 +2958,13 @@ class MKVExtractorQt5(QMainWindow):
     def WorkStop(self, Type):
         """Fonction d'arrêt du travail en cours."""
         ### Dans le cas spécifique de Qtesseract
-        if Configs.contains("Qtesseract5Folder") and Configs.value("Qtesseract5Folder").exists():
-            Path(Configs.value("Qtesseract5Folder"), "Stop").touch()
+        if TempValues.contains("Qtesseract5Folder") and TempValues.value("Qtesseract5Folder").exists() and Type != "Close":
+            Path(TempValues.value("Qtesseract5Folder"), "Stop").touch()
 
-            while Configs.value("Qtesseract5Folder").exists():
+            while TempValues.value("Qtesseract5Folder").exists():
                 sleep(0.2)
 
-            Configs.remove("Qtesseract5Folder")
+            TempValues.remove("Qtesseract5Folder")
 
 
         ### Type : Error (en cas de plantage), Stop (en cas d'arrêt du travail), Close (en cas de fermeture du logiciel), Pause (en cas d'annulation pendant la pause), SrtError (en cas d'erreur tesseract)
@@ -2880,12 +3123,6 @@ class MKVExtractorQt5(QMainWindow):
             self.FolderTempWidget.remove()
 
 
-        ### Suppression des clés qu'on ne garde pas
-        # Options temporaires seulement
-        for Key in ("Reencapsulate", "VobsubToSrt", "DtsToAc3", "MKVLoaded", "ChaptersFile", "TagsFile", "TitleFile", "DurationFile", "Command", "FirstRun", "SuperBlockTemp", "WorkOldLine", "FolderTemp", "Info", "OutputFile", "AudioQuality", "AudioBoost", "AudioStereo", "SubtitlesOpen", "WorkPause", "AudioConvert", "AllTracks", "Qtesseract5Folder", "Qtesseract5"):
-            Configs.remove(Key)
-
-
         ### Acceptation de l'événement
         event.accept()
 
@@ -2896,7 +3133,7 @@ class MKVExtractorQt5(QMainWindow):
 #############################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setApplicationVersion("5.5.5")
+    app.setApplicationVersion("5.5.6")
     app.setApplicationName("MKV Extractor Qt5")
 
     ### Dossier du logiciel, utile aux traductions et à la liste des codecs
@@ -2928,7 +3165,16 @@ if __name__ == '__main__':
                      "FeedbackBlock": False, # Option bloquant les infos de retours
                      "FolderParentTemp": QDir.tempPath(), # Dossier temporaire dans lequel extraire les pistes pour visualisation
                      "FFMpeg": False, # Commande de conversion avconv ou ffmpeg
+                     "HideOptions": False, # Option cachant ou non les options inutilisables
                      "LastFile": False, # Option conservant en mémoire le dernier mkv ouvert
+                     "Location/AvConv": "", # Adresses des logiciels
+                     "Location/BDSup2Sub": "",
+                     "Location/FFMpeg": "",
+                     "Location/MKClean": "",
+                     "Location/MKVInfo": "",
+                     "Location/MKVToolNix": "",
+                     "Location/MKValidator": "",
+                     "Location/Qtesseract5": "",
                      "MMGorMEQ": "MEQ", # Logiciel à utiliser
                      "MMGorMEQCheckbox": False, # Valeur sautant la confirmation du choix de logiciel à utiliser
                      "ConfirmConvert": False, # Valeur sautant la confirmation de conversion
@@ -2939,8 +3185,6 @@ if __name__ == '__main__':
                      "RecentInfos": True, # Option de suppression du fichier des fichiers et adresses récentes
                      "RemuxRename": False, # Renommer automatiquement le fichier de sorti remux
                      "OutputSameFolder": True, # Option d'utilisation du même dossier de sortie que celui du fichier mkv
-                     "AudioStereo": False, # Option de conversion en canal double
-                     "SubtitlesOpen": False, # Option d'ouverture des sous-titres avant leur ré encapsulage
                      "SysTray": True, # Option affichant l'icône du system tray
                      "WindowAspect": True, # Conserver la fenêtre et sa géométrie
                      "QtStyle": QApplication.style().objectName() # Conserver la fenêtre et sa géométrie
@@ -2977,6 +3221,41 @@ if __name__ == '__main__':
     except:
         for Key, Value in DefaultValues.items():
             Configs.setValue(Key, Value)
+
+
+    ### Valeurs temporaires
+    ## Valeurs par défaut des options, pas toutes (MMGorMEQ, les valeurs de la fenêtre, l'adresse du dernier fichier ouvert)
+    DefaultTempValues = {"AllTracks": False,
+                         "AudioConvert": False,
+                         "AudioBoost": "NoChange",
+                         "AudioQuality": "NoChange",
+                         "AudioStereo": False,
+                         "ChaptersFile": "",
+                         "Command": "",
+                         "DurationFile": 0,
+                         "FirstRun": True,
+                         "FolderTemp": "",
+                         "MKVLoaded": False,
+                         "OutputFile": "",
+                         "Qtesseract5Folder": Path(),
+                         "Qtesseract5": False,
+                         "Reencapsulate": False,
+                         "SubtitlesOpen": False,
+                         "SuperBlockTemp": False,
+                         "TagsFile": "",
+                         "TitleFile": "",
+                         "VobsubToSrt": False,
+                         "WorkOldLine": "",
+                         "WorkPause": False}
+
+    ## Création ou ouverture du fichier de config
+    TempValues = QSettings(QSettings.NativeFormat, QSettings.UserScope, "MKV Extractor Qt5")
+
+    ## Donne le bon type de variable
+    for Key, Value in DefaultTempValues.items():
+        TempValues.setValue(Key, Value)
+
+
 
 
     MKVExtractorQt5Class = MKVExtractorQt5()

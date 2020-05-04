@@ -1,4 +1,14 @@
-mkv-extractor-qt5 (5.5.5a-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.5.6-0~focal) focal; urgency=low ()
+
+  [english]
+    - Fix the QActionGroup exclusive bug
+
+  [français]
+    - Correction du bug des QActionGroup exclusives
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 23 Apr 2020 18:20:04 +0200
+
+mkv-extractor-qt5 (5.5.5a-0~focal) focal; urgency=low ()
 
   [english]
     - Fix the desktop file
@@ -16,7 +26,7 @@ mkv-extractor-qt5 (5.5.5a-0~bionic) bionic; urgency=low ()
 
  -- Belleguic Terence <hizo@free.fr>  Sat, 27 Jan 2018 12:20:04 +0200
 
-mkv-extractor-qt5 (5.5.1-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.5.1-0~focal) focal; urgency=low ()
 
   [english]
     - Bug correction "can't pickle QTemporaryDir objects"
@@ -27,7 +37,7 @@ mkv-extractor-qt5 (5.5.1-0~bionic) bionic; urgency=low ()
 
  -- Belleguic Terence <hizo@free.fr>  Mon, 20 Nov 2017 18:40:04 +0200
 
-mkv-extractor-qt5 (5.5.0-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.5.0-0~focal) focal; urgency=low ()
 
   [english]
     - Bug corrections
@@ -40,7 +50,7 @@ mkv-extractor-qt5 (5.5.0-0~bionic) bionic; urgency=low ()
 
  -- Belleguic Terence <hizo@free.fr>  Thu, 24 Nov 2016 10:40:04 +0200
 
-mkv-extractor-qt5 (5.4.4-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.4.4-0~focal) focal; urgency=low ()
 
   [english]
     - Update of the cz translation
@@ -56,7 +66,7 @@ mkv-extractor-qt5 (5.4.4-0~bionic) bionic; urgency=low ()
 
  -- Belleguic Terence <hizo@free.fr>  Thu, 24 Nov 2016 10:40:04 +0200
 
-mkv-extractor-qt5 (5.4.3-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.4.3-0~focal) focal; urgency=low ()
 
   [english]
     - Code update of the volume boost
@@ -71,7 +81,7 @@ mkv-extractor-qt5 (5.4.3-0~bionic) bionic; urgency=low ()
  -- Belleguic Terence <hizo@free.fr>  Mon, 28 Sep 2016 14:40:27 +0200
 
 
-mkv-extractor-qt5 (5.4.2-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.4.2-0~focal) focal; urgency=low ()
 
   [english]
     - Add pause during SUB to SRT convert
@@ -84,7 +94,7 @@ mkv-extractor-qt5 (5.4.2-0~bionic) bionic; urgency=low ()
  -- Belleguic Terence <hizo@free.fr>  Thu, 12 May 2016 14:01:27 +0200
 
 
-mkv-extractor-qt5 (5.4.0-1~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.4.0-1~focal) focal; urgency=low ()
 
   [english]
     - Lot of bug fixes and revised code
@@ -122,7 +132,7 @@ mkv-extractor-qt5 (5.4.0-1~bionic) bionic; urgency=low ()
  -- Belleguic Terence <hizo@free.fr>  Thu, 21 Apr 2015 19:01:27 +0200
 
 
-mkv-extractor-qt5 (5.3.0-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.3.0-0~focal) focal; urgency=low ()
 
   [english]
     - Bug fixed
@@ -133,7 +143,7 @@ mkv-extractor-qt5 (5.3.0-0~bionic) bionic; urgency=low ()
  -- hizoka <hizo@free.fr>  Mon, 23 Nov 2015 19:26:08 +0100
 
 
-mkv-extractor-qt5 (5.2.3-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.2.3-0~focal) focal; urgency=low ()
 
   [english]
     - Bug fixed
@@ -146,7 +156,7 @@ mkv-extractor-qt5 (5.2.3-0~bionic) bionic; urgency=low ()
  -- hizoka <hizo@free.fr>  Sun, 25 Oct 2015 09:06:00 +0100
 
 
-mkv-extractor-qt5 (5.2.2-3~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.2.2-3~focal) focal; urgency=low ()
 
   [english]
     - Folder select fixed
@@ -161,7 +171,7 @@ mkv-extractor-qt5 (5.2.2-3~bionic) bionic; urgency=low ()
  -- hizoka <hizo@free.fr>  Sat, 1 Aug 2015 12:40:00 +0100
 
 
-mkv-extractor-qt5 (5.2.2-0~bionic) bionic; urgency=low ()
+mkv-extractor-qt5 (5.2.2-0~focal) focal; urgency=low ()
 
   [english]
     - Creation of the QT5 version

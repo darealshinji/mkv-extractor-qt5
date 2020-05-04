@@ -298,6 +298,9 @@
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;MKVMerge&lt;/span&gt;: Merge multimedia streams into a Matroska file. This software is available in the debian packages &lt;span style=&quot; font-style:italic;&quot;&gt;(mkvtoolnix package name)&lt;/span&gt; or on &lt;span style=&quot; text-decoration: underline;&quot;&gt;mkvtoolnix.download&lt;/span&gt; and is &lt;span style=&quot; font-weight:600;&quot;&gt;mandatory&lt;/span&gt; for use MKV Extractor Qt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="statusTip">
                    <string>Automatically remux extracted tracks into a new MKV file. Options are available.</string>
                   </property>
@@ -305,8 +308,14 @@
                    <string>Remux</string>
                   </property>
                   <property name="icon">
-                   <iconset theme="view-refresh">
-                    <normaloff>.</normaloff>.</iconset>
+                   <iconset resource="MKVRessources.qrc">
+                    <normaloff>:/img/capsule.png</normaloff>:/img/capsule.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -324,15 +333,24 @@
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qtesseract5 &lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;(by me)&lt;/span&gt;: SUB to SRT convertion with OCR. This software is avaible on my PPA or on &lt;span style=&quot; text-decoration: underline;&quot;&gt;qtesseract5.hizo.fr&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;BDSub2Sup &lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;(by Volker Oth then by Miklos Juhasz)&lt;/span&gt;: SUP to SUB convertion. This software is avaible on my PPA or on &lt;span style=&quot; text-decoration: underline;&quot;&gt;github.com&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Explications&lt;/span&gt;: If this button is activate, the SUP files will be convert to SUB format &lt;span style=&quot; font-style:italic;&quot;&gt;(if BDSup2Sub is present) &lt;/span&gt;then the SUB files will be convert to SRT files with OCR detection.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) Qtesseract5 needs to be install and BDSub2Sup too for SUB convertion.&lt;br/&gt;2) Tick a SUB/SUP track and the button will be activate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="statusTip">
-                   <string>Convertion subtitles option.</string>
+                   <string>Convertion subtitles option. Qtesseract5 and BDSup2Sub (for SUP files) need to be present.</string>
                   </property>
                   <property name="text">
                    <string>SUB to SRT</string>
                   </property>
                   <property name="icon">
-                   <iconset theme="qtesseract5">
-                    <normaloff>.</normaloff>.</iconset>
+                   <iconset resource="MKVRessources.qrc">
+                    <normaloff>:/img/subtitles-convert.png</normaloff>:/img/subtitles-convert.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -350,15 +368,24 @@
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;FFmpeg&lt;/span&gt;: A complete, cross-platform solution to record, convert and stream audio and video. This software is avaible in the debian packages or on &lt;span style=&quot; text-decoration: underline;&quot;&gt;ffmpeg.org&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;AvConv&lt;/span&gt;: A fork of FFmpeg. This software is avaible in the debian packages &lt;span style=&quot; font-style:italic;&quot;&gt;(libav-tools package name)&lt;/span&gt; or on &lt;span style=&quot; text-decoration: underline;&quot;&gt;libav.org&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) FFmpeg or AvConv need to be install.&lt;br/&gt;2) Tick a audio track and the button will be activate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="statusTip">
-                   <string>Convertion audio option.</string>
+                   <string>Audio conversion option. FFMpeg or AvConv need to be present.</string>
                   </property>
                   <property name="text">
                    <string>Audio Convert</string>
                   </property>
                   <property name="icon">
-                   <iconset theme="media-tape">
-                    <normaloff>.</normaloff>.</iconset>
+                   <iconset resource="MKVRessources.qrc">
+                    <normaloff>:/img/audio-convert.png</normaloff>:/img/audio-convert.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -548,7 +575,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="page">
+       <widget class="QWidget" name="ConfigsPage">
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <property name="topMargin">
           <number>6</number>
@@ -689,23 +716,377 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="configuration_ok">
+              <widget class="QPushButton" name="configuration_close">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="statusTip">
+                <string>Edit configuration close.</string>
+               </property>
                <property name="text">
-                <string>OK</string>
+                <string>Close</string>
                </property>
                <property name="icon">
-                <iconset theme="dialog-ok">
-                 <normaloff>.</normaloff>.</iconset>
+                <iconset theme="dialog-close"/>
                </property>
               </widget>
              </item>
             </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="LocationsPage">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Softwares locations</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>The locations are compatible with appimage files. The links cannot containt &quot; -&quot; in their names.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QScrollArea" name="scrollArea">
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>-100</y>
+              <width>621</width>
+              <height>326</height>
+             </rect>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_16">
+               <item>
+                <widget class="QLabel" name="label_13">
+                 <property name="text">
+                  <string notr="true">AvConv :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="location_avconv">
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_avconv">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="document-open">
+                   <normaloff>.</normaloff>.</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_13">
+               <item>
+                <widget class="QLabel" name="label_11">
+                 <property name="text">
+                  <string notr="true">BDSup2Sub :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="location_bdsup2sub">
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_bdsup2sub">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="document-open"/>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_14">
+               <item>
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string notr="true">FFMpeg :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="location_ffmpeg">
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_ffmpeg">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="document-open">
+                   <normaloff>.</normaloff>.</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <item>
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string notr="true">MKClean :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="location_mkclean">
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_mkclean">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="document-open">
+                   <normaloff>.</normaloff>.</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_11">
+               <item>
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string notr="true">MKVInfoGui :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="location_mkvinfo">
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_mkvinfo">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="document-open">
+                   <normaloff>.</normaloff>.</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string notr="true">MKVToolNixGui :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="location_mkvtoolnix">
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_mkvtoolnix">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="document-open">
+                   <normaloff>.</normaloff>.</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string notr="true">MKValidator :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="location_mkvalidator">
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_mkvalidator">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="document-open">
+                   <normaloff>.</normaloff>.</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <item>
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string notr="true">QTesseract5 :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="location_qtesseract5">
+                 <property name="clearButtonEnabled">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_qtesseract5">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="document-open">
+                   <normaloff>.</normaloff>.</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_15">
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="locations_reset">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="statusTip">
+              <string>Restore the default softwares locations.</string>
+             </property>
+             <property name="text">
+              <string>&amp;Reset</string>
+             </property>
+             <property name="icon">
+              <iconset theme="draw-eraser">
+               <normaloff>.</normaloff>.</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="locations_close">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="statusTip">
+              <string>Softwares locations close.</string>
+             </property>
+             <property name="text">
+              <string>Close</string>
+             </property>
+             <property name="icon">
+              <iconset theme="dialog-close"/>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -736,6 +1117,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) Open a mkv file.&lt;br/&gt;2) Tick tracks before execute command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="statusTip">
          <string>Launch extract/convert/mux tracks.</string>
         </property>
@@ -763,7 +1147,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string/>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I want all stopped now!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="statusTip">
          <string>Cancel running processes and delete resulting file.</string>
@@ -796,6 +1180,9 @@
       </item>
       <item>
        <widget class="QProgressBar" name="progressBar">
+        <property name="statusTip">
+         <string>Progression of the actual job.</string>
+        </property>
         <property name="value">
          <number>0</number>
         </property>
@@ -825,7 +1212,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string/>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Noooo!&lt;br/&gt;Please, don't close me!!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="statusTip">
          <string>Quit the program and save the options.</string>
@@ -918,18 +1305,25 @@
     </property>
     <widget class="QMenu" name="option_style">
      <property name="statusTip">
-      <string/>
+      <string>List of the Qt styles available on the computer.</string>
      </property>
      <property name="title">
       <string>Q&amp;t styles</string>
+     </property>
+     <property name="icon">
+      <iconset resource="MKVRessources.qrc">
+       <normaloff>:/img/qt.png</normaloff>:/img/qt.png</iconset>
      </property>
     </widget>
     <addaction name="option_recent_infos"/>
     <addaction name="separator"/>
     <addaction name="option_configuration_table"/>
+    <addaction name="option_softwares_locations"/>
     <addaction name="separator"/>
     <addaction name="option_feedback"/>
     <addaction name="option_feedback_block"/>
+    <addaction name="separator"/>
+    <addaction name="option_hide_options"/>
     <addaction name="separator"/>
     <addaction name="option_style"/>
     <addaction name="option_aspect"/>
@@ -958,7 +1352,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>96</width>
+     <width>504</width>
      <height>134</height>
     </size>
    </property>
@@ -1030,7 +1424,7 @@
     <string>Open an MKV file</string>
    </property>
    <property name="toolTip">
-    <string>Open an MKV file</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a file selector dialog to choose a MKV file or supported file who will be converted in MKV before load it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="statusTip">
     <string>Chosing an MKV file is required.</string>
@@ -1048,7 +1442,7 @@
     <string>Output &amp;folder</string>
    </property>
    <property name="toolTip">
-    <string>Output folder</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a folder selector dialog to choose the directory who will receive the new files and if needed the temporary files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="statusTip">
     <string>Chosing an output folder is mandatory if the option to use the same folder as the MKV file is not used.</string>
@@ -1089,6 +1483,9 @@
    <property name="text">
     <string>&amp;Start job queue</string>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) Open a mkv file.&lt;br/&gt;2) Tick tracks before execute command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="statusTip">
     <string>Launch extract/convert/mux tracks.</string>
    </property>
@@ -1098,7 +1495,7 @@
   </action>
   <action name="mk_validator">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset theme="dialog-ok">
@@ -1106,6 +1503,9 @@
    </property>
    <property name="text">
     <string>&amp;Check MKV file</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) mkvalidator needs to be install.&lt;br/&gt;2) Open a mkv file before execute command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="statusTip">
     <string>Verify Matroska files for specification conformance with MKValidator.</string>
@@ -1116,7 +1516,7 @@
   </action>
   <action name="mk_clean">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset theme="draw-eraser">
@@ -1125,8 +1525,14 @@
    <property name="text">
     <string>&amp;Optimize MKV file</string>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) mkclean needs to be install.&lt;br/&gt;2) Open a mkv file before execute command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="statusTip">
     <string>Clean/Optimize Matroska files with MKClean.</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
    </property>
    <property name="shortcut">
     <string notr="true">F8</string>
@@ -1152,7 +1558,7 @@
   </action>
   <action name="mkv_info">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset theme="mkvinfo">
@@ -1160,6 +1566,9 @@
    </property>
    <property name="text">
     <string>&amp;View MKV information</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) mkvtoolnix-gui needs to be install.&lt;br/&gt;2) Open a mkv file before execute command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="statusTip">
     <string>Display information about the MKV file with mkvinfo.</string>
@@ -1186,24 +1595,6 @@
     <enum>QAction::AboutQtRole</enum>
    </property>
   </action>
-  <action name="option_mkv_folder">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset theme="edit-copy">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Use the same output folder as the MKV file</string>
-   </property>
-   <property name="statusTip">
-    <string>Change the output folder automatically to use the same folder as the MKV file.</string>
-   </property>
-  </action>
   <action name="option_configuration_table">
    <property name="checkable">
     <bool>false</bool>
@@ -1221,7 +1612,7 @@
   </action>
   <action name="mkv_mkvmerge">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset theme="mkvmerge">
@@ -1229,6 +1620,9 @@
    </property>
    <property name="text">
     <string>&amp;Edit MKV file</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) mkvtoolnix-gui needs to be install.&lt;br/&gt;2) Open a mkv file before execute command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="statusTip">
     <string>Open the MKV file with mkvmerge GUI for more modifications.</string>
@@ -1249,7 +1643,10 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>&amp;Replay MKV file</string>
+    <string>&amp;Play MKV file</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;br/&gt;1) Open a mkv file before execute command.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="statusTip">
     <string>Open the MKV file with the default application.</string>
@@ -1273,18 +1670,6 @@
     <string notr="true">F1</string>
    </property>
   </action>
-  <action name="option_clan">
-   <property name="icon">
-    <iconset theme="edit-clear">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Clean the information feedback box</string>
-   </property>
-   <property name="statusTip">
-    <string>Reset the information feedback box.</string>
-   </property>
-  </action>
   <action name="option_recent_infos">
    <property name="checkable">
     <bool>true</bool>
@@ -1299,8 +1684,11 @@
    <property name="text">
     <string>Delete &amp;recent files/URLs list</string>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I don't want to &lt;a name=&quot;result_box&quot;/&gt;leave unnecessary traces :)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="statusTip">
-    <string>Remove the Qt file who keeps the list of the recent files for the window selection.</string>
+    <string>View and edit the configuration values.</string>
    </property>
   </action>
   <action name="option_feedback">
@@ -1308,7 +1696,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset theme="code-context">
@@ -1318,7 +1706,7 @@
     <string>View &amp;information feedback box</string>
    </property>
    <property name="statusTip">
-    <string>Show or hide the information feedback box.</string>
+    <string>Show or hide the informations feedback box.</string>
    </property>
   </action>
   <action name="option_feedback_block">
@@ -1333,7 +1721,7 @@
     <string>&amp;Anchor information feedback box</string>
    </property>
    <property name="statusTip">
-    <string>Anchor or loose information feedback box.</string>
+    <string>Anchor or detach information feedback box.</string>
    </property>
   </action>
   <action name="option_aspect">
@@ -1351,7 +1739,7 @@
     <string>&amp;Keep the window aspect and its position</string>
    </property>
    <property name="statusTip">
-    <string>Keep in memory the aspect and the position of the window for the next opened.</string>
+    <string>Keep in memory the aspect and the position of the window for the next opening.</string>
    </property>
   </action>
   <action name="option_debug">
@@ -1383,13 +1771,11 @@
    <property name="text">
     <string>&amp;Use a system tray icon</string>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;With a system tray icon, the software can be hided of the taskbar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="statusTip">
     <string>Display a system tray icon of the software.</string>
-   </property>
-  </action>
-  <action name="option_wizard">
-   <property name="text">
-    <string>Ass&amp;istant</string>
    </property>
   </action>
   <action name="mkvtoolnix">
@@ -1399,6 +1785,9 @@
    </property>
    <property name="text">
     <string>&amp;MKVToolNix last version</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;MKVToolNix&lt;/span&gt; is a awesome software who serve of base at &lt;span style=&quot; font-weight:600;&quot;&gt;MKV Extractor Q&lt;/span&gt;t.&lt;/p&gt;&lt;p&gt;Try to update it regularly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="statusTip">
     <string>Open the download page of MKVToolNix.</string>
@@ -1416,22 +1805,10 @@
     <string>&amp;They talk about</string>
    </property>
    <property name="statusTip">
-    <string>They talk about MKV Extractor Gui.</string>
+    <string>They talk about MKV Extractor Gui on the web.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::AboutRole</enum>
-   </property>
-  </action>
-  <action name="about_qtesseract5">
-   <property name="icon">
-    <iconset theme="qtesseract5">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>A&amp;bout Qtesseract5</string>
-   </property>
-   <property name="statusTip">
-    <string>Display information about Qtesseract5.</string>
    </property>
   </action>
   <action name="whatsup">
@@ -1442,31 +1819,43 @@
    <property name="text">
     <string>&amp;What's up ?!</string>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Why I can't use it?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;1) MKV Extractor Qt needs to be install by a debian package&lt;span style=&quot; font-style:italic;&quot;&gt; (on my ppa)&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="statusTip">
     <string>View the changelog file of the software.</string>
    </property>
   </action>
-  <actiongroup name="actionGroupName8">
-   <action name="option_avconv">
-    <property name="checkable">
-     <bool>true</bool>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-    <property name="text">
-     <string>Use avconv</string>
-    </property>
-   </action>
-   <action name="option_ffmpeg">
-    <property name="checkable">
-     <bool>true</bool>
-    </property>
-    <property name="text">
-     <string>Use ffmpeg</string>
-    </property>
-   </action>
-  </actiongroup>
+  <action name="option_hide_options">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="hint">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Hide options not available</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the not available options are hide, it's impossible to see &lt;a name=&quot;result_box&quot;/&gt;all the possibilities offered by the software.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="statusTip">
+    <string>This option hides all options (like ffmpeg, mkvingo...) who are not available.</string>
+   </property>
+  </action>
+  <action name="option_softwares_locations">
+   <property name="icon">
+    <iconset theme="application-x-executable"/>
+   </property>
+   <property name="text">
+    <string>Softwares locations</string>
+   </property>
+   <property name="statusTip">
+    <string>Edit the executables locations.</string>
+   </property>
+  </action>
+  <actiongroup name="actionGroupName8"/>
   <actiongroup name="actionGroupName2">
    <action name="lang_en">
     <property name="checkable">

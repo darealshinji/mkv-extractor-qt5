@@ -9,6 +9,7 @@ MKVRessources.qrc
 MKVRessources_rc.py
 ui_MKVExtractorQt5.py
 MKVExtractorQt5-standalone.py
+BDSup2Sub.jar
 tmp*
 debian/
 

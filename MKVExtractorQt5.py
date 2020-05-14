@@ -327,14 +327,6 @@ class MKVExtractorQt5(QMainWindow):
             self.ui.option_feedback_block.setChecked(True)
             self.ui.feedback_widget.setFeatures(QDockWidget.NoDockWidgetFeatures)
 
-
-        ### Réinitialisation du dossier de sortie s'il n'existe pas
-        if not Configs.contains("OutputFolder") or not Configs.value("OutputFolder").is_dir():
-            Configs.setValue("OutputFolder", Path().resolve())
-            self.OptionsValue("OutputSameFolder", True)
-            #self.ui.option_mkv_folder.setChecked(True) # Activation de l'option même dossier afin qu'un dossier de sortie soit pris en compte au prochain MKV
-
-
         ### Gestion la traduction, le widget n'est pas encore connecté
         # Sélection de la langue français
         if "fr_" in Configs.value("Language"):
@@ -349,6 +341,12 @@ class MKVExtractorQt5(QMainWindow):
         # Force le chargement de traduction si c'est la langue anglaise (par défaut)
         else:
             self.OptionLanguage("en_US")
+
+
+        ### Réinitialisation du dossier de sortie s'il n'existe pas
+        if not Configs.contains("OutputFolder") or not Configs.value("OutputFolder").is_dir():
+            Configs.setValue("OutputFolder", Path().resolve())
+            Configs.setValue("OutputSameFolder", True)
 
 
         ### Définition de la taille des colonnes du tableau des pistes
@@ -418,7 +416,7 @@ class MKVExtractorQt5(QMainWindow):
             QMessageBox(3, self.Trad["ErrorArgTitle"], self.Trad["ErrorArgNb"].format("<br/> - ".join(sys.argv[1:])), QMessageBox.Close, self, Qt.WindowSystemMenuHint).exec()
 
         ## En cas de l'utilisation du dernier fichier ouvert
-        elif Configs.value("LastFile"):
+        elif Configs.value("InputFile") and Configs.value("LastFile"):
             # Si le fichier n'existe plus et qu'on ne cache pas le message, on affiche le message d'erreur
             if not Configs.value("InputFile").is_file() and not Configs.value("ConfirmErrorLastFile"):
                 Configs.remove("InputFile")
@@ -3133,7 +3131,7 @@ class MKVExtractorQt5(QMainWindow):
 #############################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setApplicationVersion("5.5.6")
+    app.setApplicationVersion("5.5.7")
     app.setApplicationName("MKV Extractor Qt5")
 
     ### Dossier du logiciel, utile aux traductions et à la liste des codecs

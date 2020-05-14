@@ -1904,6 +1904,10 @@ class MKVExtractorQt5(QMainWindow):
                         ComboItems.append(str(info2)) # Ajout de la valeur inconnue
                         ComboItems.sort()
 
+                # Cas spécifique où l'info est manquante
+                else:
+                    info2 = ""
+
                 # Texte à afficher
                 Text = self.Trad["TrackVideo"]
 
@@ -3131,7 +3135,7 @@ class MKVExtractorQt5(QMainWindow):
 #############################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setApplicationVersion("5.5.7")
+    app.setApplicationVersion("5.5.8")
     app.setApplicationName("MKV Extractor Qt5")
 
     ### Dossier du logiciel, utile aux traductions et à la liste des codecs

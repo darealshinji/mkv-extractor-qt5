@@ -1,3 +1,14 @@
+mkv-extractor-qt5 (5.5.8-0~focal) focal; urgency=low ()
+
+  [english]
+    - Fixed a bug if the video doesn't have the default_duration information.
+
+  [français]
+    - Correction d'un bug si la vidéo ne comporte pas l'information default_duration.
+
+ -- Belleguic Terence <hizo@free.fr>  Thu, 7 May 2020 11:20:00 +0200
+
+
 mkv-extractor-qt5 (5.5.7-0~focal) focal; urgency=low ()
 
   [english]
@@ -8,6 +19,7 @@ mkv-extractor-qt5 (5.5.7-0~focal) focal; urgency=low ()
 
  -- Belleguic Terence <hizo@free.fr>  Mon, 4 May 2020 23:00:00 +0200
 
+
 mkv-extractor-qt5 (5.5.6-0~focal) focal; urgency=low ()
 
   [english]
@@ -17,6 +29,7 @@ mkv-extractor-qt5 (5.5.6-0~focal) focal; urgency=low ()
     - Correction du bug des QActionGroup exclusives
 
  -- Belleguic Terence <hizo@free.fr>  Thu, 23 Apr 2020 18:20:04 +0200
+
 
 mkv-extractor-qt5 (5.5.5a-0~focal) focal; urgency=low ()
 
@@ -35,6 +48,7 @@ mkv-extractor-qt5 (5.5.5a-0~focal) focal; urgency=low ()
     - Ajout du choix du style graphique
 
  -- Belleguic Terence <hizo@free.fr>  Sat, 27 Jan 2018 12:20:04 +0200
+
 
 mkv-extractor-qt5 (5.5.1-0~focal) focal; urgency=low ()
 
